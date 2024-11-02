@@ -1,0 +1,231 @@
+package dev.faiths.module.player;
+
+import com.viaversion.viarewind.protocol.protocol1_8to1_9.Protocol1_8To1_9;
+import com.viaversion.viarewind.utils.PacketUtil;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Type;
+import dev.faiths.event.Handler;
+import dev.faiths.event.Listener;
+import dev.faiths.event.impl.*;
+import net.minecraft.item.ItemAppleGold;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.login.client.C00PacketLoginStart;
+import net.minecraft.network.login.client.C01PacketEncryptionResponse;
+import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.status.client.C00PacketServerQuery;
+import net.minecraft.network.status.client.C01PacketPing;
+import net.viamcp.ViaMCP;
+import dev.faiths.module.Category;
+import dev.faiths.module.CheatModule;
+import dev.faiths.value.ValueBoolean;
+import dev.faiths.value.ValueInt;
+import net.minecraft.network.Packet;
+
+import java.util.concurrent.LinkedBlockingQueue;
+
+import static dev.faiths.component.SmoothCameraComponent.stopWatch;
+import static dev.faiths.utils.IMinecraft.mc;
+
+@SuppressWarnings("unused")
+public class ModuleAutoGApple extends CheatModule {
+    public ModuleAutoGApple() {
+        super("AutoGApple", Category.PLAYER);
+    }
+    private final ValueInt delay = new ValueInt("Delay",1000,100, 10000);
+    private final ValueInt health = new ValueInt("Delay",15,1, 20);
+    private final ValueBoolean noMove = new ValueBoolean("Stop move when eating",false);
+    private final ValueBoolean autoClose = new ValueBoolean("Close when no golden apple",true);
+    private final ValueBoolean lagValue = new ValueBoolean("Lag when in air",false);
+    private final ValueBoolean notification = new ValueBoolean("Notification",false);
+
+    public static boolean eating = false;
+    private int movingPackets = 0;
+    private int slot = 0;
+    private final LinkedBlockingQueue<Packet<?>> packets = new LinkedBlockingQueue<>();
+    private boolean needSkip = false;
+
+    @Override
+    public void onEnable() {
+        packets.clear();
+        slot = -1;
+        needSkip = false;
+        movingPackets = 0;
+        eating = false;
+    }
+
+    @Override
+    public void onDisable() {
+        eating = false;
+        release();
+    }
+
+
+    private final Handler<WorldEvent> onWorld = event -> {
+        eating = false;
+        release();
+    };
+
+
+    private final Handler<PostUpdateEvent> onMoveMath = event -> {
+        if (eating && lagValue.getValue() && mc.thePlayer.positionUpdateTicks < 20 && !needSkip) event.setCancelled(false);
+        else if (needSkip) needSkip = false;
+    };
+
+
+    private final Handler<MotionEvent> onPostMotion = event -> {
+        if (eating) {
+            movingPackets++;
+            packets.add(new C01PacketChatMessage("release"));
+        }
+    };
+
+
+    private final Handler<MotionEvent> onPreMotion = event -> {
+        if (mc.thePlayer == null || !mc.thePlayer.isEntityAlive()) {
+            eating = false;
+            packets.clear();
+
+            return;
+        }
+
+        if (!mc.playerController.getCurrentGameType().isSurvivalOrAdventure()|| !stopWatch.finished(delay.getValue())) {
+            eating = false;
+            release();
+
+            return;
+        }
+
+        slot = getGApple();
+
+        if (slot == -1 || mc.thePlayer.getHealth() >= health.getValue().floatValue()) {
+            if (eating) {
+                eating = false;
+                release();
+            }
+        } else {
+            eating = true;
+            if (movingPackets >= 32) {
+                mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(slot));
+//                mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getStackInSlot(slot));
+                mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getStackInSlot(slot)));
+                mc.thePlayer.itemInUseCount -= 32;
+                release();
+                mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                stopWatch.reset();
+
+
+            } else if (mc.thePlayer.ticksExisted % 3 == 0) {
+                while (!packets.isEmpty()) {
+                    final Packet<?> packet = packets.poll();
+
+                    if (packet instanceof C01PacketChatMessage) {
+                        break;
+                    }
+
+                    if (packet instanceof C03PacketPlayer) {
+                        movingPackets--;
+                    }
+
+                    mc.getNetHandler().addToSendQueue(packet);
+                    if (packet instanceof C08PacketPlayerBlockPlacement) {
+                        if (ViaMCP.NATIVE_VERSION > 47) {
+                            PacketWrapper useItem = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
+                            useItem.write(Type.VAR_INT, 1);
+                            PacketUtil.sendToServer(useItem, Protocol1_8To1_9.class, true, true);
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    private final Handler<PacketEvent> onPacketSend = event -> {
+        if (mc.thePlayer == null || !mc.playerController.getCurrentGameType().isSurvivalOrAdventure()) return;
+
+        final Packet<?> packet = event.getPacket();
+
+        if (packet instanceof C00Handshake || packet instanceof C00PacketLoginStart ||
+                packet instanceof C00PacketServerQuery || packet instanceof C01PacketPing ||
+                packet instanceof C01PacketEncryptionResponse || packet instanceof C01PacketChatMessage) {
+            return;
+        }
+
+        if (!(packet instanceof C09PacketHeldItemChange) &&
+                !(packet instanceof C0EPacketClickWindow) &&
+                !(packet instanceof C16PacketClientStatus) &&
+                !(packet instanceof C0DPacketCloseWindow)) {
+            if (eating) {
+                event.setCancelled(true);
+
+                packets.add(packet);
+            }
+        }
+    };
+
+
+    private final Handler<PacketEvent> onPacketReceive = event -> {
+        final Packet<?> packet = event.getPacket();
+
+        if (packet instanceof S12PacketEntityVelocity) {
+            final S12PacketEntityVelocity wrapped = (S12PacketEntityVelocity) packet;
+
+            if (wrapped.getEntityID() == mc.thePlayer.getEntityId())
+                needSkip = true;
+        }
+    };
+
+
+    private final Handler<MoveInputEvent> onSlowDown = event -> {
+        if (eating) {
+            event.setCancelled(false);
+            event.setForward(0.2F);
+            event.setStrafe(0.2F);
+        }
+    };
+
+
+    private final Handler<MoveInputEvent> onMoveInput = event -> {
+        if (eating && noMove.getValue()) {
+            event.setForward(0);
+            event.setStrafe(0);
+        }
+    };
+
+    private void release() {
+        if (mc.getNetHandler() == null) return;
+
+        while (!packets.isEmpty()) {
+            final Packet<?> packet = packets.poll();
+
+            if (packet instanceof C01PacketChatMessage || packet instanceof C08PacketPlayerBlockPlacement || packet instanceof C07PacketPlayerDigging)
+                continue;
+
+            mc.getNetHandler().addToSendQueue(packet);
+        }
+
+        movingPackets = 0;
+    }
+
+    private int getGApple() {
+        for (int i = 0;i < 9;i++) {
+            final ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
+
+            if (stack == null)
+                continue;
+
+            if (stack.getItem() instanceof ItemAppleGold) {
+                return i;
+            }
+        }
+
+        if (autoClose.getValue())
+            this.toggle();
+
+        return -1;
+    }
+
+
+}

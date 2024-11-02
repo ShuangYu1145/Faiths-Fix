@@ -1,0 +1,177 @@
+package dev.faiths.module.combat;
+
+import dev.faiths.Faiths;
+import dev.faiths.event.Handler;
+import dev.faiths.event.impl.MotionEvent;
+import dev.faiths.event.impl.PacketEvent;
+import dev.faiths.event.impl.TickUpdateEvent;
+import dev.faiths.module.Category;
+import dev.faiths.module.CheatModule;
+import dev.faiths.utils.PacketUtils;
+import dev.faiths.utils.TimerUtil;
+import dev.faiths.value.ValueInt;
+import dev.faiths.value.ValueMode;
+import net.minecraft.item.ItemAppleGold;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+
+import java.util.ArrayList;
+
+import static dev.faiths.utils.IMinecraft.mc;
+
+
+/**
+ * @author Genius
+ * @since 2024/7/17 ����2:35
+ * IntelliJ IDEA
+ */
+
+@SuppressWarnings("unused")
+public class ModuleAutoGapple extends CheatModule {
+    private ValueMode mode = new ValueMode("Mode", new String[]{"NoVelocity","FakeHAND"}, "NoVelocity");
+
+    private ValueInt delay = new ValueInt ("Delay", 33,30,50);
+    public TimerUtil timeUtil = new TimerUtil();
+    public ArrayList<Packet<?>> packets = new ArrayList<>();
+    private int i;
+    private int c;
+    private boolean attack;
+    private int slot;
+
+    public ModuleAutoGapple() {
+        super("AutoGapple",Category.COMBAT);
+    }
+
+    @Override
+    public void onEnable() {
+        i = 0;
+        c = 0;
+        slot = 0;
+        timeUtil.reset();
+        packets.clear();
+    }
+
+    @Override
+    public void onDisable() {
+        timeUtil.reset();
+        i = 0;
+        c = 0;
+        slot = 0;
+        takeAll();
+    }
+
+
+    private final Handler<MotionEvent> event = event -> {
+       if(mode.is("FakeHAND")) {
+                if (event.isPost()) {
+                    if (c < 35 && getAppleGold() > 0) {
+                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(getAppleGold()));
+                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getStackInSlot(mc.thePlayer.inventory.currentItem)));
+                        c++;
+                    }
+
+                    if (c >= 35) {
+                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                        setState(false);
+                    }
+                }
+            }
+        };
+
+
+    private final Handler<PacketEvent> packetHandler = event -> {
+        Packet<?> packet = event.getPacket();
+        if(mode.is("NoVelocity")) {
+                if (!packet.getClass().getSimpleName().startsWith("S")) {
+                    if (packet instanceof C03PacketPlayer) {
+                        i++;
+                    }
+                    packets.add(packet);
+                    event.setCancelled(true);
+                }
+
+                if (packet instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity sPacketEntityVelocity = (S12PacketEntityVelocity) packet;
+                    if (sPacketEntityVelocity.getEntityID() == mc.thePlayer.getEntityId()) {
+                        attack = true;
+
+                        sPacketEntityVelocity.setMotionZ(0);
+                        sPacketEntityVelocity.setMotionX(0);
+                    }
+                }
+            }
+        };
+
+    @SuppressWarnings("unused")
+    private final Handler<TickUpdateEvent> tickUpdateEventHandler = event -> {
+        if(mode.is("NoVelocity")) {
+                take();
+                if (i >= delay.getValue()) {
+                    if (getAppleGold() != -1 && !(mc.thePlayer.inventory.getStackInSlot(mc.thePlayer.inventory.currentItem).getItem() instanceof ItemAppleGold)) {
+                        PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(getAppleGold()));
+                        PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getStackInSlot(getAppleGold())));
+                        takeAll();
+                        PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    } else if (mc.thePlayer.inventory.getStackInSlot(mc.thePlayer.inventory.currentItem).getItem() instanceof ItemAppleGold) {
+                        PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getStackInSlot(mc.thePlayer.inventory.currentItem)));
+                        takeAll();
+                    }
+                    timeUtil.reset();
+                    setState(false);
+                }
+            }
+        };
+
+    private int getAppleGold() {
+        for (int i = 0; i < 9; ++i) {
+            ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i + 36);
+            if (!mc.thePlayer.inventoryContainer.getSlot(i + 36).getHasStack() || !(mc.thePlayer.inventoryContainer.getSlot(i + 36).getStack().getItem() instanceof ItemAppleGold) || !isGoldenApple(stack)) continue;
+            return i;
+        }
+        return -1;
+    }
+
+
+    private boolean isGoldenApple(ItemStack stack) {
+        return stack.getItem() instanceof ItemAppleGold && !isEnchantedGoldenApple(stack);
+    }
+
+    private boolean isEnchantedGoldenApple(ItemStack stack) {
+        if (stack.getItem() instanceof ItemAppleGold) {
+            ItemAppleGold goldenApple = (ItemAppleGold) stack.getItem();
+            return goldenApple.hasEffect(stack);
+        }
+        return false;
+    }
+
+    public void take() {
+        if (!packets.isEmpty() && !attack) {
+            Packet<?> p = packets.get(0);
+            packets.remove(p);
+            PacketUtils.sendPacketNoEvent(p);
+        }
+
+        if (attack) {
+            attack = false;
+        }
+    }
+
+    public void takeAll() {
+        try {
+            if (!packets.isEmpty()) {
+                this.packets.forEach(PacketUtils::sendPacketNoEvent);
+
+                packets.clear();
+            }
+
+        } catch (NullPointerException ignored) {} catch (Exception var2) {
+            var2.printStackTrace();
+        }
+    }
+
+
+}
