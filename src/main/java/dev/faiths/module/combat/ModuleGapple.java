@@ -18,6 +18,7 @@ import dev.faiths.value.ValueFloat;
 import dev.faiths.value.ValueInt;
 import io.netty.buffer.Unpooled;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.Items;
 import net.minecraft.network.Packet;
@@ -34,6 +35,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 import static dev.faiths.module.combat.ModuleKillAura.target;
+import static dev.faiths.module.render.ModuleHUD.color;
 import static dev.faiths.utils.IMinecraft.mc;
 
 
@@ -154,8 +156,15 @@ public class ModuleGapple extends CheatModule {
         float target = (120.0f * ((float) storedC03 / c03s.getValue().intValue())) * ((float) 100 / 120);
         int startX = sr.getScaledWidth() / 2 - 68;
         int startY = sr.getScaledHeight() / 2 + 100;
+
+        final int[] counter = new int[1];
+        float time = Minecraft.getSystemTime();
+        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
+                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
+                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
+
         RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), 120.0f, 6.0f, 3.0f, new Color(0, 0, 0, 200), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150));
-        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 6.0f, 3.0f,new Color(241, 239, 232, 170), new Color(179, 179, 179, 50), new Color(241, 249, 249, 170), new Color(241, 239, 232, 170));
+        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 6.0f, 3.0f,rainbow, rainbow, rainbow, rainbow);
     };
 
     private void poll() {

@@ -1,0 +1,738 @@
+[
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 340,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 480,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 620,
+        "prefixes": [
+          "CELL",
+          "POLICE"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 340,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 480,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 620,
+        "prefixes": [
+          "CELL",
+          "POLICE"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "CELL",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "CELL"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "WINDOW",
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW",
+          "CELL"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "CELL",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 800,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 700,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "CELL"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "BOSS"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 800,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "POLICE"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 740,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 740,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 800,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 740,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 840,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 800,
+        "prefixes": [
+          "BOSS",
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 400,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 700,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1100,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 800,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1000,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1000,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1000,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1000,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1100,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "BOSS"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 0,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 300,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 600,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 900,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1200,
+        "prefixes": [
+          "BOSS",
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1500,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 1800,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 2100,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  }
+]

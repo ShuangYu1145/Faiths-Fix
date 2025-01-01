@@ -30,7 +30,7 @@ InvManager: {PotionSlot: 6, FoodSlot: 9, Legit: false, ExtraPacket: false, KeyBi
   Block Slot: 5, Delay: 50, PickaxeSlot: 2, ShovelSlot: 4, State: false, Hidden: false,
   SwordSlot: 1, AxeSlot: 3}
 Sprint: {State: true, Hidden: false, KeyBind: NONE, AllDirection: false}
-Gapple: {Speed: 3, C03Eat: 18.53F, State: false, Hidden: false, KeyBind: G, AutoDis: true}
+Gapple: {Speed: 3, C03Eat: 16.84F, State: false, Hidden: false, KeyBind: G, AutoDis: false}
 KillAura:
   Rotation Mode: Normal
   AutoBlock mode: Grim
@@ -85,7 +85,7 @@ AntiBot:
   Hidden: true
   KeyBind: NONE
 NoRotateSet: {State: false, Hidden: false, KeyBind: NONE}
-Teams: {State: true, Color: false, Hidden: false, KeyBind: NONE, ArmorColor: false,
+Teams: {State: false, Color: false, Hidden: false, KeyBind: NONE, ArmorColor: false,
   ScoreboardTeam: true}
 ContainerStealer: {Chest: true, PickTrash: true, State: false, Post: false, BrewingStand: true,
   Hidden: false, KeyBind: B, Silent: true, StealDelay: 0, Furnace: true}
@@ -121,6 +121,6 @@ SnowballAura: {State: true, Hidden: false, KeyBind: NONE, Range: 4.8F}
 Animation: {Blocking X Position: 0.0F, Arm Y Position: 0.0F, Blocking Z Position: 0.0F,
   State: false, Mode: Exhi Swang, Hidden: false, KeyBind: NONE, Arm X Position: 0.0F,
   Block Animation Speed: 1.29F, Swing Animation: true, Arm Z Position: 0.0F, Blocking Y Position: 0.0F}
-Insult: {State: false, Mode: xinxin, Hidden: false, KeyBind: NONE}
+Insult: {State: false, Mode: BWMIsland, Hidden: false, KeyBind: NONE}
 AutoSoup: {Min Delay: 53, Health: 12, State: true, Post: true, Legit: false, Hidden: false,
   KeyBind: NONE, Max Delay: 116, Drop Bowl: true}
