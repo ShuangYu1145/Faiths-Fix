@@ -14,7 +14,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public final class NotificationManager {
 
     private final int DEFAULT_DELAY = 2_000;
-//    private final CustomFont fontRendererObj = FontManager.bold18;
+    //    private final CustomFont fontRendererObj = FontManager.bold18;
     /* fields */
     private final List<Notification> NOTIFICATIONS = new CopyOnWriteArrayList<>();
 

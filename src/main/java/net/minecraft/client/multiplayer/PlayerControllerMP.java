@@ -641,6 +641,7 @@ public class PlayerControllerMP
     {
         return this.isHittingBlock;
     }
+
     public boolean isBreakingBlock() {
         return mc.gameSettings.keyBindAttack.isKeyDown() && mc.thePlayer.capabilities.allowEdit &&
                 mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.BLOCK);

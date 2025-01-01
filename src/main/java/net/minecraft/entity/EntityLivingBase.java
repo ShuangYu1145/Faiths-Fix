@@ -5,6 +5,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.JumpEvent;
+import dev.faiths.module.combat.ModuleGapple;
 import dev.faiths.module.movement.ModuleNoFluid;
 import dev.faiths.module.render.ModuleAnimation;
 import net.minecraft.block.Block;
@@ -1049,7 +1050,7 @@ public abstract class EntityLivingBase extends Entity
 
     /**
      * Drop the equipment for this entity.
-     *  
+     *
      * @param wasRecentlyHit true if this this entity was recently hit by appropriate entity (generally only if player
      * or tameable)
      * @param lootingModifier level of enchanment to be applied to this drop
@@ -1107,7 +1108,7 @@ public abstract class EntityLivingBase extends Entity
 
     /**
      * Drop 0-2 items of this living's type
-     *  
+     *
      * @param wasRecentlyHit true if this this entity was recently hit by appropriate entity (generally only if player
      * or tameable)
      * @param lootingModifier level of enchanment to be applied to this drop
@@ -1594,6 +1595,17 @@ public abstract class EntityLivingBase extends Entity
      * Moves the entity based on the specified heading.  Args: strafe, forward
      */
     public void moveEntityWithHeading(float strafe, float forward) {
+        // 卡空
+        if (Faiths.moduleManager.getModule(ModuleGapple.class).getState()) {
+            if (this == Minecraft.getMinecraft().thePlayer) {
+                if (Minecraft.getMinecraft().thePlayer.positionUpdateTicks < 20 && !ModuleGapple.isS12) {
+                    return;
+                } else if (ModuleGapple.isS12) {
+                    ModuleGapple.isS12 = false;
+                }
+            }
+        }
+
         if (this.isServerWorld()) {
             if (!(this.isInWater() && !ModuleNoFluid.shouldCancelWater) || this instanceof EntityPlayer && ((EntityPlayer) this).capabilities.isFlying) {
                 if (!(this.isInLava() && !ModuleNoFluid.shouldCancelWater) || this instanceof EntityPlayer && ((EntityPlayer) this).capabilities.isFlying) {
@@ -2219,7 +2231,7 @@ public abstract class EntityLivingBase extends Entity
 
     /**
      * Set the render yaw offset
-     *  
+     *
      * @param offset The render yaw offset
      */
     public void setRenderYawOffset(float offset)

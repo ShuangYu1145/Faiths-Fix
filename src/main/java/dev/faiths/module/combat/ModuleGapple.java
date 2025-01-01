@@ -3,9 +3,7 @@ package dev.faiths.module.combat;
 import dev.faiths.Faiths;
 import dev.faiths.component.MovementComponent;
 import dev.faiths.event.Handler;
-import dev.faiths.event.impl.PacketEvent;
-import dev.faiths.event.impl.Render2DEvent;
-import dev.faiths.event.impl.TickUpdateEvent;
+import dev.faiths.event.impl.*;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
 import dev.faiths.module.player.ModuleBlink;
@@ -17,14 +15,23 @@ import dev.faiths.utils.player.BlinkUtils;
 import dev.faiths.utils.render.RoundedUtil;
 import dev.faiths.value.ValueBoolean;
 import dev.faiths.value.ValueFloat;
+import dev.faiths.value.ValueInt;
 import io.netty.buffer.Unpooled;
 
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.Items;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.handshake.client.C00Handshake;
+import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.network.play.client.*;
 import dev.faiths.utils.player.InventoryUtil;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.status.client.C00PacketServerQuery;
+
 import java.awt.*;
+import java.util.Hashtable;
+import java.util.LinkedList;
 
 import static dev.faiths.module.combat.ModuleKillAura.target;
 import static dev.faiths.utils.IMinecraft.mc;
@@ -32,16 +39,21 @@ import static dev.faiths.utils.IMinecraft.mc;
 
 @SuppressWarnings("unused")
 public class ModuleGapple extends CheatModule {
-    public ValueFloat duringSendTicks = new ValueFloat("DuringSendTicks", 1f, 0f,10f);
     public ValueFloat c03s = new ValueFloat("C03Eat",32f ,1f, 40f);
-    public ValueFloat delay = new ValueFloat("Delay", 9f, 0f,10f);
-    public ValueBoolean auto = new ValueBoolean("Auto", false);
+    public ValueInt speed = new ValueInt("Speed", 3,3,10);
+
+    public ValueBoolean auto = new ValueBoolean("AutoDis", false);
     private int gappleSlot = -1;
+
+    private LinkedList<Packet<?>> packets = new LinkedList<>();
+
     public static int storedC03 = 0;
     public static boolean eating = false;
     public static boolean sending = false;
 
     public static boolean restart = false;
+
+    public static boolean isS12;
 
     public ModuleGapple() {
         super("Gapple", Category.COMBAT);
@@ -50,7 +62,9 @@ public class ModuleGapple extends CheatModule {
 
     @Override
     public void onEnable() {
+        packets.clear();
         storedC03 = 0;
+        isS12 = false;
         this.gappleSlot = InventoryUtil.findItem2(36, 45, Items.golden_apple);
         if (this.gappleSlot != -1) {
             this.gappleSlot -= 36;
@@ -59,71 +73,76 @@ public class ModuleGapple extends CheatModule {
 
     @Override
     public void onDisable() {
-        eating = false;
-
-        sending = false;
-        BlinkUtils.stopBlink();
-
-        MovementComponent.resetMove();
-
-        PacketUtils.sendPacket(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem % 8 + 1));
-        PacketUtils.sendPacketNoEvent(new C17PacketCustomPayload("NoSlowPatcher", new PacketBuffer(Unpooled.buffer())));
-        PacketUtils.sendPacket(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem)));
+        poll();
     }
 
-        private Handler<TickUpdateEvent> tickUpdateEventHandler = event -> {
-        if (mc.thePlayer == null || mc.thePlayer.isDead) {
-            BlinkUtils.stopBlink();
-            this.setState(false);
-            return;
-        }
-        if (this.gappleSlot == -1) {
-            ClientUtils.displayChatMessage("没苹果");
-            this.setState(false);
-            return;
-        }
-        if (eating) {
-            MovementComponent.cancelMove();
-            if (!Faiths.moduleManager.getModule(ModuleBlink.class).getState()) {
-                BlinkUtils.startBlink();
-            }
-        } else {
-            eating = true;
-        }
-        if (storedC03 >= c03s.getValue().intValue()) {
-            eating = false;
-            sending = true;
-            PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(this.gappleSlot));
-            PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventoryContainer.getSlot(this.gappleSlot + 36).getStack()));
-            BlinkUtils.stopBlink();
-            PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-            sending = false;
-            this.setState(false);
-            ClientUtils.displayChatMessage("Eat");
-            if (auto.getValue()){
-                if (target.getName()!=null){
-                    ClientUtils.displayChatMessage("Stop");
-                    setState(true);
-                    ClientUtils.displayChatMessage("Restart");
+    private Handler<UpdateEvent> updateEventHandler = event -> {
+        if (gappleSlot == -1) setState(false);
+    };
+
+    private Handler<MotionEvent> motionEventHandler = event -> {
+        if (gappleSlot >= 0) {
+            if (event.isPre()) {
+                if (storedC03 > c03s.getValue().intValue()) {
+                    PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(gappleSlot));
+                    PacketUtils.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                    poll();
+                    PacketUtils.sendPacketNoEvent(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+
+                    if (auto.getValue()) {
+                        setState(false);
+                    } else {
+                        storedC03 = 0;
+                        packets.clear();
+                    }
+                } else {
+                    if (mc.thePlayer.ticksExisted % speed.getValue() == 0) {
+                        while (!packets.isEmpty()) {
+                            Packet<?> packet = packets.poll();
+
+                            if (packet instanceof C03PacketPlayer) storedC03--;
+
+                            if (packet instanceof C01PacketChatMessage) break;
+
+                            PacketUtils.sendPacketNoEvent(packet);
+                        }
+                    }
                 }
             }
-            return;
-        }
-        if ((mc.thePlayer.ticksExisted % delay.getValue().intValue()) == 0) {
-            BlinkUtils.releaseC03(duringSendTicks.getValue().intValue());
+            if (event.isPost()) {
+                packets.add(new C01PacketChatMessage("sb"));
+            }
         }
     };
 
 
-        private Handler<PacketEvent> packetEventHandler = event -> {
-        // 首先检查 event.getPacket() 是否是 C07PacketPlayerDigging 类型的实例
-        if (event.getPacket() instanceof C07PacketPlayerDigging) {
-            // 强制类型转换，将 event.getPacket() 转换为 C07PacketPlayerDigging 类型
-            C07PacketPlayerDigging c07 = (C07PacketPlayerDigging) event.getPacket();
+    private Handler<PacketEvent> packetEventHandler = event -> {
 
-            // 然后检查 c07 的状态是否为 RELEASE_USE_ITEM
-            if (c07.getStatus().equals(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM)) {
-                event.setCancelled(true);
+        if (mc.thePlayer == null || mc.theWorld == null) return;
+
+
+        Packet<?> packet = event.getPacket();
+        if (gappleSlot >= 0) {
+            if (PacketUtils.isCPacket(packet)) {
+                if (packet instanceof C00PacketKeepAlive || packet instanceof C00Handshake || packet instanceof C00PacketLoginStart || packet instanceof C00PacketServerQuery || packet instanceof C01PacketChatMessage)
+                    return;
+
+                if (!(packet instanceof C08PacketPlayerBlockPlacement || packet instanceof C0EPacketClickWindow || packet instanceof C0DPacketCloseWindow || packet instanceof C07PacketPlayerDigging)) {
+                    packets.add(packet);
+                    event.setCancelled(true);
+                }
+
+                if (packet instanceof C03PacketPlayer) {
+                    storedC03++;
+                }
+            } else {
+                if (packet instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity velocity = (S12PacketEntityVelocity) event.getPacket();
+
+                    if (velocity.getEntityID() == mc.thePlayer.getEntityId()) {
+                        isS12 = true;
+                    }
+                }
             }
         }
     };
@@ -135,9 +154,17 @@ public class ModuleGapple extends CheatModule {
         float target = (120.0f * ((float) storedC03 / c03s.getValue().intValue())) * ((float) 100 / 120);
         int startX = sr.getScaledWidth() / 2 - 68;
         int startY = sr.getScaledHeight() / 2 + 100;
-        String text = "Gapple...";
-        FontManager.sf18.drawString(text, startX + 10 + 60 - FontManager.sf18.getStringWidth(text) / 2, startY + 20, new Color(225, 225, 225, 100).getRGB());
-        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), 120.0f, 2.0f, 3.0f, new Color(0, 0, 0, 200), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150));
-        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 2.0f, 3.0f,new Color(241, 59, 232, 170), new Color(241, 59, 232, 170), new Color(241, 59, 232, 170), new Color(241, 59, 232, 170));
+        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), 120.0f, 6.0f, 3.0f, new Color(0, 0, 0, 200), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150));
+        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 6.0f, 3.0f,new Color(241, 239, 232, 170), new Color(179, 179, 179, 50), new Color(241, 249, 249, 170), new Color(241, 239, 232, 170));
     };
+
+    private void poll() {
+        while (!packets.isEmpty()) {
+            Packet<?> p = packets.poll();
+
+            if (p instanceof C01PacketChatMessage) continue;
+
+            PacketUtils.sendPacketNoEvent(p);
+        }
+    }
 }

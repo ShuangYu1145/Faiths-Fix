@@ -16,7 +16,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public abstract class CheatModule implements Listener {
     private String name;
-    private Category category;
+    protected Category category;
     private int keyBind;
     private boolean state;
     private boolean isHidden = false;
@@ -95,11 +95,11 @@ public abstract class CheatModule implements Listener {
         if (!Faiths.INSTANCE.isInitializing()) {
             if (state) {
                 onEnable();
-                Faiths.notificationManager.pop("Enabled", "Enabled " + getName() + ".", 1000, NotificationType.SUCCESS);
+                Faiths.notificationManager.pop("Enabled", getName() + ".", 1000, NotificationType.SUCCESS);
 
             } else {
                 onDisable();
-                Faiths.notificationManager.pop("Disabled", "Disabled " + getName() + ".", 1000, NotificationType.ERROR);
+                Faiths.notificationManager.pop("Disabled", getName() + ".", 1000, NotificationType.ERROR);
             }
             mc.thePlayer.playSound("random.click",0.5F,1F);
         }

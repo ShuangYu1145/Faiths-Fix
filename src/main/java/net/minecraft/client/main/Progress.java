@@ -13,7 +13,7 @@ public class Progress extends JFrame {
       public static boolean done = false;
 
       public Progress() {
-            this.setSize(250, 247);
+            this.setSize(200, 159);
             this.setAlwaysOnTop(true);
             this.setLayout(new BorderLayout());
             this.setLocationRelativeTo(null);
@@ -24,7 +24,7 @@ public class Progress extends JFrame {
             this.setVisible(true);
             for (int i = 0; i <= 100; i++) {
                   try {
-                        Thread.sleep(20);
+                        Thread.sleep(30);
                   } catch (InterruptedException e) {
                         e.printStackTrace();
                   }

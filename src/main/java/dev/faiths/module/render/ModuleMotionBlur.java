@@ -19,7 +19,7 @@ public class ModuleMotionBlur  extends CheatModule {
         super("MotionBlur", Category.RENDER);
     }
 
-    public static ValueFloat blurAmount = new ValueFloat("Amount", 5.0f, 0.0f, 10.0f);
+    public static ValueFloat blurAmount = new ValueFloat("Amount", 5.0f, 0.0f, 20.0f);
 
     private Framebuffer blurBufferMain = null;
     private Framebuffer blurBufferInto = null;

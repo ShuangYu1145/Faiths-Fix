@@ -1,0 +1,692 @@
+[
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "BOSS"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "SLIME"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "BOSS"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON",
+          "BOSS"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "WITHER_SKELETON"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 480,
+        "prefixes": [
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 760,
+        "prefixes": [
+          "HBM"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 480,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 760,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "WINDOW"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 480,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 760,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      }
+    ]
+  },
+  {
+    "waves": [
+      {
+        "ticks": 200,
+        "prefixes": [
+          "WINDOW",
+          "HBM"
+        ]
+      },
+      {
+        "ticks": 440,
+        "prefixes": [
+          "WINDOW",
+          "HBM",
+          "BOSS"
+        ]
+      },
+      {
+        "ticks": 680,
+        "prefixes": [
+          "HBM",
+          "WINDOW"
+        ]
+      }
+    ]
+  }
+]

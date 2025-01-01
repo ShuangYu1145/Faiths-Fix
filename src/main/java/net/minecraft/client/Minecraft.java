@@ -103,7 +103,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
+
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -1025,18 +1025,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         System.gc();
     }
 
-    @NativeObfuscation
-    private void exitProcess() {
-        System.exit(0);
-    }
-
     /**
      * Called repeatedly from run()
      */
     private void runGameLoop() throws IOException {
-        if (crashed) {
-            exitProcess();
-        }
         final long currentTime = (Sys.getTime() * 1000) / Sys.getTimerResolution();
         final int deltaTime = (int) (currentTime - Faiths.lastFrame);
         Faiths.lastFrame = currentTime;

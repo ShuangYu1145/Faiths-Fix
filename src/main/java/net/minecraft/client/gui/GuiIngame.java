@@ -5,7 +5,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.Render2DEvent;
-import dev.faiths.module.combat.ModuleVelocity;
 import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import net.minecraft.block.material.Material;

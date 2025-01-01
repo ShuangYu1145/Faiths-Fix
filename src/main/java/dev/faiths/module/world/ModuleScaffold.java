@@ -584,7 +584,10 @@ public class ModuleScaffold extends CheatModule {
                     tellyTicks = 3.8F;
                 }
             }
-            canTellyPlace = mc.thePlayer.offGroundTicks >= tellyTicks;
+
+             canTellyPlace = mc.thePlayer.offGroundTicks >= tellyTicks;
+
+
         }
 
         if (!this.canTellyPlace) {

@@ -19,13 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.stage.Stage;
 
 import static dev.faiths.module.render.ModuleHUD.color;
 

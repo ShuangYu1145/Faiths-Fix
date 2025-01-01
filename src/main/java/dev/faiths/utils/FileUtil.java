@@ -1,6 +1,5 @@
 package dev.faiths.utils;
 
-import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;

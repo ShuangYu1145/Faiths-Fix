@@ -3,6 +3,7 @@ package net.minecraft.client.entity;
 import com.mojang.authlib.GameProfile;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.LookEvent;
+import dev.faiths.module.fun.ModuleCape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -27,6 +28,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.io.File;
 
+import static dev.faiths.module.fun.ModuleCape.cape;
 import static net.minecraft.client.Minecraft.getMinecraft;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
@@ -98,13 +100,14 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     }
 
     public ResourceLocation getLocationCape() {
+
         if (!Config.isShowCapes()) {
             return null;
         } else if (locationOfCape != null) {
             return locationOfCape;
         } else {
             if(this == getMinecraft().thePlayer)
-                return Faiths.cape;
+                return cape;
             NetworkPlayerInfo networkplayerinfo = getPlayerInfo();
             return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
         }

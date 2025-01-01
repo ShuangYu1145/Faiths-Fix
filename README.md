@@ -1,6 +1,15 @@
-# Faiths-Recode
-Faiths Client but recoding
+# Faiths-Fix
+Faiths Client
 
+启动器运行请开启 关闭文件校验
+
+`必须！
+启动要改这个
+-Djava.library.path=你的natives目录`
+
+本人java小白，写的不对的地方请多多指教🙏
+
+```
 #10/4
 [-]remove IRC
 [-]remove Verify
@@ -49,16 +58,6 @@ Faiths Client but recoding
 [+]更新了新的按钮（丑死了）
 [+]MainMenu背景由伟小庭提供
 
-
-
-
-_By SuanYu_    本人java小白，写的不对的地方请多多指教🙏
-
-_**使用教程：**
-打开你的idea，
-加载项目，
-然后等待加载项目（挂VPN会好一点），
-然后运行。_
-
-启动器运行请开启 关闭文件校验
-
+#1/1
+[+]改了好多，都忘了
+```

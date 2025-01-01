@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import dev.faiths.Faiths;
-import dev.faiths.module.player.ModuleAutoBan;
+import dev.faiths.module.fun.ModuleAutoBan;
 import dev.faiths.module.player.ModuleBlink;
 import dev.faiths.module.world.ModuleScaffold;
 import net.minecraft.client.gui.achievement.GuiAchievements;

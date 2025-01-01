@@ -11,6 +11,8 @@ import dev.faiths.event.EventManager;
 import dev.faiths.hackerdetector.HackerDetector;
 import dev.faiths.module.CheatModule;
 import dev.faiths.module.ModuleManager;
+import dev.faiths.module.fun.ModuleCape;
+import dev.faiths.module.render.ModuleAnimation;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.notifiction.NotificationManager;
 import dev.faiths.utils.SlotSpoofManager;
@@ -26,14 +28,14 @@ import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
-    public static String VERSION = "2401027";
+    public static String VERSION = "241215";
     public static boolean IS_BETA = false;
-    public static final ResourceLocation cape = new ResourceLocation("client/cape.png");
     @NativeObfuscation.Inline
     public static boolean verified = false; // this is a temporary boolean
     private final EventManager eventManager;
@@ -54,6 +56,7 @@ public class Faiths {
     public static int delta;
     public static long lastFrame;
     public final int astolfo;
+
 
     public Faiths() {
         INSTANCE = this;

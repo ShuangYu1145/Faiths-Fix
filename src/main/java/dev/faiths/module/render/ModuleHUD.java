@@ -34,6 +34,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import static com.viaversion.viaversion.util.ChatColorUtil.STRIP_COLOR_PATTERN;
+import static dev.faiths.module.Category.RENDER;
 import static dev.faiths.utils.IMinecraft.mc;
 import static dev.faiths.utils.megawalls.FkCounter.MW_GAME_START_MESSAGE;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
@@ -82,7 +83,7 @@ public class ModuleHUD extends CheatModule {
     private boolean colorsSet;
 
     public ModuleHUD() {
-        super("HUD", Category.RENDER);
+        super("HUD", RENDER);
     }
 
     @Override
@@ -159,6 +160,8 @@ public class ModuleHUD extends CheatModule {
         mc.fontRendererObj.drawString(str, x, y, internalCol, false);
     }
 
+
+
     public String stripColorCodes(String input) {
         return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
     }
@@ -177,6 +180,9 @@ public class ModuleHUD extends CheatModule {
         GL11.glTranslatef(scaledResolution.getScaledWidth(), 0F, 0F);
         CustomFont fontRenderer = FontManager.sf18;
         FontRenderer mcFont = mc.fontRendererObj;
+
+
+
         if (facyfont.getValue()) {
             modules.sort((o1, o2) -> Float.valueOf(
                     (fontRenderer.getStringWidth(o2.getName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2 : 0)))

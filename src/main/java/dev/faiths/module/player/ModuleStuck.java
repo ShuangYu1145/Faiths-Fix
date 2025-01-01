@@ -6,7 +6,6 @@ import dev.faiths.event.impl.PacketEvent;
 import dev.faiths.event.impl.UpdateEvent;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
-import dev.faiths.module.combat.ModuleVelocity;
 import dev.faiths.module.world.ModuleScaffold;
 import dev.faiths.utils.PacketUtils;
 import dev.faiths.utils.player.Rotation;
