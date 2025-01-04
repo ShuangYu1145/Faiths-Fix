@@ -8,11 +8,10 @@
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
-.out/*
-.target/*
+out/*
+target/*
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
