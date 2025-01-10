@@ -49,15 +49,6 @@ public class Window {
     }
 
     protected void renderWindow(final int mouseX, final int mouseY) {
-        final int[] counter = new int[1];
-        float time = Minecraft.getSystemTime();
-        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
-        final Color rainbow1 = color.getValue();
-
-
         moveX = mouseX - this.prevMouseX;
         moveY = mouseY - this.prevMouseY;
         this.prevMouseX = mouseX;
@@ -99,7 +90,7 @@ public class Window {
             }
         }
         // if (expand) height += 3F;
-        RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), rainbow);
+        RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), ModuleHUD.color(ModuleHUD.colortick.getValue()));
         if (!expand) {
             RenderUtils.drawImage(new ResourceLocation("client/icon/eye_close.png"), 80F, 3F, 8F, 8F,
                     new Color(60, 60, 60));
@@ -129,14 +120,14 @@ public class Window {
 
         }
 
-        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, rainbow1);
+        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
         float moduleHeight = 11F;
         for (final CheatModule module : modules) {
             if (expand) {
                 if (!module.isExpanded()) {
                     RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(36, 36, 36));
                     if (module.getState()) {
-                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, rainbow1);
+                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     }
                 }
 
@@ -166,7 +157,7 @@ public class Window {
                 FontManager.bold15.drawString(module.getName().toLowerCase(),
                         100F - FontManager.bold15.getStringWidth(module.getName().toLowerCase()) - 3F,
                         moduleHeight + 5F,
-                        module.getState() && module.isExpanded() ? rainbow1.getRGB()
+                        module.getState() && module.isExpanded() ? ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB()
                                 : new Color(160, 160, 160).getRGB());
 
                 if (module.isExpanded()) {
@@ -187,7 +178,7 @@ public class Window {
                                 }
                             }
                             if (booleanValue.getValue()) {
-                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, rainbow1);
+                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                             }
                             FontManager.bold13.drawString(booleanValue.getName(), 5F, moduleHeight + 5F, -1);
                         }
@@ -234,7 +225,7 @@ public class Window {
                             final ValueFloat floatValue = (ValueFloat) value;
                             RenderUtils.drawRect(3F, moduleHeight,
                                     95F * (floatValue.getValue() / floatValue.getMaximum()), 11F,
-                                    rainbow1);
+                                    ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
                             FontManager.bold13.drawString(floatValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(FLOAT_POINT_FORMAT.format(floatValue.getValue()), 88F,
@@ -336,7 +327,7 @@ public class Window {
                             final ValueInt intValue = (ValueInt) value;
                             RenderUtils.drawRect(3F, moduleHeight,
                                     95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 11F,
-                                    rainbow1);
+                                    ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
                             FontManager.bold13.drawString(intValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(String.valueOf(intValue.getValue()), 90F,
@@ -384,7 +375,7 @@ public class Window {
                                     }
                                     if (pair.getValue()) {
                                         RenderUtils.drawRect(3F, moduleHeight, 95F, 11F,
-                                                rainbow1);
+                                                ModuleHUD.color(ModuleHUD.colortick.getValue()));
                                     }
                                     FontManager.bold13.drawString(pair.getKey(), 5F, moduleHeight + 5F, -1);
                                 }

@@ -511,30 +511,18 @@ public class ModuleScaffold extends CheatModule {
                 , (int) (height * 0.6 - FontManager.sf20.getHeight() * 0.5 + 50));
         RenderHelper.disableStandardItemLighting();
 
-        final int[] counter = new int[1];
-        float time = Minecraft.getSystemTime();
-        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
         if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-            FontManager.sf20.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, rainbow.getRGB());
+            FontManager.sf20.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
         } else {
-            mc.fontRendererObj.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, rainbow.getRGB());
+            mc.fontRendererObj.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
         }
     //    RoundedUtil.drawRound(width / 2f - 32, height * 0.6f + 0.5f + 46,FontManager.sf20.getStringWidth(info) + 28,15,4,new Color(1,1,1, 100));
         GlStateManager.popMatrix();
     };
 
     private final Handler<Render3DEvent> render3DEventHandler = event -> {
-        final int[] counter = new int[1];
-        float time = Minecraft.getSystemTime();
-        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
         if (data == null) return;
-        RenderUtils.drawBlockBox(data, rainbow, false);
+        RenderUtils.drawBlockBox(data,ModuleHUD.color(ModuleHUD.colortick.getValue()), false);
     };
 
     private final Handler<UpdateEvent> updateEventHandler = event -> {

@@ -1072,6 +1072,33 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
+    public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed) {
+        return colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255);
+    }
+
+    public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed, double alpha) {
+        long now = (long) (speed * System.currentTimeMillis() + index * timePerIndex);
+
+        float redDiff = (firstColor.getRed() - secondColor.getRed()) / time;
+        float greenDiff = (firstColor.getGreen() - secondColor.getGreen()) / time;
+        float blueDiff = (firstColor.getBlue() - secondColor.getBlue()) / time;
+        int red = Math.round(secondColor.getRed() + redDiff * (now % (long) time));
+        int green = Math.round(secondColor.getGreen() + greenDiff * (now % (long) time));
+        int blue = Math.round(secondColor.getBlue() + blueDiff * (now % (long) time));
+
+        float redInverseDiff = (secondColor.getRed() - firstColor.getRed()) / time;
+        float greenInverseDiff = (secondColor.getGreen() - firstColor.getGreen()) / time;
+        float blueInverseDiff = (secondColor.getBlue() - firstColor.getBlue()) / time;
+        int inverseRed = Math.round(firstColor.getRed() + redInverseDiff * (now % (long) time));
+        int inverseGreen = Math.round(firstColor.getGreen() + greenInverseDiff * (now % (long) time));
+        int inverseBlue = Math.round(firstColor.getBlue() + blueInverseDiff * (now % (long) time));
+
+        if (now % ((long) time * 2) < (long) time)
+            return ColorUtil.getColor(inverseRed, inverseGreen, inverseBlue, (int) alpha);
+        else return ColorUtil.getColor(red, green, blue, (int) alpha);
+    }
+
+
     public static Color getHealthColor(float health, float maxHealth) {
         float[] fractions = new float[]{0.0F, 0.5F, 1.0F};
         Color[] colors = new Color[]{new Color(108, 0, 0), new Color(255, 51, 0), Color.GREEN};

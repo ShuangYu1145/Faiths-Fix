@@ -141,12 +141,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        final int[] counter = new int[1];
-        float time = Minecraft.getSystemTime();
-        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
 
         RenderUtils.drawImage(
                 new ResourceLocation("client/furry.png"),
@@ -158,7 +152,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
 
         String s = "Faiths Client #" + Faiths.VERSION;
-        fontRendererObj.drawString(s, 5, this.height - 10, rainbow.getRGB());
+        fontRendererObj.drawString(s, 5, this.height - 10,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
 
         Optional<String> username = Wrapper.getUsername();
         if (username.isPresent())
@@ -180,7 +174,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
                 this.height / 4f - 40F,
                 64F,
                 64F,
-                rainbow);
+                ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
 
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -157,14 +157,8 @@ public class ModuleGapple extends CheatModule {
         int startX = sr.getScaledWidth() / 2 - 68;
         int startY = sr.getScaledHeight() / 2 + 100;
 
-        final int[] counter = new int[1];
-        float time = Minecraft.getSystemTime();
-        final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
         RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), 120.0f, 6.0f, 3.0f, new Color(0, 0, 0, 200), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150), new Color(0, 0, 0, 150));
-        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 6.0f, 3.0f,rainbow, rainbow, rainbow, rainbow);
+        RoundedUtil.drawGradientRound(startX + 10, (float) (startY + 7.5), Math.min(target, 120.0f), 6.0f, 3.0f,ModuleHUD.color(ModuleHUD.colortick.getValue()), ModuleHUD.color(ModuleHUD.colortick.getValue()),ModuleHUD.color(ModuleHUD.colortick.getValue()), ModuleHUD.color(ModuleHUD.colortick.getValue()));
     };
 
     private void poll() {

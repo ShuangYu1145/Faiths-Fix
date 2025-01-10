@@ -86,10 +86,9 @@ public class GuiDisconnected extends GuiScreen
             {
                 this.drawCenteredString(this.fontRendererObj, s, this.width / 2, i, 16777215);
                 i += this.fontRendererObj.FONT_HEIGHT;
+                BanCheck();
             }
         }
-
-        BanCheck();
 
 
         super.drawScreen(mouseX, mouseY, partialTicks);

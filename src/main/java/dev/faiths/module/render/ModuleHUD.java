@@ -12,6 +12,7 @@ import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.MouseInputHandler;
 import dev.faiths.utils.Pair;
 import dev.faiths.utils.megawalls.FkCounter;
+import dev.faiths.utils.render.ColorUtil;
 import dev.faiths.utils.render.GlowUtils;
 import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.value.ValueBoolean;
@@ -55,12 +56,15 @@ import tech.skidonion.obfuscator.inline.Wrapper;
 @SuppressWarnings("unused")
 public class ModuleHUD extends CheatModule {
     public ValueBoolean facyfont = new ValueBoolean("ClientFont", false);
-    public ValueMode colorsetting = new ValueMode("ColorSetting", new String[] { "Custom", "Rainbow", "Dynamic", "Double" },
-            "Dynamic");
+    public static ValueMode colorsetting = new ValueMode("ColorSetting", new String[] { "Fade", "Static", "Double" },
+            "Static");
     public static ValueInt globalalpha = new ValueInt("GlobalAlpha", 100, 0, 255);
 
     public static final ValueColor color = new ValueColor("Color", new Color(118, 2, 255, 255));
     public static final ValueColor color2 = new ValueColor("Color2", new Color(2, 166, 255, 255));
+
+    public static ValueInt colortick = new ValueInt("ColorTick", 10, 0, 20);
+
     private final ValueBoolean outline = new ValueBoolean("OutLine", true);
     public static FkCounter killCounter = new FkCounter();
 
@@ -99,6 +103,20 @@ public class ModuleHUD extends CheatModule {
     public float easeOut(float t, final float d) {
         return (t / d - (t = 1F)) * t * t + 1;
     }
+
+    public static Color color(int tick) {
+        Color rainbow = new Color(-1);
+        if (colorsetting.is("Fade")) {
+            rainbow = ColorUtil.fade(5, tick * 20, new Color(color.getValue().getRGB()), 1);
+        } else if (colorsetting.is("Static")) {
+            rainbow = new Color(color.getValue().getRGB());
+        } else if (colorsetting.is("Double")) {
+            tick *= 200;
+            rainbow = new Color(RenderUtils.colorSwitch(new Color(color.getValue().getRGB()), new Color(color2.getValue().getRGB()), 2000, -tick / 40, 75, 2));
+        }
+        return rainbow;
+    }
+
 
     private String intToRomanByGreedy(int num) {
         int[] values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
@@ -194,7 +212,6 @@ public class ModuleHUD extends CheatModule {
                     .compareTo((mcFont.getStringWidth(o1.getName() + o1.getSuffix())
                             + (o1.suffixIsNotEmpty() ? 2F : 0))));
         }
-        Color rainbow1 = new Color(0, 0, 0, 255);
 
         for (final CheatModule module : modules) {
             if (facyfont.getValue()) {
@@ -230,14 +247,11 @@ public class ModuleHUD extends CheatModule {
                     module.slide = 0F;
                 if (module.slideStep > width)
                     module.slide = width;
-                final Color rainbow = colorsetting.is("Custom") ? color.getValue()
-                        : colorsetting.is("Dynamic") ? new Color(getArrayDynamic(time, 255))
-                                : new Color(astolfoRainbow(counter[0], 5, 107));
-                rainbow1 = rainbow;
+//1
                 final float slide = -module.slide - 2f;
                 if (outline.getValue()) {
                     RenderUtils.drawRectOriginal(slide - 3, module.height, slide - 2,
-                            module.height + fontRenderer.getHeight() + 4F, rainbow);
+                            module.height + fontRenderer.getHeight() + 4F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
                     if (index > 0) {
                         RenderUtils
@@ -248,17 +262,17 @@ public class ModuleHUD extends CheatModule {
                                                 + fontRenderer.getStringWidth(displayText)
                                                 + fontRenderer.getStringWidth(module.getSuffix())
                                                 + (module.suffixIsNotEmpty() ? 2 : 0),
-                                        module.height, slide - 2F, module.height + 1, rainbow);
+                                        module.height, slide - 2F, module.height + 1, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     }
                     if (index == modules.size() - 1)
                         RenderUtils.drawRectOriginal(slide - 3F, module.height + fontRenderer.getHeight() + 4F, 0F,
-                                module.height + fontRenderer.getHeight() + 5F, rainbow);
+                                module.height + fontRenderer.getHeight() + 5F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                 }
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                         module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
                 fontRenderer.drawString(displayText, slide, module.height + 2.5F,
-                        rainbow.getRGB(), true);
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
                 fontRenderer.drawString(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
                         module.height + 3F,
                         new Color(160, 160, 160).getRGB(), true);
@@ -298,14 +312,11 @@ public class ModuleHUD extends CheatModule {
                     module.slide = 0F;
                 if (module.slideStep > width)
                     module.slide = width;
-                final Color rainbow = colorsetting.is("Custom") ? color.getValue()
-                        : colorsetting.is("Dynamic") ? new Color(getArrayDynamic(time, 255))
-                                : new Color(astolfoRainbow(counter[0], 5, 107));
-                rainbow1 = rainbow;
+//1
                 final float slide = -module.slide - 2f;
                 if (outline.getValue()) {
                     RenderUtils.drawRectOriginal(slide - 3, module.height, slide - 2,
-                            module.height + font.FONT_HEIGHT + 4F, rainbow);
+                            module.height + font.FONT_HEIGHT + 4F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
                     if (index > 0) {
                         RenderUtils
@@ -316,16 +327,16 @@ public class ModuleHUD extends CheatModule {
                                                 + font.getStringWidth(displayText)
                                                 + font.getStringWidth(module.getSuffix())
                                                 + (module.suffixIsNotEmpty() ? 2 : 0),
-                                        module.height, slide - 2F, module.height + 1, rainbow);
+                                        module.height, slide - 2F, module.height + 1, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     }
                     if (index == modules.size() - 1)
                         RenderUtils.drawRectOriginal(slide - 3F, module.height + font.FONT_HEIGHT + 4F, 0F,
-                                module.height + font.FONT_HEIGHT + 5F, rainbow);
+                                module.height + font.FONT_HEIGHT + 5F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                 }
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F, module.height + font.FONT_HEIGHT + 4F,
                         new Color(0, 0, 0, globalalpha.getValue()));
                 font.drawString(displayText, slide, module.height + 2.5F,
-                        rainbow.getRGB(), true);
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
                 font.drawString(module.getSuffix(), slide + font.getStringWidth(displayText) + 2, module.height + 3F,
                         new Color(160, 160, 160).getRGB(), true);
                 counter[0]++;
@@ -357,11 +368,11 @@ public class ModuleHUD extends CheatModule {
             final String name = "Faiths " + Faiths.VERSION + " [FPS:" + mc.getDebugFPS() + "]";
             if (facyfont.getValue()) {
                 FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
-                        rainbow1.getRGB());
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
                 mc.fontRendererObj.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
-                        rainbow1.getRGB());
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
                 // }
             }
         }
@@ -503,10 +514,10 @@ public class ModuleHUD extends CheatModule {
             double roundedBPS = (double) Math.round(bps * 100.0) / 100.0;
             if (facyfont.getValue()) {
                 FontManager.sf18.drawString(roundedBPS + " block / sec", x, y,
-                        rainbow1.getRGB(), true);
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
             } else {
                 mc.fontRendererObj.drawStringWithShadow(roundedBPS + " block / sec", x, y,
-                        rainbow1.getRGB());
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
             }
             y -= 9.0F;
         }
@@ -514,10 +525,10 @@ public class ModuleHUD extends CheatModule {
         if (information.isEnabled("ShowFPS")) {
             if (facyfont.getValue()) {
                 FontManager.sf18.drawString("FPS: " + mc.getDebugFPS(), x, y,
-                        rainbow1.getRGB(), true);
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
             } else {
                 mc.fontRendererObj.drawStringWithShadow("FPS: " + mc.getDebugFPS(), x, y,
-                        rainbow1.getRGB());
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
             }
             y -= 9.0F;
 
@@ -527,58 +538,4 @@ public class ModuleHUD extends CheatModule {
             finals();
         }
     };
-
-    public int astolfoRainbow(int delay, int offset, int index) {
-        double rainbowDelay = Math.ceil(System.currentTimeMillis() + (long) (delay * index)) / offset;
-        return Color.getHSBColor(
-                (double) ((float) ((rainbowDelay %= 360.0) / 360.0)) < 0.5 ? -((float) (rainbowDelay / 360.0))
-                        : (float) (rainbowDelay / 360.0),
-                0.5F, 1).getRGB();
-    }
-
-    public int getArrayDynamic(float counter, int alpha) {
-        float brightness = 1.0F
-                - MathHelper.abs(MathHelper.sin(counter % 6000F / 6000F * (float) Math.PI * 2.0F) * 0.6F);
-        final float[] hudHSB = getHSB(color.getValue().getRGB());
-        Color color = Color.getHSBColor(hudHSB[0], hudHSB[1], brightness);
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha).getRGB();
-    }
-
-    public float[] getHSB(final int value) {
-        float[] hsbValues = new float[3];
-
-        float saturation, brightness;
-        float hue;
-
-        int cMax = Math.max(value >>> 16 & 0xFF, value >>> 8 & 0xFF);
-        if ((value & 0xFF) > cMax)
-            cMax = value & 0xFF;
-
-        int cMin = Math.min(value >>> 16 & 0xFF, value >>> 8 & 0xFF);
-        if ((value & 0xFF) < cMin)
-            cMin = value & 0xFF;
-
-        brightness = (float) cMax / 255.0F;
-        saturation = cMax != 0 ? (float) (cMax - cMin) / (float) cMax : 0;
-
-        if (saturation == 0) {
-            hue = 0;
-        } else {
-            float redC = (float) (cMax - (value >>> 16 & 0xFF)) / (float) (cMax - cMin), // @off
-                    greenC = (float) (cMax - (value >>> 8 & 0xFF)) / (float) (cMax - cMin),
-                    blueC = (float) (cMax - (value & 0xFF)) / (float) (cMax - cMin); // @on
-
-            hue = ((value >>> 16 & 0xFF) == cMax ? blueC - greenC
-                    : (value >>> 8 & 0xFF) == cMax ? 2.0F + redC - blueC : 4.0F + greenC - redC) / 6.0F;
-
-            if (hue < 0)
-                hue += 1.0F;
-        }
-
-        hsbValues[0] = hue;
-        hsbValues[1] = saturation;
-        hsbValues[2] = brightness;
-
-        return hsbValues;
-    }
 }

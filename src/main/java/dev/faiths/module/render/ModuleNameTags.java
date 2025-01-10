@@ -89,12 +89,6 @@ public class ModuleNameTags extends CheatModule {
     private final Handler<Render2DEvent> render2DEventHandler = event -> {
         final ScaledResolution scaledResolution = new ScaledResolution(mc);
         for (final EntityPlayer player : this.entityPosMap.keySet()) {
-            final int[] counter = new int[1];
-            float time = Minecraft.getSystemTime();
-            final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                    : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                    : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
             if (player.getDistanceToEntity(mc.thePlayer) >= 1.0f || mc.gameSettings.thirdPersonView != 0) {
                 if (!RenderUtils.isBBInFrustum(player.getEntityBoundingBox())) {
                     continue;

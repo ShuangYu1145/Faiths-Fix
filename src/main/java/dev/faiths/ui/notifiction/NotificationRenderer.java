@@ -33,13 +33,6 @@ public final class NotificationRenderer {
 
         for (Notification notification : notificationManager.getNotifications()) {
 
-
-            final int[] counter = new int[1];
-            float time = Minecraft.getSystemTime();
-            final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                    : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                    : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
-
             double x = notification.getX();
             double y = resolution.getScaledHeight() - notification.getY();
 
@@ -72,7 +65,7 @@ public final class NotificationRenderer {
                             resolution.getScaledWidth(),
                             20,
                             4f,(float) 0,
-                            new Color(255, 80, 80,215),rainbow);
+                            new Color(255, 80, 80,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     break;
                 case WARNING:
                     RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
@@ -80,7 +73,7 @@ public final class NotificationRenderer {
                             resolution.getScaledWidth(),
                             20,
                             4f,(float) 0,
-                            new Color(255, 215, 100,215),rainbow);
+                            new Color(255, 215, 100,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     break;
                 case SUCCESS:
                     RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
@@ -88,7 +81,7 @@ public final class NotificationRenderer {
                             resolution.getScaledWidth(),
                             20,
                             4f,(float) 0,
-                            new Color(100,198,119,215),rainbow);
+                            new Color(100,198,119,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     break;
                 case INFO:
                     RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
@@ -96,7 +89,7 @@ public final class NotificationRenderer {
                             resolution.getScaledWidth(),
                             20,
                             4f,(float) 0,
-                            new Color(128,128,128,215),rainbow);
+                            new Color(128,128,128,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + notification.getType());

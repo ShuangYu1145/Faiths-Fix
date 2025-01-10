@@ -626,11 +626,6 @@ public class GuiIngame extends Gui
 
         for (Score score1 : collection)
         {
-            final int[] counter = new int[1];
-            float time = Minecraft.getSystemTime();
-            final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                    : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                    : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
             ++j;
             ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
             String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
@@ -641,9 +636,9 @@ public class GuiIngame extends Gui
             if (j == 1) {
                 if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
                 //    FontManager.sf20.drawString("skidonion.tech", l1, k, rainbow.getRGB());
-                    this.getFontRenderer().drawString("skidonion.tech", l1, k, rainbow.getRGB());
+                    this.getFontRenderer().drawString("skidonion.tech", l1, k,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
                 } else {
-                    this.getFontRenderer().drawString("skidonion.tech", l1, k, rainbow.getRGB());
+                    this.getFontRenderer().drawString("skidonion.tech", l1, k, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
                 }
             } else {
                 this.getFontRenderer().drawString(s1, l1, k, 553648127);

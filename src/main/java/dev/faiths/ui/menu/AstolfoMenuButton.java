@@ -112,11 +112,7 @@ public class AstolfoMenuButton extends Gui
                                 new Color(0.5F, 0.5F, 0.5F, 0.5F).getRGB());
 
                  */
-                final int[] counter = new int[1];
-                float time = Minecraft.getSystemTime();
-                final Color rainbow = Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Custom") ? color.getValue()
-                        : Faiths.moduleManager.getModule(ModuleHUD.class).colorsetting.is("Dynamic") ? new Color(Faiths.moduleManager.getModule(ModuleHUD.class).getArrayDynamic(time, 255))
-                        : new Color(Faiths.moduleManager.getModule(ModuleHUD.class).astolfoRainbow(counter[0], 5, 107));
+
 /*
                 RoundedUtil.drawRound(xPosition, yPosition,
                         width, height, 4,
@@ -125,7 +121,7 @@ public class AstolfoMenuButton extends Gui
  */
                 RoundedUtil.drawRoundOutline(xPosition, yPosition,
                         width, height, 4,0.5f,
-                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150),rainbow);
+                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150),ModuleHUD.color(ModuleHUD.colortick.getValue()));
             } catch (final Exception ignored) {
                 
             }
