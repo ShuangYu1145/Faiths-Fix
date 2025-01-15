@@ -259,6 +259,15 @@ public class RenderUtils {
         if (texture2D) glEnable(GL_TEXTURE_2D);
         GlStateManager.resetColor();
     }
+
+    public static void quickDrawRect(float x2, float y2, float x22, float y22) {
+        GL11.glBegin((int)7);
+        GL11.glVertex2d((double)x22, (double)y2);
+        GL11.glVertex2d((double)x2, (double)y2);
+        GL11.glVertex2d((double)x2, (double)y22);
+        GL11.glVertex2d((double)x22, (double)y22);
+        GL11.glEnd();
+    }
     public static boolean isBBInFrustum(AxisAlignedBB aabb) {
         EntityPlayerSP player = mc.thePlayer;
         FRUSTUM.setPosition(player.posX, player.posY, player.posZ);

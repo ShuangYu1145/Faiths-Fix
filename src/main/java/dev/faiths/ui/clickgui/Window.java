@@ -5,6 +5,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.utils.render.animation.normal.Animation;
+import dev.faiths.utils.render.animation.normal.Direction;
+import dev.faiths.utils.render.animation.normal.easing.EaseBackIn;
+import dev.faiths.utils.render.animation.simple.SimpleAnimation;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -25,9 +29,6 @@ import dev.faiths.value.ValueMode;
 import dev.faiths.value.ValueMultiBoolean;
 import net.minecraft.util.ResourceLocation;
 
-import static dev.faiths.module.render.ModuleHUD.color;
-import static dev.faiths.module.render.ModuleHUD.color2;
-
 public class Window {
     private final Category category;
     private float x, y;
@@ -36,6 +37,8 @@ public class Window {
     private boolean dragging = false;
     private Runnable runnable = null;
     private DecimalFormat FLOAT_POINT_FORMAT = new DecimalFormat("0.00");
+
+    private Animation animation;
 
     public Window(Category category, float x, float y) {
         this.category = category;
@@ -60,9 +63,12 @@ public class Window {
                     this.y += moveY;
                 };
                 dragging = true;
+
+
             }
 
         }
+
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, 0);
@@ -154,8 +160,8 @@ public class Window {
                         leftMouseClicked = false;
                     }
                 }
-                FontManager.bold15.drawString(module.getName().toLowerCase(),
-                        100F - FontManager.bold15.getStringWidth(module.getName().toLowerCase()) - 3F,
+                FontManager.bold15.drawString(module.getName(),
+                        100F - FontManager.bold15.getStringWidth(module.getName()) - 3F,
                         moduleHeight + 5F,
                         module.getState() && module.isExpanded() ? ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB()
                                 : new Color(160, 160, 160).getRGB());
@@ -400,7 +406,7 @@ public class Window {
                 rightMouseClicked = false;
             }
         }
-        FontManager.bold15.drawString(category.getDisplayName().toLowerCase(), 5F, 5F, -1);
+        FontManager.bold15.drawString(category.getDisplayName(), 5F, 5F, -1);
 
         GL11.glPopMatrix();
         if (runnable != null) {

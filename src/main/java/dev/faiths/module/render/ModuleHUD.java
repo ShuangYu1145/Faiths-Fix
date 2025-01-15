@@ -15,11 +15,8 @@ import dev.faiths.utils.megawalls.FkCounter;
 import dev.faiths.utils.render.ColorUtil;
 import dev.faiths.utils.render.GlowUtils;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.value.ValueBoolean;
-import dev.faiths.value.ValueColor;
-import dev.faiths.value.ValueInt;
-import dev.faiths.value.ValueMode;
-import dev.faiths.value.ValueMultiBoolean;
+import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.value.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
@@ -59,6 +56,9 @@ public class ModuleHUD extends CheatModule {
     public static ValueMode colorsetting = new ValueMode("ColorSetting", new String[] { "Fade", "Static", "Double" },
             "Static");
     public static ValueInt globalalpha = new ValueInt("GlobalAlpha", 100, 0, 255);
+
+    public static ValueInt animationSpeed = new ValueInt("AnimationSpeed", 4,1, 10);
+
 
     public static final ValueColor maincolor = new ValueColor("Color", new Color(118, 2, 255, 255));
     public static final ValueColor secondcolor = new ValueColor("Color2", new Color(2, 166, 255, 255));
@@ -353,7 +353,7 @@ public class ModuleHUD extends CheatModule {
         if (information.isEnabled("ClientName")) {
             final String name = "Faiths " + Faiths.VERSION + " [FPS:" + mc.getDebugFPS() + "]";
             if (facyfont.getValue()) {
-                FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
+                FontManager.p40.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
@@ -432,11 +432,12 @@ public class ModuleHUD extends CheatModule {
                         GL11.glPopMatrix();
                     }
                 });
-
                 yPos += mc.fontRendererObj.FONT_HEIGHT + 15;
+
             }
 
-            //RenderUtils.drawRect(-20, -10, width + 5, yPos, new Color(0, 0, 0, 150).getRGB());
+         //   RenderUtils.drawRect(-20, -10, width + 5, yPos, new Color(0, 0, 0, globalalpha.getValue()).getRGB());
+            RoundedUtil.drawRound(-20, -10, width + 5, yPos, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
 
             drawables.forEach(Runnable::run);
 
