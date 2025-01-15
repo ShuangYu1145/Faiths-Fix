@@ -60,10 +60,10 @@ public class ModuleHUD extends CheatModule {
             "Static");
     public static ValueInt globalalpha = new ValueInt("GlobalAlpha", 100, 0, 255);
 
-    public static final ValueColor color = new ValueColor("Color", new Color(118, 2, 255, 255));
-    public static final ValueColor color2 = new ValueColor("Color2", new Color(2, 166, 255, 255));
+    public static final ValueColor maincolor = new ValueColor("Color", new Color(118, 2, 255, 255));
+    public static final ValueColor secondcolor = new ValueColor("Color2", new Color(2, 166, 255, 255));
 
-    public static ValueInt colortick = new ValueInt("ColorTick", 10, 0, 20);
+    public static ValueInt colortick = new ValueInt("ColorTick", 10, 0, 100);
 
     private final ValueBoolean outline = new ValueBoolean("OutLine", true);
     public static FkCounter killCounter = new FkCounter();
@@ -104,20 +104,6 @@ public class ModuleHUD extends CheatModule {
         return (t / d - (t = 1F)) * t * t + 1;
     }
 
-    public static Color color(int tick) {
-        Color rainbow = new Color(-1);
-        if (colorsetting.is("Fade")) {
-            rainbow = ColorUtil.fade(5, tick * 20, new Color(color.getValue().getRGB()), 1);
-        } else if (colorsetting.is("Static")) {
-            rainbow = new Color(color.getValue().getRGB());
-        } else if (colorsetting.is("Double")) {
-            tick *= 200;
-            rainbow = new Color(RenderUtils.colorSwitch(new Color(color.getValue().getRGB()), new Color(color2.getValue().getRGB()), 2000, -tick / 40, 75, 2));
-        }
-        return rainbow;
-    }
-
-
     private String intToRomanByGreedy(int num) {
         int[] values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
         String[] symbols = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
@@ -151,15 +137,15 @@ public class ModuleHUD extends CheatModule {
     public void finals() {
         ArrayList<String> messages = new ArrayList<String>();
         if (mc.ingameGUI.getChatGUI().getChatOpen()) {
-            messages.add(EnumChatFormatting.RED + "RED" + EnumChatFormatting.WHITE + ": " + killCounter.getPlayers(0).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
-            messages.add(EnumChatFormatting.GREEN + "GREEN" + EnumChatFormatting.WHITE + ": " + killCounter.getPlayers(1).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
-            messages.add(EnumChatFormatting.YELLOW + "YELLOW" + EnumChatFormatting.WHITE + ": " + killCounter.getPlayers(2).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
-            messages.add(EnumChatFormatting.BLUE + "BLUE" + EnumChatFormatting.WHITE + ": " + killCounter.getPlayers(3).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
+            messages.add(EnumChatFormatting.RED + "RED" + WHITE + ": " + killCounter.getPlayers(0).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
+            messages.add(EnumChatFormatting.GREEN + "GREEN" + WHITE + ": " + killCounter.getPlayers(1).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
+            messages.add(EnumChatFormatting.YELLOW + "YELLOW" + WHITE + ": " + killCounter.getPlayers(2).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
+            messages.add(EnumChatFormatting.BLUE + "BLUE" + WHITE + ": " + killCounter.getPlayers(3).entrySet().stream().map((entry) -> String.valueOf((new StringBuilder(String.valueOf(entry.getKey()))).append(" (").append(entry.getValue()).append(")"))).collect(Collectors.joining(", ")));
         } else {
-            messages.add(EnumChatFormatting.RED + "RED" + EnumChatFormatting.WHITE + ": " + killCounter.getKills(0));
-            messages.add(EnumChatFormatting.GREEN + "GREEN" + EnumChatFormatting.WHITE + ": " + killCounter.getKills(1));
-            messages.add(EnumChatFormatting.YELLOW + "YELLOW" + EnumChatFormatting.WHITE + ": " + killCounter.getKills(2));
-            messages.add(EnumChatFormatting.BLUE + "BLUE" + EnumChatFormatting.WHITE + ": " + killCounter.getKills(3));
+            messages.add(EnumChatFormatting.RED + "RED" + WHITE + ": " + killCounter.getKills(0));
+            messages.add(EnumChatFormatting.GREEN + "GREEN" + WHITE + ": " + killCounter.getKills(1));
+            messages.add(EnumChatFormatting.YELLOW + "YELLOW" + WHITE + ": " + killCounter.getKills(2));
+            messages.add(EnumChatFormatting.BLUE + "BLUE" + WHITE + ": " + killCounter.getKills(3));
         }
 
         int y = 15;// + 80;
@@ -247,7 +233,6 @@ public class ModuleHUD extends CheatModule {
                     module.slide = 0F;
                 if (module.slideStep > width)
                     module.slide = width;
-//1
                 final float slide = -module.slide - 2f;
                 if (outline.getValue()) {
                     RenderUtils.drawRectOriginal(slide - 3, module.height, slide - 2,
@@ -268,6 +253,7 @@ public class ModuleHUD extends CheatModule {
                         RenderUtils.drawRectOriginal(slide - 3F, module.height + fontRenderer.getHeight() + 4F, 0F,
                                 module.height + fontRenderer.getHeight() + 5F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                 }
+
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                         module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
@@ -384,8 +370,9 @@ public class ModuleHUD extends CheatModule {
                     4.0f,
                     64F,
                     64F,
-                    ModuleHUD.color.getValue());
+                    color(ModuleHUD.colortick.getValue()));
         }
+
 
         if (information.isEnabled("PotionHUD")) {
             float yPos = 0F;
@@ -538,4 +525,16 @@ public class ModuleHUD extends CheatModule {
             finals();
         }
     };
+
+    public static Color color(int tick) {
+        Color textColor = new Color(-1);
+        if (colorsetting.is("Fade")) {
+            textColor = ColorUtil.fade(5, tick * 20, new Color(maincolor.getValue().getRGB()), 1);
+        } else if (colorsetting.is("Static")) {
+            textColor = new Color(maincolor.getValue().getRGB());
+        } else if (colorsetting.is("Double")) {
+            textColor = new Color(RenderUtils.colorSwitch(new Color(maincolor.getValue().getRGB()), new Color(secondcolor.getValue().getRGB()), 2000.0f, -(tick * 200) / 40, 75L, 2.0));
+        }
+        return textColor;
+    }
 }

@@ -1,11 +1,8 @@
 package dev.faiths.ui.notifiction;
 import dev.faiths.Faiths;
-import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +10,6 @@ import net.minecraft.util.StringUtils;
 
 import java.awt.*;
 
-import static dev.faiths.module.render.ModuleHUD.color;
 import static dev.faiths.utils.IMinecraft.mc;
 
 public final class NotificationRenderer {
@@ -36,99 +32,35 @@ public final class NotificationRenderer {
             double x = notification.getX();
             double y = resolution.getScaledHeight() - notification.getY();
 
-
-
-            // region notification-rendering
-            String callReason = notification.getCallReason() == null ? StringUtils.capitalize(notification.getType().toString()) :
-                    notification.getCallReason();
-            String message = notification.getMessage();
-
-            /*
-            Gui.drawRect(
-                    resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0) - 10,
-                    y,
-                    resolution.getScaledWidth(),
-                    y + 24,
-                    new Color(0, 0, 0,150).getRGB());
-
-             */
-
-           // FontManager.sf18.drawString(callReason,resolution.getScaledWidth() - (float)x + 25 - 10,(float) y + 4F,Color.WHITE.getRGB(),false);
-           // FontManager.sf18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25 - 10,(float)y + 12.5F,Color.WHITE.getRGB(),true);
-            //endregion
-
-            //region icon-rendering
-            switch (notification.getType()) {
-                case ERROR:
-                    RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
-                            (float)y + 11,
-                            resolution.getScaledWidth(),
-                            20,
-                            4f,(float) 0,
-                            new Color(255, 80, 80,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                    break;
-                case WARNING:
-                    RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
-                            (float)y + 11,
-                            resolution.getScaledWidth(),
-                            20,
-                            4f,(float) 0,
-                            new Color(255, 215, 100,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                    break;
-                case SUCCESS:
-                    RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
-                            (float)y + 11,
-                            resolution.getScaledWidth(),
-                            20,
-                            4f,(float) 0,
-                            new Color(100,198,119,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                    break;
-                case INFO:
-                    RoundedUtil.drawRoundOutline(resolution.getScaledWidth() - (float)x + 14,
-                            (float)y + 11,
-                            resolution.getScaledWidth(),
-                            20,
-                            4f,(float) 0,
-                            new Color(128,128,128,215),ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + notification.getType());
-            }
-            mc.fontRendererObj.drawString(message + " ",resolution.getScaledWidth() - (float)x + 22,(float)y + 17F,Color.WHITE.getRGB(),true);
-
-            /* OLD 土死了
-            double x = notification.getX();
-            double y = resolution.getScaledHeight() - notification.getY();
-
             // region notification-rendering
             String callReason = notification.getCallReason() == null ? StringUtils.capitalize(notification.getType().toString()) :
                     notification.getCallReason();
             String message = notification.getMessage();
 
             Gui.drawRect(
-                    resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0) - 10,
+                    resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0),
                     y,
                     resolution.getScaledWidth(),
                     y + 24,
                     new Color(0, 0, 0,150).getRGB());
 
-            mc.fontRendererObj.drawString(callReason,resolution.getScaledWidth() - (float)x + 25 - 10,(float) y + 4F,Color.WHITE.getRGB(),false);
-            mc.fontRendererObj.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25 - 10,(float)y + 12.5F,Color.GRAY.getRGB(),false);
+            FontManager.bold19.drawString(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB(),false);
+            FontManager.bold18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB(),false);
             //endregion
 
             //region icon-rendering
             switch (notification.getType()) {
                 case ERROR:
-                    RenderUtils.drawImage(new ResourceLocation("client/notifications/DANGER.png"), (float) (resolution.getScaledWidth() - x + 3.5) - 10, (float) y + 3, 16, 16, new Color(255, 80, 80));
+                    RenderUtils.drawImage(new ResourceLocation("client/notifications/DANGER.png"), (float) (resolution.getScaledWidth() - x + 3.5), (float) y + 3, 16, 16, new Color(255, 80, 80));
                     break;
                 case WARNING:
-                    RenderUtils.drawImage(new ResourceLocation("client/notifications/WARNING.png"), (float) (resolution.getScaledWidth() - x + 3.5) - 10, (float) y + 3, 16, 16, new Color(255, 215, 100));
+                    RenderUtils.drawImage(new ResourceLocation("client/notifications/WARNING.png"), (float) (resolution.getScaledWidth() - x + 3.5), (float) y + 3, 16, 16, new Color(255, 215, 100));
                     break;
                 case SUCCESS:
-                    RenderUtils.drawImage(new ResourceLocation("client/notifications/SUCCESS.png"), (float) (resolution.getScaledWidth() - x + 3.5) - 10, (float) y + 3, 16, 16, new Color(100,198,119));
+                    RenderUtils.drawImage(new ResourceLocation("client/notifications/SUCCESS.png"), (float) (resolution.getScaledWidth() - x + 3.5), (float) y + 3, 16, 16, new Color(100,198,119));
                     break;
                 case INFO:
-                    RenderUtils.drawImage(new ResourceLocation("client/notifications/INFO.png"), (float) (resolution.getScaledWidth() - x + 3.5) - 10, (float) y + 3, 16, 16, new Color(255, 255, 255));
+                    RenderUtils.drawImage(new ResourceLocation("client/notifications/INFO.png"), (float) (resolution.getScaledWidth() - x + 3.5), (float) y + 3, 16, 16, new Color(255, 255, 255));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + notification.getType());
@@ -143,14 +75,12 @@ public final class NotificationRenderer {
 
             Gui.drawRect(
                     resolution.getScaledWidth() - x -
-                            (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0) - 10,
+                            (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0),
                     y + 22,
                     resolution.getScaledWidth() - x + (perc * w1),
                     y + 24,
                     getColorForType(notification.getType()));
             //endregion
-
-             */
         }
 
     }

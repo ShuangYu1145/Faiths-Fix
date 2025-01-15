@@ -14,7 +14,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public final class NotificationManager {
 
     private final int DEFAULT_DELAY = 2_000;
-    //    private final CustomFont fontRendererObj = FontManager.bold18;
+    private final CustomFont fontRendererObj = FontManager.bold18;
     /* fields */
     private final List<Notification> NOTIFICATIONS = new CopyOnWriteArrayList<>();
 
@@ -23,13 +23,13 @@ public final class NotificationManager {
         for (Notification notification : NOTIFICATIONS) {
             int i = NOTIFICATIONS.indexOf(notification) * 37;
 
-            if (notification.getY() < 35 + i) notification.setY(MathHelper.clamp_double(notification.getY() + 0.5 * ((double) 2000 / Minecraft.getDebugFPS()),0,35 + i));
-            if (notification.getY() > 35 + i) notification.setY(MathHelper.clamp_double(notification.getY() - 0.25 * ((double) 2000 / Minecraft.getDebugFPS()),50 + i,99999));
+            if (notification.getY() < 50 + i) notification.setY(MathHelper.clamp_double(notification.getY() + 0.5 * ((double) 2000 / Minecraft.getDebugFPS()),0,50 + i));
+            if (notification.getY() > 50 + i) notification.setY(MathHelper.clamp_double(notification.getY() - 0.25 * ((double) 2000 / Minecraft.getDebugFPS()),50 + i,99999));
 
             String seconds = notification.getDelay() / 1000 + "";
             String s = " (" + seconds.substring(0, seconds.indexOf(".") + 2) + "s) ";
-            if (notification.isExtending() && notification.getX() < Math.max(mc.fontRendererObj.getStringWidth(notification.getMessage() + s), mc.fontRendererObj.getStringWidth(notification.getCallReason()))) {
-                notification.setX(MathHelper.clamp_double(notification.getX() + 0.25 * ((double) 2000 / Minecraft.getDebugFPS()),0,Math.max(mc.fontRendererObj.getStringWidth(notification.getMessage() + s), mc.fontRendererObj.getStringWidth(notification.getCallReason()))));
+            if (notification.isExtending() && notification.getX() < Math.max(fontRendererObj.getStringWidth(notification.getMessage() + s), fontRendererObj.getStringWidth(notification.getCallReason())) + 16) {
+                notification.setX(MathHelper.clamp_double(notification.getX() + 0.25 * ((double) 2000 / Minecraft.getDebugFPS()),0,Math.max(fontRendererObj.getStringWidth(notification.getMessage() + s), fontRendererObj.getStringWidth(notification.getCallReason())) + 16));
                 notification.getTimer().reset();
             } else {
                 notification.setExtending(false);

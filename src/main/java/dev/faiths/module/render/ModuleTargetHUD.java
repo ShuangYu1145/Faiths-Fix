@@ -243,17 +243,17 @@ public class ModuleTargetHUD extends CheatModule {
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(2.0, 2.0, 2.0);
-        mc.fontRendererObj.drawStringWithShadow(healthStr2, 18, 7.5f, ModuleHUD.color.getValue().hashCode());
+        mc.fontRendererObj.drawStringWithShadow(healthStr2, 18, 7.5f, ModuleHUD.color(ModuleHUD.colortick.getValue()).hashCode());
         GlStateManager.popMatrix();
 
-        drawRect(36, 36.5f, 9 + width2, 8f, reAlpha(ModuleHUD.color.getValue().hashCode(), 0.35f));
+        drawRect(36, 36.5f, 9 + width2, 8f, reAlpha(ModuleHUD.color(ModuleHUD.colortick.getValue()).hashCode(), 0.35f));
 
         float barWidth = (43 + width2 - 2) - 37;
         float drawPercent = 7 + (barWidth / 100) * (healthPercent * 100);
 
         if (!(drawPercent + e.hurtTime > (int) (55 + width2)))
-            drawRect(36, 36.5f, drawPercent + e.hurtTime, 8f, ModuleHUD.color.getValue());
-        drawRect(36, 36.5f, drawPercent, 8f, ModuleHUD.color.getValue());
+            drawRect(36, 36.5f, drawPercent + e.hurtTime, 8f, ModuleHUD.color(ModuleHUD.colortick.getValue()));
+        drawRect(36, 36.5f, drawPercent, 8f, ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
@@ -302,7 +302,7 @@ public class ModuleTargetHUD extends CheatModule {
 
     public static void renderAstolfoTHUD(EntityPlayer e, int x, int y) {
         ScaledResolution sr = new ScaledResolution(mc);
-        int n15 = ModuleHUD.color.getValue().hashCode();
+        int n15 = ModuleHUD.color(ModuleHUD.colortick.getValue()).hashCode();
         if (e == null) {
             animWidth = 0;
             return;
@@ -324,7 +324,7 @@ public class ModuleTargetHUD extends CheatModule {
         if ((float)animWidth < f6) {
             animWidth = getNextPostion(animWidth, (int) f6, 200.0);
         }
-        drawRectB(x - 1, y + 46, animWidth, 3.0f, ModuleHUD.color.getValue());
+        drawRectB(x - 1, y + 46, animWidth, 3.0f, ModuleHUD.color(ModuleHUD.colortick.getValue()));
         for (int i = 1; i < 5; ++i) {
             e.getEquipmentInSlot(i);
         }

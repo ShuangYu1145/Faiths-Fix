@@ -35,7 +35,7 @@ public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
     public static String VERSION = "250101";
-    public static boolean IS_BETA = false;
+    public static boolean IS_BETA = true;
     @NativeObfuscation.Inline
     public static boolean verified = false; // this is a temporary boolean
     private final EventManager eventManager;

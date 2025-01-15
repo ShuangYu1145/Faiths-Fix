@@ -96,7 +96,7 @@ public class SilenceFixIRC {
     };
 
     public static String generateHardwareId() throws Exception {
-        String input = "Faiths User";
+        String input = "awa User";
         String sha256 = DigestUtil.sha256Hex(input);
         return sha256;
     };

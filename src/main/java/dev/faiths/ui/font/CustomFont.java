@@ -1,7 +1,9 @@
 package dev.faiths.ui.font;
 
+import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.utils.math.MathUtils;
 import dev.faiths.utils.render.GLUtil;
+import dev.faiths.utils.render.GradientUtil;
 import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.utils.tuples.mutable.MutablePair;
 import net.minecraft.client.renderer.GlStateManager;
@@ -129,7 +131,6 @@ public class CustomFont implements AbstractFontRenderer {
         GLUtil.endBlend();
         return returnVal;
     }
-
 
     private float drawCustomChars(String text, double x, double y, float kerning, int color, boolean shadow) {
         x = (x - 1) * 2;
