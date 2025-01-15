@@ -1,567 +1,445 @@
 package dev.faiths.ui.font;
 
 import dev.faiths.module.render.ModuleHUD;
-import dev.faiths.utils.math.MathUtils;
-import dev.faiths.utils.render.GLUtil;
 import dev.faiths.utils.render.GradientUtil;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.tuples.mutable.MutablePair;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.List;
 
-/**
- * @author cedo
- * @since 05/12/2022
- */
-public class CustomFont implements AbstractFontRenderer {
-    private static int[] colorCode;
-    private static final String colorcodeIdentifiers = "0123456789abcdefklmnor";
-    private final Font font;
+public class CustomFont {
+    private static final int[] colorCode = new int[32];
+    private final byte[][] charwidth = new byte[256][];
+    private final int[] textures = new int[256];
+    private final FontRenderContext context = new FontRenderContext(new AffineTransform(), true, true);
+    private Font font = null;
+    private float size = 0.0f;
+    private int fontWidth = 0;
+    private int fontHeight = 0;
+    private int textureWidth = 0;
+    private int textureHeight = 0;
+    private final int halfHeight;
 
-    private CustomFont boldFont;
-    private final FontData regular = new FontData(Font.PLAIN), italic = new FontData(Font.ITALIC);
+    public final float drawCenteredString(String text, float x2, float y2, int color) {
+        return this.drawString(text, x2 - (float)(this.getStringWidth(text) / 2), y2, color);
+    }
 
-    private int fontHeight;
-    private static final float KERNING = 8.2f;
+    public final float drawCenteredStringNoFormat(String text, float x2, float y2, int color) {
+        return this.drawStringNoFormat(text, x2 - (float)(this.getStringWidth(text) / 2), y2, color, false);
+    }
+
+    public final void drawCenteredStringWithShadow(String text, float x2, float y2, int color) {
+        this.drawStringWithShadow(text, x2 - (float)(this.getStringWidth(text) / 2), y2, color);
+    }
+
+    private static final String processString(String text) {
+        String str = "";
+        for (char c : text.toCharArray()) {
+            if (c >= '\uc350' && c <= '\uea60' || c == '\u26bd') continue;
+            str = str + c;
+        }
+        text = str.replace("\u00a7r", "").replace('\u25ac', '=').replace('\u2764', '\u2665').replace('\u22c6', '\u2606').replace('\u2620', '\u2606').replace('\u2730', '\u2606').replace("\u272b", "\u2606").replace("\u2719", "+");
+        text = text.replace('\u2b05', '\u2190').replace('\u2b06', '\u2191').replace('\u2b07', '\u2193').replace('\u27a1', '\u2192').replace('\u2b08', '\u2197').replace('\u2b0b', '\u2199').replace('\u2b09', '\u2196').replace('\u2b0a', '\u2198');
+        return text;
+    }
 
     public CustomFont(Font font) {
-        generateColorCodes();
         this.font = font;
-        setupTexture(regular);
-        setupTexture(italic);
+        this.size = font.getSize2D();
+        this.halfHeight = font.getSize() / 2;
+        Arrays.fill(this.textures, -1);
+        Rectangle2D maxBounds = font.getMaxCharBounds(this.context);
+        this.fontWidth = (int)Math.ceil(maxBounds.getWidth());
+        this.fontHeight = (int)Math.ceil(maxBounds.getHeight());
+        if (this.fontWidth > 127 || this.fontHeight > 127) {
+            throw new IllegalArgumentException("Font size to large!");
+        }
+        this.textureWidth = this.resizeToOpenGLSupportResolution(this.fontWidth * 16);
+        this.textureHeight = this.resizeToOpenGLSupportResolution(this.fontHeight * 16);
     }
 
-    private void setupTexture(FontData fontData) {
-        //Set to 1 because we don't know the width and height of the map yet
-        BufferedImage fakeImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = (Graphics2D) fakeImage.getGraphics();
-
-        //Don't re-derive the font if it is plain
-        Font currentFont = fontData.textType == 0 ? font : font.deriveFont(fontData.textType);
-        graphics.setFont(currentFont);
-        handleSprites(fontData, currentFont, graphics);
+    public String trimStringToWidth(String p_trimStringToWidth_1_, int p_trimStringToWidth_2_, boolean p_trimStringToWidth_3_) {
+        StringBuilder stringbuilder = new StringBuilder();
+        int i = 0;
+        int j2 = p_trimStringToWidth_3_ ? p_trimStringToWidth_1_.length() - 1 : 0;
+        int k2 = p_trimStringToWidth_3_ ? -1 : 1;
+        boolean flag = false;
+        boolean flag1 = false;
+        for (int l2 = j2; l2 >= 0 && l2 < p_trimStringToWidth_1_.length() && i < p_trimStringToWidth_2_; l2 += k2) {
+            char c0 = p_trimStringToWidth_1_.charAt(l2);
+            int i1 = this.getStringWidth(String.valueOf(c0));
+            if (flag) {
+                flag = false;
+                if (c0 != 'l' && c0 != 'L') {
+                    if (c0 == 'r' || c0 == 'R') {
+                        flag1 = false;
+                    }
+                } else {
+                    flag1 = true;
+                }
+            } else if (i1 < 0) {
+                flag = true;
+            } else {
+                i += i1;
+                if (flag1) {
+                    ++i;
+                }
+            }
+            if (i > p_trimStringToWidth_2_) break;
+            if (p_trimStringToWidth_3_) {
+                stringbuilder.insert(0, c0);
+                continue;
+            }
+            stringbuilder.append(c0);
+        }
+        return stringbuilder.toString();
     }
 
-    public void drawSmoothString(String text, double x2, float y2, int color) {
-        this.drawString(text, x2, y2, color, false, KERNING);
+    public final int getHeight() {
+        return this.fontHeight / 3;
     }
 
-    public void drawSmoothStringWithShadow(String text, double x2, float y2, int color) {
-        this.drawString(text, x2 + 0.5f, y2 + 0.5f, color, true, KERNING);
-
-        this.drawString(text, x2, y2, color, false, KERNING);
+    public final int getFontHeight() {
+        return this.fontHeight / 2;
     }
 
-    @Override
-    public int drawCenteredString(String name, float x, float y, int color) {
-        return drawString(name, x - (getStringWidth(name) / 2), y, color);
+    protected final int drawChar(char chr, float x2, float y2) {
+        int region = chr >> 8;
+        int id = chr & 0xFF;
+        int xTexCoord = (id & 0xF) * this.fontWidth;
+        int yTexCoord = (id >> 4) * this.fontHeight;
+        byte width = this.getOrGenerateCharWidthMap(region)[id];
+        GlStateManager.bindTexture(this.getOrGenerateCharTexture(region));
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(770, 771);
+        GL11.glBegin((int)7);
+        GL11.glTexCoord2d((double)this.wrapTextureCoord(xTexCoord, this.textureWidth), (double)this.wrapTextureCoord(yTexCoord, this.textureHeight));
+        GL11.glVertex2f((float)x2, (float)y2);
+        GL11.glTexCoord2d((double)this.wrapTextureCoord(xTexCoord, this.textureWidth), (double)this.wrapTextureCoord(yTexCoord + this.fontHeight, this.textureHeight));
+        GL11.glVertex2f((float)x2, (float)(y2 + (float)this.fontHeight));
+        GL11.glTexCoord2d((double)this.wrapTextureCoord(xTexCoord + width, this.textureWidth), (double)this.wrapTextureCoord(yTexCoord + this.fontHeight, this.textureHeight));
+        GL11.glVertex2f((float)(x2 + (float)width), (float)(y2 + (float)this.fontHeight));
+        GL11.glTexCoord2d((double)this.wrapTextureCoord(xTexCoord + width, this.textureWidth), (double)this.wrapTextureCoord(yTexCoord, this.textureHeight));
+        GL11.glVertex2f((float)(x2 + (float)width), (float)y2);
+        GL11.glEnd();
+        return width;
     }
 
-    @Override
-    public void drawCenteredString(String name, float x, float y, Color color) {
-        drawCenteredString(name, x, y, color.getRGB());
+    public int drawString(String str, float x2, float y2, int color) {
+        return this.drawString(str, x2, y2, color, false);
     }
-
-    public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        this.drawStringWithShadow(text, x - (this.getStringWidth(text) / 2), y, color);
+    public int drawString2(String str,String str2, float x2, float y2, int color1 ,int color2) {
+        return this.drawString(str, x2, y2, color1, false)+drawString(str2,x2+getStringWidth(str),y2,color2);
     }
-
-    @Override
-    public int drawStringWithShadow(String name, float x, float y, int color) {
-        drawString(name, x + .5f, y + .5f, color, true, KERNING);
-        return (int) drawString(name, x, y, color, false, KERNING);
+    public int drawString32(String str,String str2, double x2, double y2, int color1 ,int color2) {
+         return (int) (this.drawStringWithShadow(str, (double) x2, (double)y2,1.0,color1)+drawString(str2,(int) x2+getStringWidth(str),(int) y2,color2));
     }
-
-    @Override
-    public void drawStringWithShadow(String name, float x, float y, Color color) {
-        drawStringWithShadow(name, x, y, color.getRGB());
-    }
-
-    @Override
-    public int drawString(String text, float x, float y, int color, boolean shadow) {
-        if (shadow) return this.drawStringWithShadow(text, x, y, color);
-        return (int) this.drawString(text, x, y, color, false, KERNING);
-    }
-
-    @Override
-    public int drawString(String name, float x, float y, int color) {
-        return drawString(name, x, y, color, false);
-    }
-
-    @Override
     public void drawString(String name, float x, float y, Color color) {
         drawString(name, x, y, color.getRGB(), false);
     }
 
-    public float drawString(String text, double x, double y, int color, boolean shadow, float kerning) {
-        if (text == null) {
-            return 0;
-        }
-        
 
-        if (shadow) {
+    public final int drawStringNoFormat(String str, float x2, float y2, int color, boolean darken) {
+        str = str.replace("\u25ac", "=");
+        y2 -= 2.0f;
+        x2 *= 2.0f;
+        y2 *= 2.0f;
+        y2 -= 2.0f;
+        int offset = 0;
+        if (darken) {
             color = (color & 0xFCFCFC) >> 2 | color & 0xFF000000;
         }
-
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(.5, .5, .5);
-        GLUtil.startBlend();
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-        RenderUtils.glColor(color);
-        GlStateManager.enableTexture2D();
-        GlStateManager.bindTexture(this.regular.texture.getGlTextureId());
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        
-
-        float returnVal = drawCustomChars(text, x, y, kerning, color, shadow);
-
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_DONT_CARE);
-        GlStateManager.popMatrix();
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-        GlStateManager.bindTexture(0);
-        GLUtil.endBlend();
-        return returnVal;
-    }
-
-    private float drawCustomChars(String text, double x, double y, float kerning, int color, boolean shadow) {
-        x = (x - 1) * 2;
-        y = (y - 3) * 2;
-        FontData currentData = this.regular;
-        float alpha = (float) (color >> 24 & 255) / 255f;
-
-        boolean bold = false, italic = false, strikethrough = false, underline = false;
-
-        for (int index = 0; index < text.length(); index++) {
-            char character = text.charAt(index);
-
-            // If you need to apply color codes
-            if (character == '§') {
-                int colorIndex = 21;
-
-                try {
-                    colorIndex = colorcodeIdentifiers.indexOf(text.charAt(index + 1));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                //If it's a color code
-                if (colorIndex < 16) {
-                    bold = false;
-                    italic = false;
-                    underline = false;
-                    strikethrough = false;
-                    GlStateManager.bindTexture(this.regular.texture.getGlTextureId());
-                    currentData = this.regular;
-
-                    if (colorIndex < 0) {
-                        colorIndex = 15;
-                    }
-
-                    if (shadow) {
-                        colorIndex += 16;
-                    }
-
-                    RenderUtils.color(colorCode[colorIndex], alpha);
-                } else {
-                    switch (colorIndex) {
-                        case 17:
-                            if (hasBoldFont()) {
-                                bold = true;
-                                if (italic) {
-                                    GlStateManager.bindTexture(this.boldFont.italic.texture.getGlTextureId());
-                                    currentData = this.boldFont.italic;
-                                } else {
-                                    GlStateManager.bindTexture(this.boldFont.regular.texture.getGlTextureId());
-                                    currentData = this.boldFont.regular;
-                                }
-                            }
-                            break;
-                        case 18:
-                            strikethrough = true;
-                            break;
-                        case 19:
-                            underline = true;
-                            break;
-                        case 20:
-                            italic = true;
-                            if (bold && hasBoldFont()) {
-                                GlStateManager.bindTexture(this.boldFont.italic.texture.getGlTextureId());
-                                currentData = this.boldFont.italic;
-                            } else {
-                                GlStateManager.bindTexture(this.italic.texture.getGlTextureId());
-                                currentData = this.italic;
-                            }
-                            break;
-                        default:
-                            bold = false;
-                            italic = false;
-                            underline = false;
-                            strikethrough = false;
-                            RenderUtils.glColor(color);
-                            GlStateManager.bindTexture(this.regular.texture.getGlTextureId());
-                            currentData = this.regular;
-                            break;
-                    }
-                }
-
-                ++index;
-            } else if (character < currentData.chars.length) {
-
-                drawLetter(x, y, currentData, strikethrough, underline, character);
-                x += MathUtils.roundToHalf(currentData.chars[character].width - KERNING);
+        float r2 = (float)(color >> 16 & 0xFF) / 255.0f;
+        float g2 = (float)(color >> 8 & 0xFF) / 255.0f;
+        float b2 = (float)(color & 0xFF) / 255.0f;
+        float a = (float)(color >> 24 & 0xFF) / 255.0f;
+        if (a == 0.0f) {
+            a = 1.0f;
+        }
+        GlStateManager.color(r2, g2, b2, a);
+        GL11.glPushMatrix();
+        GL11.glScaled((double)0.5, (double)0.5, (double)0.5);
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; ++i) {
+            char chr = chars[i];
+            if (chr == '\u00a7' && i != chars.length - 1) {
+                if ((color = "0123456789abcdef".indexOf(chars[++i])) == -1 || !darken) continue;
+                color |= 0x10;
+                continue;
             }
+            offset += this.drawChar(chr, x2 + (float)offset, y2);
         }
-        return (float) (x / 2);
+        GL11.glPopMatrix();
+        return offset;
     }
 
-    public void drawLetter(double x, double y, FontData currentData, boolean strikethrough, boolean underline, char character) {
-        GL11.glBegin(GL11.GL_TRIANGLES);
-        CharData charData = currentData.chars[character];
-        drawQuad((float) x, (float) y, charData.width, charData.height, charData.storedX, charData.storedY, currentData.imageSize.getFirst(), currentData.imageSize.getSecond());
-        GL11.glEnd();
-
-        if (strikethrough) {
-            this.drawLine(x, y + (double) (charData.height / 2), x + (double) charData.width - 8, y + (double) (charData.height / 2));
+    public final int drawString(String str, float x2, float y2, int color, boolean darken) {
+        str = str.replace("\u25ac", "=");
+        y2 -= 2.0f;
+        x2 *= 2.0f;
+        y2 *= 2.0f;
+        y2 -= 2.0f;
+        int offset = 0;
+        if (darken) {
+            color = (color & 0xFCFCFC) >> 2 | color & 0xFF000000;
         }
-        if (underline) {
-            this.drawLine(x + 2.5f, y + (double) charData.height - 1, x + charData.width - 6, y + (double) charData.height - 1);
+        float r2 = (float)(color >> 16 & 0xFF) / 255.0f;
+        float g2 = (float)(color >> 8 & 0xFF) / 255.0f;
+        float b2 = (float)(color & 0xFF) / 255.0f;
+        float a = (float)(color >> 24 & 0xFF) / 255.0f;
+        if (a == 0.0f) {
+            a = 1.0f;
         }
+        GlStateManager.color(r2, g2, b2, a);
+        GL11.glPushMatrix();
+        GL11.glScaled((double)0.5, (double)0.5, (double)0.5);
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; ++i) {
+            char chr = chars[i];
+            if (chr == '\u00a7' && i != chars.length - 1) {
+                if ((color = "0123456789abcdef".indexOf(chars[++i])) == -1) continue;
+                if (darken) {
+                    color |= 0x10;
+                }
+                color = colorCode[color];
+                r2 = (float)(color >> 16 & 0xFF) / 255.0f;
+                g2 = (float)(color >> 8 & 0xFF) / 255.0f;
+                b2 = (float)(color & 0xFF) / 255.0f;
+                GlStateManager.color(r2, g2, b2, a);
+                continue;
+            }
+            offset += this.drawChar(chr, x2 + (float)offset, y2);
+        }
+        GL11.glPopMatrix();
+        return offset;
     }
 
-    protected void drawQuad(float x2, float y2, float width, float height, float srcX, float srcY, float imgWidth, float imgHeight) {
-        float renderSRCX = srcX / imgWidth;
-        float renderSRCY = srcY / imgHeight;
-        float renderSRCWidth = width / imgWidth;
-        float renderSRCHeight = height / imgHeight;
-        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY);
-        GL11.glVertex2d(x2 + width, y2);
-        GL11.glTexCoord2f(renderSRCX, renderSRCY);
-        GL11.glVertex2d(x2, y2);
-        GL11.glTexCoord2f(renderSRCX, renderSRCY + renderSRCHeight);
-        GL11.glVertex2d(x2, y2 + height);
-        GL11.glTexCoord2f(renderSRCX, renderSRCY + renderSRCHeight);
-        GL11.glVertex2d(x2, y2 + height);
-        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY + renderSRCHeight);
-        GL11.glVertex2d(x2 + width, y2 + height);
-        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY);
-        GL11.glVertex2d(x2 + width, y2);
-    }
-
-    @Override
     public float getMiddleOfBox(float height) {
-        return height / 2f - getHeight() / 2f;
+        return height / 2.0f - (float)this.getHeight() / 2.0f;
     }
 
-    @Override
-    public String trimStringToWidth(String text, int width) {
-        return this.trimStringToWidth(text, width, false);
-    }
-
-    @Override
-    public String trimStringToWidth(String text, int width, boolean reverse) {
-        if (text == null) return "";
-        StringBuilder buffer = new StringBuilder();
-        float lineWidth = 0.0F;
-        int offset = reverse ? text.length() - 1 : 0;
-        int increment = reverse ? -1 : 1;
-        boolean var8 = false;
-        boolean var9 = false;
-
-
-        for (int index = offset; index >= 0 && index < text.length() && lineWidth < (float) width; index += increment) {
-            char character = text.charAt(index);
-            float charWidth = this.getCharWidthFloat(character);
-
-            if (var8) {
-                var8 = false;
-
-                if (character != 108 && character != 76) {
-                    if (character == 114 || character == 82) {
-                        var9 = false;
-                    }
-                } else {
-                    var9 = true;
-                }
-            } else if (charWidth < 0) {
-                var8 = true;
-            } else {
-                lineWidth += charWidth;
-
-                if (var9) {
-                    ++lineWidth;
-                }
-            }
-
-            if (lineWidth > (float) width) {
-                break;
-            }
-
-            if (reverse) {
-                buffer.insert(0, character);
-            } else {
-                buffer.append(character);
-            }
-        }
-
-        return buffer.toString();
-    }
-
-    private float getCharWidthFloat(char c) {
-        if (c == 167) {
-            return -1;
-        } else if (c == 32) {
-            return 2;
-        } else {
-            int var2 = ("\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000").indexOf(c);
-
-            if (c > 0 && var2 != -1) {
-                return ((regular.chars[var2].width / 2.f) - 4.f);
-            } else if (c < regular.chars.length && ((regular.chars[c].width / 2.f) - 4.f) != 0) {
-                int var3 = ((int) ((regular.chars[c].width / 2.f) - 4.f)) >>> 4;
-                int var4 = ((int) ((regular.chars[c].width / 2.f) - 4.f)) & 15;
-                var3 &= 15;
-                ++var4;
-                return (float) ((var4 - var3) / 2 + 1);
-            } else {
-                return 0;
-            }
-        }
-    }
-
-    @Override
-    public int getHeight() {
-        return (this.fontHeight - 8) / 2;
-    }
-
-    @Override
-    public float getStringWidth(String text) {
-        return (float) getStringWidth(text, KERNING);
-    }
-
-    public double getStringWidth(String text, float kerning) {
+    public final int getStringWidth(String text) {
         if (text == null) {
             return 0;
         }
-
-        float width = 0;
-        CharData[] currentData = regular.chars;
-        for (int index = 0; index < text.length(); index++) {
-            char character = text.charAt(index);
-
-            if (character == '§') {
-                int colorIndex = colorcodeIdentifiers.indexOf(text.charAt(index + 1));
-                switch (colorIndex) {
-                    case 17:
-                        if (hasBoldFont()) {
-                            currentData = this.boldFont.regular.chars;
-                        }
-                        break;
-                    case 20:
-                        currentData = this.regular.chars;
-                        break;
-                    default:
-                        currentData = regular.chars;
-                        break;
-                }
-                ++index;
-            } else if (character < currentData.length) {
-                width += currentData[character].width - kerning;
-            }
-        }
-
-        return width / 2;
-
-    }
-
-
-    public boolean hasBoldFont() {
-        return this.boldFont != null;
-    }
-
-    private final List<String> lines = new ArrayList<>();
-
-    //Lines list and height
-    public List<String> getWrappedLines(String text, float x, float width, float heightIncrement) {
-        wrapTextToLines(text, x, width);
-        return lines;
-    }
-
-    public float drawWrappedText(String text, float x, float y, int color, float width, float heightIncrement) {
-        wrapTextToLines(text, x, width);
-
-        float newY = y;
-        for (String s : lines) {
-            GL11.glColor4f(1F, 1F, 1F, 1F);
-            drawString(s, x, newY, color);
-            newY += getHeight() + heightIncrement;
-        }
-        return newY - y;
-    }
-
-    public MutablePair<Float, Float> drawNewLineText(String text, float x, float y, int color, float heightIncrement) {
-        wrapTextToNewLine(text, x);
-
-        String longest = "";
-        float newY = y;
-        for (String s : lines) {
-            if (getStringWidth(s) > getStringWidth(longest)) {
-                longest = s;
-            }
-            GL11.glColor4f(1F, 1F, 1F, 1F);
-            drawString(s, x, newY, color);
-            newY += getHeight() + heightIncrement;
-        }
-
-        return MutablePair.of(getStringWidth(longest), newY - y);
-    }
-
-    private void wrapTextToNewLine(String text, float x) {
-        lines.clear();
-        lines.addAll(Arrays.asList(text.trim().split("\n")));
-    }
-
-    private void wrapTextToLines(String text, float x, float width) {
-        lines.clear();
-        String[] words = text.trim().split(" ");
-        StringBuilder line = new StringBuilder();
-        for (String word : words) {
-            float totalWidth = getStringWidth(line + " " + word);
-
-            if (x + totalWidth >= x + width) {
-                lines.add(line.toString());
-                line = new StringBuilder(word).append(" ");
+        int width = 0;
+        char[] currentData = text.toCharArray();
+        int size = text.length();
+        for (int i = 0; i < size; ++i) {
+            char chr = currentData[i];
+            char character = text.charAt(i);
+            if (character == '\u00a7') {
+                ++i;
                 continue;
             }
-
-            line.append(word).append(" ");
+            width += this.getOrGenerateCharWidthMap(chr >> 8)[chr & 0xFF];
         }
-        lines.add(line.toString());
+        return width / 2;
     }
 
-    private void drawLine(double x2, double y2, double x1, double y1) {
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth((float) 1);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex2d(x2, y2);
-        GL11.glVertex2d(x1, y1);
-        GL11.glEnd();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    public final float getSize() {
+        return this.size;
     }
 
-
-    private static class FontData {
-        private final CharData[] chars = new CharData[256];
-        private final int textType;
-        private DynamicTexture texture;
-        private final MutablePair<Integer, Integer> imageSize = MutablePair.of(512, 0);
-
-        public FontData(int textType) {
-            this.textType = textType;
-        }
-    }
-
-    private static class CharData {
-        private float width;
-        private int height, storedX, storedY;
-    }
-
-    private void generateColorCodes() {
-        if (colorCode == null) {
-            colorCode = new int[32];
-            for (int i = 0; i < 32; ++i) {
-                final int noClue = (i >> 3 & 0x1) * 85;
-                int red = (i >> 2 & 0x1) * 170 + noClue;
-                int green = (i >> 1 & 0x1) * 170 + noClue;
-                int blue = (i & 0x1) * 170 + noClue;
-                if (i == 6) {
-                    red += 85;
-                }
-                if (i >= 16) {
-                    red /= 4;
-                    green /= 4;
-                    blue /= 4;
-                }
-                colorCode[i] = ((red & 0xFF) << 16 | (green & 0xFF) << 8 | (blue & 0xFF));
+    private final int generateCharTexture(int id) {
+        int textureId = GL11.glGenTextures();
+        int offset = id << 8;
+        BufferedImage img = new BufferedImage(this.textureWidth, this.textureHeight, 2);
+        Graphics2D g2 = (Graphics2D)img.getGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2.setFont(this.font);
+        g2.setColor(Color.WHITE);
+        FontMetrics fontMetrics = g2.getFontMetrics();
+        for (int y2 = 0; y2 < 16; ++y2) {
+            for (int x2 = 0; x2 < 16; ++x2) {
+                String chr = String.valueOf((char)(y2 << 4 | x2 | offset));
+                g2.drawString(chr, x2 * this.fontWidth, y2 * this.fontHeight + fontMetrics.getAscent());
             }
         }
+        GL11.glBindTexture((int)3553, (int)textureId);
+        GL11.glTexParameteri((int)3553, (int)10241, (int)9728);
+        GL11.glTexParameteri((int)3553, (int)10240, (int)9728);
+        GL11.glTexImage2D((int)3553, (int)0, (int)6408, (int)this.textureWidth, (int)this.textureHeight, (int)0, (int)6408, (int)5121, (ByteBuffer) CustomFont.imageToBuffer(img));
+        return textureId;
+    }
+
+    private final int getOrGenerateCharTexture(int id) {
+        if (this.textures[id] == -1) {
+            this.textures[id] = this.generateCharTexture(id);
+            return this.textures[id];
+        }
+        return this.textures[id];
+    }
+
+    private final int resizeToOpenGLSupportResolution(int size) {
+        int power = 0;
+        while (size > 1 << power) {
+            ++power;
+        }
+        return 1 << power;
+    }
+
+    private final byte[] generateCharWidthMap(int id) {
+        int offset = id << 8;
+        byte[] widthmap = new byte[256];
+        for (int i = 0; i < widthmap.length; ++i) {
+            widthmap[i] = (byte)Math.ceil(this.font.getStringBounds(String.valueOf((char)(i | offset)), this.context).getWidth());
+        }
+        return widthmap;
+    }
+
+    private final byte[] getOrGenerateCharWidthMap(int id) {
+        if (this.charwidth[id] == null) {
+            this.charwidth[id] = this.generateCharWidthMap(id);
+            return this.charwidth[id];
+        }
+        return this.charwidth[id];
+    }
+
+    public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {
+        GradientUtil.applyGradientHorizontal((float)x2, (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
+            GlStateManager.enableAlpha();
+            GlStateManager.alphaFunc(516, 0.0f);
+            this.drawString(text, (float)x2, (float)y2, -1);
+        });
+    }
+    public void drawStringDynamic2(String text, double x2, double y2, int tick1, int tick2) {
+        GradientUtil.applyGradientHorizontal((float)x2 - (float)(this.getStringWidth(text) / 2), (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
+            GlStateManager.enableAlpha();
+            GlStateManager.alphaFunc(516, 0.0f);
+            this.drawString(text, (float)x2 - (float)(this.getStringWidth(text) / 2), (float)y2, -1);
+        });
+    }
+
+    private final double wrapTextureCoord(int coord, int size) {
+        return (double)coord / (double)size;
+    }
+
+    private static final ByteBuffer imageToBuffer(BufferedImage img) {
+        int[] arr = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
+        ByteBuffer buf = ByteBuffer.allocateDirect(4 * arr.length);
+        for (int i : arr) {
+            buf.putInt(i << 8 | i >> 24 & 0xFF);
+        }
+        buf.flip();
+        return buf;
+    }
+
+    protected final void finalize() throws Throwable {
+        for (int textureId : this.textures) {
+            if (textureId == -1) continue;
+            GL11.glDeleteTextures((int)textureId);
+        }
+    }
+
+    public final void drawStringWithShadow(String newstr, float i, float i1, int rgb) {
+        this.drawString(newstr, i + 0.5f, i1 + 0.5f, rgb, true);
+        this.drawString(newstr, i, i1, rgb);
     }
 
 
-    private void handleSprites(FontData fontData, Font currentFont, Graphics2D graphics2D) {
-        handleSprites(fontData, currentFont, graphics2D, false);
+    public final void drawLimitedString(String text, float x2, float y2, int color, float maxWidth) {
+        this.drawLimitedStringWithAlpha(text, x2, y2, color, (float)(color >> 24 & 0xFF) / 255.0f, maxWidth);
     }
 
-    private void handleSprites(FontData fontData, Font currentFont, Graphics2D graphics2D, boolean drawString) {
-        int charHeight = 0;
-        int positionX = 0;
-        int positionY = 1;
+    public final void drawLimitedStringWithAlpha(String text, float x2, float y2, int color, float alpha, float maxWidth) {
+        y2 *= 2.0f;
+        float originalX = x2 *= 2.0f;
+        float curWidth = 0.0f;
+        GL11.glPushMatrix();
+        GL11.glScaled((double)0.5, (double)0.5, (double)0.5);
+        boolean wasBlend = GL11.glGetBoolean((int)3042);
+        GlStateManager.enableAlpha();
+        GL11.glEnable((int)3042);
+        GL11.glBlendFunc((int)770, (int)771);
+        GL11.glEnable((int)3553);
+        int currentColor = color;
+        char[] characters = text.toCharArray();
         int index = 0;
-        FontMetrics fontMetrics = graphics2D.getFontMetrics();
-
-        if (drawString) {
-            BufferedImage image = new BufferedImage(fontData.imageSize.getFirst(), fontData.imageSize.getSecond(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = (Graphics2D) image.getGraphics();
-
-            graphics.setFont(currentFont);
-            graphics.setColor(new Color(255, 255, 255, 0));
-            graphics.fillRect(0, 0, fontData.imageSize.getFirst(), fontData.imageSize.getSecond());
-            graphics.setColor(Color.WHITE);
-            graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-            graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            for (CharData data : fontData.chars) {
-                char c = (char) index;
-                graphics.drawString(String.valueOf(c), data.storedX + 2, data.storedY + fontMetrics.getAscent());
-                index++;
+        for (char c : characters) {
+            if (c == '\r') {
+                x2 = originalX;
             }
-
-            fontData.texture = new DynamicTexture(image);
-        } else {
-            while (index < fontData.chars.length) {
-                char c = (char) index;
-                CharData charData = new CharData();
-                Rectangle2D dimensions = fontMetrics.getStringBounds(String.valueOf(c), graphics2D);
-                charData.width = dimensions.getBounds().width + KERNING;
-                charData.height = dimensions.getBounds().height;
-
-                if (positionX + charData.width >= fontData.imageSize.getFirst()) {
-                    positionX = 0;
-                    positionY += charHeight;
-                    charHeight = 0;
-                }
-
-                if (charData.height > charHeight) {
-                    charHeight = charData.height;
-                }
-
-                charData.storedX = positionX;
-                charData.storedY = positionY;
-
-                if (charData.height > this.fontHeight) {
-                    this.fontHeight = charData.height;
-                }
-
-                fontData.chars[index] = charData;
-                positionX += charData.width;
-                fontData.imageSize.setSecond(positionY + fontMetrics.getAscent());
-                ++index;
+            if (c == '\n') {
+                y2 += (float)this.getFontHeight() * 2.0f;
             }
-
-            //Call the method again so that the image is actually drawn
-            handleSprites(fontData, currentFont, graphics2D, true);
+            if (c != '\u00a7' && (index == 0 || index == characters.length - 1 || characters[index - 1] != '\u00a7')) {
+                if (index >= 1 && characters[index - 1] == '\u00a7') continue;
+                GL11.glPushMatrix();
+                this.drawString(Character.toString(c), x2, y2, RenderUtils.reAlpha(new Color(currentColor), (int)alpha).getRGB(), false);
+                GL11.glPopMatrix();
+                curWidth += (float)this.getStringWidth(Character.toString(c)) * 2.0f;
+                x2 += (float)this.getStringWidth(Character.toString(c)) * 2.0f;
+                if (curWidth > maxWidth) {
+                    break;
+                }
+            } else if (c == ' ') {
+                x2 += (float)this.getStringWidth(" ");
+            } else if (c == '\u00a7' && index != characters.length - 1) {
+                int codeIndex = "0123456789abcdefklmnor".indexOf(text.charAt(index + 1));
+                if (codeIndex < 0) continue;
+                if (codeIndex < 16) {
+                    currentColor = colorCode[codeIndex];
+                } else if (codeIndex == 21) {
+                    currentColor = Color.WHITE.getRGB();
+                }
+            }
+            ++index;
         }
-
+        if (!wasBlend) {
+            GL11.glDisable((int)3042);
+        }
+        GL11.glPopMatrix();
+        GL11.glColor4f((float)1.0f, (float)1.0f, (float)1.0f, (float)1.0f);
     }
 
+    public final void drawOutlinedString(String str, float x2, float y2, int internalCol, int externalCol) {
+        this.drawString(str, x2 - 0.5f, y2, externalCol);
+        this.drawString(str, x2 + 0.5f, y2, externalCol);
+        this.drawString(str, x2, y2 - 0.5f, externalCol);
+        this.drawString(str, x2, y2 + 0.5f, externalCol);
+        this.drawString(str, x2, y2, internalCol);
+    }
 
+    public void drawStringWithShadow(String z, double x2, double positionY, int mainTextColor) {
+        this.drawStringWithShadow(z, (float)x2, (float)positionY, mainTextColor);
+    }
+
+    public double getStringHeight() {
+        return this.getHeight();
+    }
+
+    public float drawStringWithShadow(String text, double x2, double y2, double sWidth, int color) {
+        float shadowWidth = this.drawString(text, (float)(x2 + sWidth), (float)(y2 + sWidth), color, true);
+        return Math.max(shadowWidth, (float)this.drawString(text, (float)x2, (float)y2, color, false));
+    }
+
+    static {
+        for (int i = 0; i < 32; ++i) {
+            int base = (i >> 3 & 1) * 85;
+            int r2 = (i >> 2 & 1) * 170 + base;
+            int g2 = (i >> 1 & 1) * 170 + base;
+            int b2 = (i & 1) * 170 + base;
+            if (i == 6) {
+                r2 += 85;
+            }
+            if (i >= 16) {
+                r2 /= 4;
+                g2 /= 4;
+                b2 /= 4;
+            }
+            CustomFont.colorCode[i] = (r2 & 0xFF) << 16 | (g2 & 0xFF) << 8 | b2 & 0xFF;
+        }
+    }
 }
+

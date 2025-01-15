@@ -4,18 +4,13 @@ import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
 import dev.faiths.event.impl.PacketEvent;
 import dev.faiths.event.impl.Render2DEvent;
-import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
-import dev.faiths.module.player.ModuleNotify;
 import dev.faiths.ui.font.CustomFont;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.MouseInputHandler;
 import dev.faiths.utils.Pair;
 import dev.faiths.utils.megawalls.FkCounter;
-import dev.faiths.utils.render.ColorUtil;
-import dev.faiths.utils.render.GlowUtils;
-import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.utils.render.*;
 import dev.faiths.value.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -28,7 +23,6 @@ import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import static com.viaversion.viaversion.util.ChatColorUtil.STRIP_COLOR_PATTERN;
@@ -38,7 +32,6 @@ import static dev.faiths.utils.megawalls.FkCounter.MW_GAME_START_MESSAGE;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -188,10 +181,11 @@ public class ModuleHUD extends CheatModule {
 
 
         if (facyfont.getValue()) {
+
             modules.sort((o1, o2) -> Float.valueOf(
                     (fontRenderer.getStringWidth(o2.getName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2 : 0)))
-                    .compareTo((fontRenderer.getStringWidth(o1.getName() + o1.getSuffix())
-                            + (o1.suffixIsNotEmpty() ? 2 : 0))));
+                    .compareTo((float) (fontRenderer.getStringWidth(o1.getName() + o1.getSuffix())
+                                                + (o1.suffixIsNotEmpty() ? 2 : 0))));
         } else {
             modules.sort((o1, o2) -> Float.valueOf(
                     (mcFont.getStringWidth(o2.getName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2F : 0)))
@@ -257,11 +251,11 @@ public class ModuleHUD extends CheatModule {
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                         module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
-                fontRenderer.drawString(displayText, slide, module.height + 2.5F,
-                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
-                fontRenderer.drawString(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
-                        module.height + 3F,
-                        new Color(160, 160, 160).getRGB(), true);
+                fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F,
+                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
+                        module.height + 2F,
+                        new Color(160, 160, 160).getRGB());
                 counter[0]++;
                 posY[0] += fontRenderer.getHeight() + 4;
             } else {
@@ -351,15 +345,16 @@ public class ModuleHUD extends CheatModule {
         }
 
         if (information.isEnabled("ClientName")) {
-            final String name = "Faiths " + Faiths.VERSION + " [FPS:" + mc.getDebugFPS() + "]";
+            final String name = "Faiths" + " [FPS:" + mc.getDebugFPS() + "]";
             if (facyfont.getValue()) {
-                FontManager.p40.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
-                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf18.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
+                FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
+                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
                 mc.fontRendererObj.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-                // }
+             // }
             }
         }
 
@@ -391,53 +386,100 @@ public class ModuleHUD extends CheatModule {
             final List<Runnable> drawables = new ArrayList<>();
 
             for (final PotionEffect effect : mc.thePlayer.getActivePotionEffects()) {
-                final Potion potion = Potion.potionTypes[effect.getPotionID()];
-                final String number = intToRomanByGreedy(effect.getAmplifier());
-                final String name = I18n.format(potion.getName()) + " " + number;
-                final float stringWidth = mc.fontRendererObj.getStringWidth(name)
-                        + mc.fontRendererObj.getStringWidth("§7" + Potion.getDurationString(effect));
 
-                if (width < stringWidth)
-                    width = stringWidth;
-                final float finalY = yPos;
-                drawables.add(() -> {
-                    mc.fontRendererObj.drawString(name, 2f, finalY - 7f, potion.getLiquidColor(), true);
-                    mc.fontRendererObj.drawStringWithShadow("§7" + Potion.getDurationString(effect), 2f, finalY + 4, -1);
-                    if (potion.hasStatusIcon()) {
-                        GL11.glPushMatrix();
-                        final boolean is2949 = GL11.glIsEnabled(2929);
-                        final boolean is3042 = GL11.glIsEnabled(3042);
-                        if (is2949)
-                            GL11.glDisable(2929);
-                        if (!is3042)
-                            GL11.glEnable(3042);
-                        GL11.glDepthMask(false);
-                        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-                        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                        final int statusIconIndex = potion.getStatusIconIndex();
-                        mc.getTextureManager()
-                                .bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
-                        mc.ingameGUI.drawTexturedModalRect(
-                                -20F,
-                                finalY - 5,
-                                statusIconIndex % 8 * 18,
-                                198 + statusIconIndex / 8 * 18,
-                                18,
-                                18);
-                        GL11.glDepthMask(true);
-                        if (!is3042)
-                            GL11.glDisable(3042);
-                        if (is2949)
-                            GL11.glEnable(2929);
-                        GL11.glPopMatrix();
-                    }
-                });
-                yPos += mc.fontRendererObj.FONT_HEIGHT + 15;
+                if (facyfont.getValue()) {
+                    final Potion potion = Potion.potionTypes[effect.getPotionID()];
+                    final String number = intToRomanByGreedy(effect.getAmplifier());
+                    final String name = I18n.format(potion.getName()) + " " + number;
+                    final float stringWidth = fontRenderer.getStringWidth(name)
+                            + fontRenderer.getStringWidth("§7" + Potion.getDurationString(effect));
 
+                    if (width < stringWidth)
+                        width = stringWidth;
+                    final float finalY = yPos;
+                    drawables.add(() -> {
+                        fontRenderer.drawString(name, 2f, finalY - 7f, potion.getLiquidColor(), true);
+                        fontRenderer.drawStringWithShadow("§7" + Potion.getDurationString(effect), 2f, finalY + 4, -1);
+                        if (potion.hasStatusIcon()) {
+                            GL11.glPushMatrix();
+                            final boolean is2949 = GL11.glIsEnabled(2929);
+                            final boolean is3042 = GL11.glIsEnabled(3042);
+                            if (is2949)
+                                GL11.glDisable(2929);
+                            if (!is3042)
+                                GL11.glEnable(3042);
+                            GL11.glDepthMask(false);
+                            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+                            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                            final int statusIconIndex = potion.getStatusIconIndex();
+                            mc.getTextureManager()
+                                    .bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
+                            mc.ingameGUI.drawTexturedModalRect(
+                                    -20F,
+                                    finalY - 5,
+                                    statusIconIndex % 8 * 18,
+                                    198 + statusIconIndex / 8 * 18,
+                                    18,
+                                    18);
+                            GL11.glDepthMask(true);
+                            if (!is3042)
+                                GL11.glDisable(3042);
+                            if (is2949)
+                                GL11.glEnable(2929);
+                            GL11.glPopMatrix();
+                        }
+                    });
+                    yPos += fontRenderer.getFontHeight() + 15;
+                } else {
+                    final Potion potion = Potion.potionTypes[effect.getPotionID()];
+                    final String number = intToRomanByGreedy(effect.getAmplifier());
+                    final String name = I18n.format(potion.getName()) + " " + number;
+                    final float stringWidth = mc.fontRendererObj.getStringWidth(name)
+                            + mc.fontRendererObj.getStringWidth("§7" + Potion.getDurationString(effect));
+
+                    if (width < stringWidth)
+                        width = stringWidth;
+                    final float finalY = yPos;
+                    drawables.add(() -> {
+                        mc.fontRendererObj.drawString(name, 2f, finalY - 7f, potion.getLiquidColor(), true);
+                        mc.fontRendererObj.drawStringWithShadow("§7" + Potion.getDurationString(effect), 2f, finalY + 4, -1);
+                        if (potion.hasStatusIcon()) {
+                            GL11.glPushMatrix();
+                            final boolean is2949 = GL11.glIsEnabled(2929);
+                            final boolean is3042 = GL11.glIsEnabled(3042);
+                            if (is2949)
+                                GL11.glDisable(2929);
+                            if (!is3042)
+                                GL11.glEnable(3042);
+                            GL11.glDepthMask(false);
+                            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+                            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                            final int statusIconIndex = potion.getStatusIconIndex();
+                            mc.getTextureManager()
+                                    .bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));
+                            mc.ingameGUI.drawTexturedModalRect(
+                                    -20F,
+                                    finalY - 5,
+                                    statusIconIndex % 8 * 18,
+                                    198 + statusIconIndex / 8 * 18,
+                                    18,
+                                    18);
+                            GL11.glDepthMask(true);
+                            if (!is3042)
+                                GL11.glDisable(3042);
+                            if (is2949)
+                                GL11.glEnable(2929);
+                            GL11.glPopMatrix();
+                        }
+                    });
+                    yPos += mc.fontRendererObj.FONT_HEIGHT + 15;
+                }
             }
 
          //   RenderUtils.drawRect(-20, -10, width + 5, yPos, new Color(0, 0, 0, globalalpha.getValue()).getRGB());
+       //     BlurUtil.blurArea(-20, -10, width + 5, yPos, 10f);
             RoundedUtil.drawRound(-20, -10, width + 5, yPos, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
+
 
             drawables.forEach(Runnable::run);
 
@@ -475,14 +517,8 @@ public class ModuleHUD extends CheatModule {
         }
 
         if (information.isEnabled("UserInfo")) {
-            String info;
-            if (Faiths.IS_BETA) {
-                info = GRAY + "Beta" + GRAY + " - " + WHITE + Faiths.VERSION + GRAY + " - " + GRAY
-                        + Wrapper.getUsername().get();
-            } else {
-                info = GRAY + "Release" + GRAY + " - " + WHITE + Faiths.VERSION + GRAY + " - " + GRAY
-                        + Wrapper.getUsername().get();
-            }
+              String info = "DEV";
+
 
             if (facyfont.getValue()) {
                 FontManager.sf20.drawString(info,

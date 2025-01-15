@@ -21,7 +21,6 @@ import net.minecraft.util.ChatComponentText;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static dev.faiths.utils.HYTUtils.isxinxindog;
 import static dev.faiths.utils.IMinecraft.mc;
 
 @SuppressWarnings("unused")

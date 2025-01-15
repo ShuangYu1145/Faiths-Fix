@@ -2,8 +2,6 @@ package dev.faiths.ui.menu;
 
 import dev.faiths.Faiths;
 import dev.faiths.module.render.ModuleHUD;
-import dev.faiths.ui.font.CustomFont;
-import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;

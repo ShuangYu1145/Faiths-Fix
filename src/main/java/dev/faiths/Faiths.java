@@ -11,8 +11,6 @@ import dev.faiths.event.EventManager;
 import dev.faiths.hackerdetector.HackerDetector;
 import dev.faiths.module.CheatModule;
 import dev.faiths.module.ModuleManager;
-import dev.faiths.module.fun.ModuleCape;
-import dev.faiths.module.render.ModuleAnimation;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.notifiction.NotificationManager;
 import dev.faiths.utils.SlotSpoofManager;
@@ -20,21 +18,18 @@ import dev.faiths.utils.player.RotationManager;
 import dev.faiths.utils.tasks.TaskManager;
 import ltd.guimc.silencefix.SFIRCListener;
 import ltd.guimc.silencefix.SilenceFixIRC;
-import net.minecraft.util.ResourceLocation;
 import net.vialoadingbase.ViaLoadingBase;
 import net.viamcp.ViaMCP;
 import org.apache.commons.lang3.RandomUtils;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
-    public static String VERSION = "250101";
+    public static String VERSION = "250115";
     public static boolean IS_BETA = true;
     @NativeObfuscation.Inline
     public static boolean verified = false; // this is a temporary boolean
@@ -60,8 +55,6 @@ public class Faiths {
 
     public Faiths() {
         INSTANCE = this;
-        // Wrapper._debug_addDefaultCloudConstant("Beta", "1857748011");
-        //  Wrapper._debug_addDefaultCloudConstant("Stable", "-1521957196");
         this.eventManager = new EventManager();
         commandManager = new CommandManager();
         commandManager.registerCommands();

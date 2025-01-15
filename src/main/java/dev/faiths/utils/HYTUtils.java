@@ -2,6 +2,12 @@ package dev.faiths.utils;
 
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.PacketEvent;
+import dev.faiths.module.combat.ModuleGapple;
+import dev.faiths.module.combat.ModuleKillAura;
+import dev.faiths.module.movement.ModuleSpeed;
+import dev.faiths.module.player.ModuleContainerStealer;
+import dev.faiths.module.player.ModuleInvManager;
+import dev.faiths.module.world.ModuleContainerAura;
 import dev.faiths.ui.notifiction.NotificationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -11,12 +17,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 
 import java.util.Iterator;
+
+import static dev.faiths.utils.IMinecraft.mc;
 
 public class HYTUtils {
     private static final Minecraft mc = Minecraft.getMinecraft();
@@ -67,16 +76,18 @@ public class HYTUtils {
         return false;
     }
 
-    public static boolean isxinxindog(PacketEvent event) {
-        S02PacketChat packet = (S02PacketChat) event.getPacket();
-        String msg = ((S02PacketChat) packet).getChatComponent().getUnformattedText();
-        if (msg.contains("SilenceFix")) {
-            String senderName = ((S02PacketChat) packet).getChatComponent().getUnformattedText().split(":")[0];
-            Faiths.notificationManager.pop("诶呦我去", "欣欣来了！！！", 5000, NotificationType.WARNING);
-            Faiths.notificationManager.pop("我是欣欣", senderName, 5000, NotificationType.WARNING);
-        }
-        return false;
-    }
+//    public static boolean isxinxindog(PacketEvent e) {
+//        if (e.getPacket() instanceof S02PacketChat) {
+//            S02PacketChat packet = (S02PacketChat) e.getPacket();
+//            String senderName = ((S02PacketChat) packet).getChatComponent().getUnformattedText().split(":")[0];
+//            if (packet.getChatComponent().getUnformattedText().contains("SilenceFix")) {
+//
+//                Faiths.notificationManager.pop("诶呦我去", "欣欣来了！！！", 5000, NotificationType.WARNING);
+//                Faiths.notificationManager.pop("我是欣欣", senderName, 5000, NotificationType.WARNING);
+//            }
+//        }
+//        return false;
+//    }
 
 
         public static boolean isKBBall(ItemStack stack) {

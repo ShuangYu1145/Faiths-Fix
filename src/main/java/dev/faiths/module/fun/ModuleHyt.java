@@ -12,6 +12,7 @@ import dev.faiths.module.player.ModuleContainerStealer;
 import dev.faiths.module.player.ModuleInvManager;
 import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.module.world.ModuleContainerAura;
+import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.value.ValueBoolean;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S02PacketChat;
@@ -28,6 +29,7 @@ public class ModuleHyt extends CheatModule {
     }
 
     private ValueBoolean AutoSkyWars = new ValueBoolean("AutoSkyWars", true);
+    private ValueBoolean XinXinCheck = new ValueBoolean("XinXinCheck", true);
 
     private void AutoSkyWars(PacketEvent e) {
         if (e.getPacket() instanceof S02PacketChat) {
@@ -47,10 +49,27 @@ public class ModuleHyt extends CheatModule {
         }
     }
 
+    public static boolean XinXinCheck(PacketEvent e) {
+        if (e.getPacket() instanceof S02PacketChat) {
+            S02PacketChat packet = (S02PacketChat) e.getPacket();
+            if (packet.getChatComponent().getUnformattedText().contains("SilenceFix")) {
+                String senderName = ((S02PacketChat) packet).getChatComponent().getUnformattedText().split(":")[0];
+
+                Faiths.notificationManager.pop("诶呦我去", "欣欣来了！！！！！！！！                                 ", 5000, NotificationType.WARNING);
+                Faiths.notificationManager.pop("我是欣欣！！！！！                                 ", senderName, 5000, NotificationType.WARNING);
+            }
+        }
+        return false;
+    }
+
     private final Handler<PacketEvent> packetEventHandler = event -> {
         if (event.getType() == PacketEvent.Type.RECEIVE) {
             if (AutoSkyWars.getValue()) {
                 AutoSkyWars(event);
+            }
+
+            if (XinXinCheck.getValue()) {
+                XinXinCheck(event);
             }
         }
     };

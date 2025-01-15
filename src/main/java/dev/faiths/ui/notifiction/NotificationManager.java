@@ -6,10 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import dev.faiths.ui.font.CustomFont;
 import dev.faiths.ui.font.FontManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
-
-import static dev.faiths.utils.IMinecraft.mc;
 
 public final class NotificationManager {
 

@@ -1,16 +1,14 @@
 package dev.faiths.ui.notifiction;
+
 import dev.faiths.Faiths;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RenderUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 
 import java.awt.*;
-
-import static dev.faiths.utils.IMinecraft.mc;
 
 public final class NotificationRenderer {
 
@@ -44,8 +42,11 @@ public final class NotificationRenderer {
                     y + 24,
                     new Color(0, 0, 0,150).getRGB());
 
-            FontManager.bold19.drawString(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB(),false);
-            FontManager.bold18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB(),false);
+//            FontManager.sf19.drawString(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB(),false);
+//            FontManager.sf18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB(),false);
+
+            FontManager.sf19.drawStringWithShadow(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB());
+            FontManager.sf18.drawStringWithShadow(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB());
             //endregion
 
             //region icon-rendering
