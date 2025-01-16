@@ -1,5 +1,7 @@
 package dev.faiths.module.render;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
 import dev.faiths.event.impl.PacketEvent;
@@ -22,7 +24,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.scoreboard.Score;
+import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import static com.viaversion.viaversion.util.ChatColorUtil.STRIP_COLOR_PATTERN;
@@ -32,9 +39,7 @@ import static dev.faiths.utils.megawalls.FkCounter.MW_GAME_START_MESSAGE;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -251,8 +256,7 @@ public class ModuleHUD extends CheatModule {
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                         module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
-                fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F,
-                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                fontRenderer.drawStringDynamic(displayText, slide, module.height + 2.5F,1,50);
                 fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
                         module.height + 2F,
                         new Color(160, 160, 160).getRGB());
@@ -344,11 +348,20 @@ public class ModuleHUD extends CheatModule {
             y -= 9.0F;
         }
 
+        if (information.isEnabled("Scoreboard")) {
+            if (facyfont.getValue()) {
+
+            } else {
+
+            }
+        }
+
         if (information.isEnabled("ClientName")) {
             final String name = "Faiths" + " [FPS:" + mc.getDebugFPS() + "]";
             if (facyfont.getValue()) {
                 RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf18.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
-                FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+            //    FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                FontManager.sf18.drawStringDynamic(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f,1,50);
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
                 RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
@@ -566,12 +579,59 @@ public class ModuleHUD extends CheatModule {
     public static Color color(int tick) {
         Color textColor = new Color(-1);
         if (colorsetting.is("Fade")) {
-            textColor = ColorUtil.fade(5, tick * 20, new Color(maincolor.getValue().getRGB()), 1);
+            float time = Minecraft.getSystemTime();
+            textColor = new Color(getArrayDynamic(time, 255));
         } else if (colorsetting.is("Static")) {
             textColor = new Color(maincolor.getValue().getRGB());
         } else if (colorsetting.is("Double")) {
             textColor = new Color(RenderUtils.colorSwitch(new Color(maincolor.getValue().getRGB()), new Color(secondcolor.getValue().getRGB()), 2000.0f, -(tick * 200) / 40, 75L, 2.0));
         }
         return textColor;
+    }
+
+    public static int getArrayDynamic(float counter, int alpha) {
+        float brightness = 1.0F
+                - MathHelper.abs(MathHelper.sin(counter % 6000F / 6000F * (float) Math.PI * 2.0F) * 0.6F);
+        final float[] hudHSB = getHSB(maincolor.getValue().getRGB());
+        Color color = Color.getHSBColor(hudHSB[0], hudHSB[1], brightness);
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha).getRGB();
+    }
+
+    public static float[] getHSB(final int value) {
+        float[] hsbValues = new float[3];
+
+        float saturation, brightness;
+        float hue;
+
+        int cMax = Math.max(value >>> 16 & 0xFF, value >>> 8 & 0xFF);
+        if ((value & 0xFF) > cMax)
+            cMax = value & 0xFF;
+
+        int cMin = Math.min(value >>> 16 & 0xFF, value >>> 8 & 0xFF);
+        if ((value & 0xFF) < cMin)
+            cMin = value & 0xFF;
+
+        brightness = (float) cMax / 255.0F;
+        saturation = cMax != 0 ? (float) (cMax - cMin) / (float) cMax : 0;
+
+        if (saturation == 0) {
+            hue = 0;
+        } else {
+            float redC = (float) (cMax - (value >>> 16 & 0xFF)) / (float) (cMax - cMin), // @off
+                    greenC = (float) (cMax - (value >>> 8 & 0xFF)) / (float) (cMax - cMin),
+                    blueC = (float) (cMax - (value & 0xFF)) / (float) (cMax - cMin); // @on
+
+            hue = ((value >>> 16 & 0xFF) == cMax ? blueC - greenC
+                    : (value >>> 8 & 0xFF) == cMax ? 2.0F + redC - blueC : 4.0F + greenC - redC) / 6.0F;
+
+            if (hue < 0)
+                hue += 1.0F;
+        }
+
+        hsbValues[0] = hue;
+        hsbValues[1] = saturation;
+        hsbValues[2] = brightness;
+
+        return hsbValues;
     }
 }

@@ -8,6 +8,7 @@ import dev.faiths.event.impl.TickUpdateEvent;
 import dev.faiths.event.impl.WorldLoadEvent;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
+import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.utils.render.RenderUtils;
@@ -185,9 +186,12 @@ public class ModuleBlink extends CheatModule {
         ScaledResolution sc = new ScaledResolution(mc);
         float strength = ticks / maxTicksBeforeRelease;
         //RenderUtils.drawRect(sc.getScaledWidth() / 2F - 50F, 35F, 100F, 20F, new Color(0, 0, 0, 140).getRGB());
-        FontManager.sf20.drawString(((maxTicksBeforeRelease - ticks) / 20) + "s left...", sc.getScaledWidth() / 2F - 15, sc.getScaledHeight() / 2F + 30,-1);
-        RenderUtils.drawRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,94,5,Color.GRAY);
-        RenderUtils.drawRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,ticks / 2 + 5,5,-1);
+        FontManager.sf20.drawStringDynamic(((maxTicksBeforeRelease - ticks) / 20) + "s left...", sc.getScaledWidth() / 2F - 15, sc.getScaledHeight() / 2F + 30,1,50);
+//        RenderUtils.drawRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,94,5,Color.GRAY);
+//        RenderUtils.drawRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,ticks / 2 + 5,5,-1);
+
+        RenderUtils.drawRoundedRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,94,5,4, Color.GRAY.getRGB());
+        RenderUtils.drawRoundedRect(sc.getScaledWidth() / 2F - 47, sc.getScaledHeight() / 2F + 15,ticks / 2 + 5,5,4,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
     };
 
     private void handleFakePlayerPacket(Packet<?> packet) {

@@ -1,5 +1,5 @@
 package dev.faiths.event;
 
 public interface Handler<T extends Event> {
-    void invoke(final T event);
+    void invoke(final T event) throws InterruptedException;
 }
