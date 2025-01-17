@@ -6,7 +6,6 @@ import dev.faiths.event.Handler;
 import dev.faiths.event.impl.*;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
-import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.BlockUtil;
 import dev.faiths.utils.ScaffoldUtils;
@@ -16,12 +15,10 @@ import dev.faiths.utils.player.PlayerUtils;
 import dev.faiths.utils.player.Rotation;
 import dev.faiths.utils.player.RotationUtils;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.RoundedUtil;
 import dev.faiths.value.ValueBoolean;
 import dev.faiths.value.ValueMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +39,6 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-import static dev.faiths.module.render.ModuleHUD.color;
 import static dev.faiths.utils.IMinecraft.mc;
 import static dev.faiths.utils.player.PlayerUtils.getSpeed;
 import static dev.faiths.utils.player.PlayerUtils.isMoving;
@@ -60,7 +56,6 @@ public class ModuleScaffold extends CheatModule {
     private final ValueBoolean keepYValue = new ValueBoolean("Keep Y", false);
     private final ValueBoolean upValue = new ValueBoolean("Up", false).visible(() -> (telly.getValue() && !keepYValue.getValue()));
     private final ValueBoolean smoothCamera = new ValueBoolean("SmoothCamera", false);
-    private final ValueMode tellymode = new ValueMode("TellyMode", new String[]{"BedWars", "SkyWars"}, "SkyWars");
     private float y;
     private int idkTick = 0, towerTick = 0, slot = 0;
     private boolean onGround = false;
@@ -147,7 +142,7 @@ public class ModuleScaffold extends CheatModule {
                 if (packet instanceof C08PacketPlayerBlockPlacement) {
                     c08PacketSize -= 1;
                 }
-                mc.getNetHandler().addToSendQueue(packet, true);
+                mc.getNetHandler().addToSendQueue(packet);
             });
         }
     }
@@ -186,8 +181,8 @@ public class ModuleScaffold extends CheatModule {
         if (bugFlyValue.getValue()) {
             packets.forEach(this::sendTick);
             packets.clear();
-            mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem + 1), true);
-            mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem), true);
+            mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem + 1));
+            mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
         }
         if (modeValue.is("WatchdogGround")) {
             if (lastJumpMode || lastKeepYMode)
@@ -508,21 +503,15 @@ public class ModuleScaffold extends CheatModule {
         }
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemIntoGUI(stack, (int) ((int) width / 2 - FontManager.sf20.getStringWidth(info)) + 17
-                , (int) (height * 0.6 - FontManager.sf20.getHeight() * 0.5 + 50));
+                , (int) (height * 0.6 - FontManager.sf20.getHeight() * 0.5));
         RenderHelper.disableStandardItemLighting();
-
-        if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-            FontManager.sf20.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-        } else {
-            mc.fontRendererObj.drawString(info, width / 2f - 10, height * 0.6f + 0.5f + 50, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-        }
-    //    RoundedUtil.drawRound(width / 2f - 32, height * 0.6f + 0.5f + 46,FontManager.sf20.getStringWidth(info) + 28,15,4,new Color(1,1,1, 100));
+        FontManager.sf20.drawCenteredString(info, width / 2f + 15, height * 0.6f + 0.5f, Color.WHITE.getRGB());
         GlStateManager.popMatrix();
     };
 
     private final Handler<Render3DEvent> render3DEventHandler = event -> {
         if (data == null) return;
-        RenderUtils.drawBlockBox(data,ModuleHUD.color(ModuleHUD.colortick.getValue()), false);
+        RenderUtils.drawBlockBox(data, new Color(255, 0, 0, 50), false);
     };
 
     private final Handler<UpdateEvent> updateEventHandler = event -> {
@@ -544,42 +533,13 @@ public class ModuleScaffold extends CheatModule {
             return;
         }
 
-
+        this.findBlock();
 
         if (telly.getValue()) {
-
-            this.findBlock();
             mc.gameSettings.keyBindSprint.pressed = true;
-
             if (canTellyPlace && !mc.thePlayer.onGround && isMoving())
                 mc.thePlayer.setSprinting(false);
-                /*
-             canTellyPlace = mc.thePlayer.offGroundTicks >= (up ? (mc.thePlayer.ticksExisted % 16 == 0 ? 2 : 1) : 2.9);
-
-             */
-
-            float tellyTicks;
-            switch (tellymode.getValue()) {
-                case "SkyWars" : {
-                    tellyTicks = 1F;
-                    break;
-                }
-                case "BedWars" : {
-                    tellyTicks = 3.8F;
-                    break;
-                }
-                default: {
-                    tellyTicks = 3.8F;
-                }
-            }
-
-             canTellyPlace = mc.thePlayer.offGroundTicks >= tellyTicks;
-
-
-        }
-
-        if (!this.canTellyPlace) {
-            return;
+            canTellyPlace = mc.thePlayer.offGroundTicks >= (up ? (mc.thePlayer.ticksExisted % 16 == 0 ? 2 : 1) : 2.9);
         }
         if (!modeValue.is("Normal") && data != null && !modeValue.is("WatchdogKeepY")) {
             try {

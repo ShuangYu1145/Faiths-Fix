@@ -45,6 +45,7 @@ public class ModuleVelocity extends CheatModule {
     private int lastVelocityTick = 0;
     private int lagbackTimes = 0;
     private long lastLagbackTime = System.currentTimeMillis();
+    private boolean absorbedVelocity;
 
     @Override
     public String getSuffix() {
@@ -71,6 +72,12 @@ public class ModuleVelocity extends CheatModule {
                     }
                 }
         }
+
+        if(mode.is("Watchdog")){
+            if (mc.thePlayer.onGround) {
+                absorbedVelocity = false;
+            }
+        }
     };
 
     private final Handler<PacketEvent> packetHandler = event -> {
@@ -91,16 +98,15 @@ public class ModuleVelocity extends CheatModule {
                 }
 
                 if(mode.is("Watchdog")){
-                    if (((S12PacketEntityVelocity) packet).getEntityID() == mc.thePlayer.getEntityId()) {
-                        lastVelocityTick = mc.thePlayer.ticksExisted;
-                        event.setCancelled(true);
-                        if (mc.thePlayer.onGround || ((S12PacketEntityVelocity) packet).getMotionY() / 8000.0D < .2 || ((S12PacketEntityVelocity) packet).getMotionY() / 8000.0D > .41995) {
-                            mc.thePlayer.motionY = ((S12PacketEntityVelocity) packet).getMotionY() / 8000.0D;
-                        }
-                        if (debug.getValue()) {
-                            DebugUtil.log("§cKnockback tick: " + mc.thePlayer.ticksExisted);
+                    if (!mc.thePlayer.onGround) {
+                        if (!absorbedVelocity) {
+                            event.setCancelled(true);
+                            absorbedVelocity = true;
+                            return;
                         }
                     }
+                    ((S12PacketEntityVelocity) packet).setMotionX((int)mc.thePlayer.motionX * 8000);
+                    ((S12PacketEntityVelocity) packet).setMotionZ((int) (mc.thePlayer.motionZ * 8000));
                 }
 
                 if(mode.is("WatchDog2") && ((S12PacketEntityVelocity) packet).getEntityID() == mc.thePlayer.getEntityId()){

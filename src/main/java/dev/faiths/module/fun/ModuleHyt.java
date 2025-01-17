@@ -10,10 +10,9 @@ import dev.faiths.module.combat.ModuleKillAura;
 import dev.faiths.module.movement.ModuleSpeed;
 import dev.faiths.module.player.ModuleContainerStealer;
 import dev.faiths.module.player.ModuleInvManager;
-import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.module.world.ModuleContainerAura;
 import dev.faiths.ui.notifiction.NotificationType;
-import dev.faiths.utils.HYTUtils;
+import dev.faiths.utils.tasks.FutureTask;
 import dev.faiths.value.ValueBoolean;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S02PacketChat;
@@ -96,11 +95,29 @@ public class ModuleHyt extends CheatModule {
             S45PacketTitle packet = (S45PacketTitle) e.getPacket();
 
             if (packet.getMessage().getUnformattedText().contains("VICTORY")) {
-                ScreenShotHelper.safeSaveScreenshot();
+                Faiths.INSTANCE.getTaskManager().queue(new FutureTask(1200) {
+                    @Override
+                    public void execute() {
+                        ScreenShotHelper.safeSaveScreenshot();
+                    }
+
+                    @Override
+                    public void run() {
+                    }
+                });
             }
 
             if (packet.getMessage().getUnformattedText().contains("恭喜!")) {
-                ScreenShotHelper.safeSaveScreenshot();
+                Faiths.INSTANCE.getTaskManager().queue(new FutureTask(1200) {
+                    @Override
+                    public void execute() {
+                        ScreenShotHelper.safeSaveScreenshot();
+                    }
+
+                    @Override
+                    public void run() {
+                    }
+                });
             }
         }
         return false;

@@ -106,7 +106,7 @@ public class ModuleDisabler extends CheatModule {
                         if (!c0fStorage.isEmpty()) {
                             c0fStorage.add((C0FPacketConfirmTransaction) event.getPacket());
                             event.setCancelled(true);
-                            mc.getNetHandler().addToSendQueue(c0fStorage.get(0), true);
+                            mc.getNetHandler().addToSendQueue(c0fStorage.get(0));
                             c0fStorage.remove(0);
                             lastTickSentC0F = true;
                         }

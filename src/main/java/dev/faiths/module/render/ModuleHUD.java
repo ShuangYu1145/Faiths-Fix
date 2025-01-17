@@ -256,7 +256,7 @@ public class ModuleHUD extends CheatModule {
                 RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                         module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
-                fontRenderer.drawStringDynamic(displayText, slide, module.height + 2.5F,1,50);
+                fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
                 fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
                         module.height + 2F,
                         new Color(160, 160, 160).getRGB());
@@ -357,15 +357,14 @@ public class ModuleHUD extends CheatModule {
         }
 
         if (information.isEnabled("ClientName")) {
-            final String name = "Faiths" + " [FPS:" + mc.getDebugFPS() + "]";
+            final String name = "Faiths" + " | " + mc.getSession().getUsername() + " | " + "FPS:" + mc.getDebugFPS();
             if (facyfont.getValue()) {
-                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf18.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
-            //    FontManager.sf18.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-                FontManager.sf18.drawStringDynamic(name.charAt(0) + "§f" + name.substring(1), 2.1f, 4.1f,1,50);
+                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
+                FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
-                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name.charAt(0) + "§f" + name.substring(1)), FontManager.sf18.getHeight() + 1, 3 ,new Color(0, 0, 0, globalalpha.getValue()));
-                mc.fontRendererObj.drawStringWithShadow(name.charAt(0) + "§f" + name.substring(1), 2.0f, 4.0f,
+                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name), mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
+                mc.fontRendererObj.drawStringWithShadow(name, 2.0f, 4.0f,
                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
              // }
             }
@@ -411,7 +410,7 @@ public class ModuleHUD extends CheatModule {
                         width = stringWidth;
                     final float finalY = yPos;
                     drawables.add(() -> {
-                        fontRenderer.drawString(name, 2f, finalY - 7f, potion.getLiquidColor(), true);
+                        fontRenderer.drawString(name, 2f, finalY - 7f, potion.getLiquidColor(), false);
                         fontRenderer.drawStringWithShadow("§7" + Potion.getDurationString(effect), 2f, finalY + 4, -1);
                         if (potion.hasStatusIcon()) {
                             GL11.glPushMatrix();
@@ -578,6 +577,7 @@ public class ModuleHUD extends CheatModule {
 
     public static Color color(int tick) {
         Color textColor = new Color(-1);
+
         if (colorsetting.is("Fade")) {
             float time = Minecraft.getSystemTime();
             textColor = new Color(getArrayDynamic(time, 255));
@@ -588,6 +588,7 @@ public class ModuleHUD extends CheatModule {
         }
         return textColor;
     }
+
 
     public static int getArrayDynamic(float counter, int alpha) {
         float brightness = 1.0F

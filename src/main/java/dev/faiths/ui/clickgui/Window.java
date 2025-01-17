@@ -76,7 +76,7 @@ public class Window {
         float height = 15F;
         if (expand) {
             for (final CheatModule module : modules) {
-                height += 11F;
+                height += 10F;
                 if (module.isExpanded()) {
                     for (final AbstractValue<?> value : module.getValues()) {
                         if (!value.isVisible())
@@ -84,19 +84,21 @@ public class Window {
                         if (value instanceof ValueMultiBoolean) {
                             final ValueMultiBoolean multiBooleanValue = (ValueMultiBoolean) value;
                             height += (multiBooleanValue.isExpanded() ? multiBooleanValue.getValue().length + 1 : 1)
-                                    * 11F;
+                                    * 10F;
                         } else {
                             if (value instanceof ValueFloat || value instanceof ValueInt)
-                                height += 11F;
+                                height += 10F;
                             else
-                                height += 11F;
+                                height += 10F;
                         }
                     }
                 }
             }
         }
         // if (expand) height += 3F;
-        RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), ModuleHUD.color(ModuleHUD.colortick.getValue()));
+     //   RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), ModuleHUD.color(ModuleHUD.colortick.getValue()));
+        RenderUtils.drawRoundedRect(0F, 0F, 100F, height, 5F, new Color(25, 25, 25,100).getRGB());
+
         if (!expand) {
             RenderUtils.drawImage(new ResourceLocation("client/icon/eye_close.png"), 80F, 3F, 8F, 8F,
                     new Color(60, 60, 60));
@@ -126,20 +128,22 @@ public class Window {
 
         }
 
-        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
-        float moduleHeight = 11F;
+        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, ModuleHUD.maincolor.getValue());
+        float moduleHeight = 10F;
         for (final CheatModule module : modules) {
             if (expand) {
                 if (!module.isExpanded()) {
-                    RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(36, 36, 36));
+            //        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(36, 36, 36));
                     if (module.getState()) {
-                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
+               //         RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                        RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5,new Color(25, 25, 25,120).getRGB());
                     }
                 }
 
-                if (mouseHovered(x, y + moduleHeight, 100, 11F, mouseX, mouseY)) {
+                if (mouseHovered(x, y + moduleHeight + 2, 100, 10F, mouseX, mouseY)) {
                     if (!module.isExpanded() && !module.getState()) {
-                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(255, 255, 255, 50));
+                  //      RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(255, 255, 255, 50));
+                        RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5 ,new Color(255, 255, 255, 50).getRGB());
                     }
                     if (Mouse.isButtonDown(1)) {
                         if (!rightMouseClicked) {
@@ -163,7 +167,7 @@ public class Window {
                 FontManager.bold15.drawString(module.getName(),
                         100F - FontManager.bold15.getStringWidth(module.getName()) - 3F,
                         moduleHeight + 5F,
-                        module.getState() && module.isExpanded() ? ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB()
+                        module.getState() && module.isExpanded() ? ModuleHUD.maincolor.getValue().getRGB()
                                 : new Color(160, 160, 160).getRGB());
 
                 if (module.isExpanded()) {
@@ -171,9 +175,9 @@ public class Window {
                         if (!value.isVisible())
                             continue;
                         if (value instanceof ValueBoolean) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueBoolean booleanValue = (ValueBoolean) value;
-                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         leftMouseClicked = true;
@@ -184,15 +188,16 @@ public class Window {
                                 }
                             }
                             if (booleanValue.getValue()) {
-                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                        //        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                                RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5,ModuleHUD.maincolor.getValue().getRGB());
                             }
                             FontManager.bold13.drawString(booleanValue.getName(), 5F, moduleHeight + 5F, -1);
                         }
 
                         if (value instanceof ValueMode) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueMode modeValue = (ValueMode) value;
-                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         leftMouseClicked = true;
@@ -227,17 +232,17 @@ public class Window {
                         }
 
                         if (value instanceof ValueFloat) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueFloat floatValue = (ValueFloat) value;
                             RenderUtils.drawRect(3F, moduleHeight,
-                                    95F * (floatValue.getValue() / floatValue.getMaximum()), 11F,
-                                    ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                                    95F * (floatValue.getValue() / floatValue.getMaximum()), 10F,
+                                    ModuleHUD.maincolor.getValue());
 
                             FontManager.bold13.drawString(floatValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(FLOAT_POINT_FORMAT.format(floatValue.getValue()), 88F,
                                     moduleHeight + 5F, -1);
 
-                            if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
+                            if (mouseHovered(x, y + moduleHeight + 2, 95F, 10F, mouseX, mouseY) && Mouse.isButtonDown(0))
                                 floatValue.setValue(
                                         Float.valueOf(Math.max(floatValue.getMinimum(),
                                                 Float.valueOf(
@@ -247,7 +252,7 @@ public class Window {
                         }
 
                         if (value instanceof ValueColor) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueColor colorValue = (ValueColor) value;
                             HSBData data = new HSBData(colorValue.getValue());
                             final float[] hsba = {
@@ -261,7 +266,7 @@ public class Window {
                             FontManager.bold13.drawString(colorValue.getName(), 5f,
                                     5.5f + moduleHeight, 0xffffffff, false);
 
-                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         colorValue.setExpanded(!colorValue.isExpanded());
@@ -319,7 +324,7 @@ public class Window {
                                         9, 1, new Color(204, 198, 255));
 
                                 final boolean onHue = RenderUtils.isHovering(x + 98 + 67,
-                                        y + moduleHeight, 10, 61, mouseX, mouseY);
+                                        y + moduleHeight + 2, 10, 61, mouseX, mouseY);
 
                                 if (onHue && Mouse.isButtonDown(0)) {
                                     data.setHue(Math.min(Math.max((mouseY - y - moduleHeight) / 60F, 0), 1));
@@ -329,17 +334,19 @@ public class Window {
                         }
 
                         if (value instanceof ValueInt) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueInt intValue = (ValueInt) value;
-                            RenderUtils.drawRect(3F, moduleHeight,
-                                    95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 11F,
-                                    ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                            RenderUtils.drawRoundedRect(3F, moduleHeight + 2,
+                                    95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 10F,5,
+                                    ModuleHUD.maincolor.getValue().getRGB());
+
+
 
                             FontManager.bold13.drawString(intValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(String.valueOf(intValue.getValue()), 90F,
                                     moduleHeight + 5F, -1);
 
-                            if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
+                            if (mouseHovered(x, y + moduleHeight + 2, 95F, 10F, mouseX, mouseY) && Mouse.isButtonDown(0))
                                 intValue.setValue(
                                         Integer.valueOf(Math.round(Math.max(intValue.getMinimum(),
                                                 ((((Math.max(0, ((mouseX - x) / 95F)) * (intValue.getMaximum())))))))));
@@ -347,14 +354,14 @@ public class Window {
                         }
 
                         if (value instanceof ValueMultiBoolean) {
-                            moduleHeight += 11F;
+                            moduleHeight += 10F;
                             final ValueMultiBoolean multiBooleanValue = (ValueMultiBoolean) value;
                             if (multiBooleanValue.isExpanded()) {
-                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(17, 17, 17));
+                                RenderUtils.drawRect(3F, moduleHeight, 95F, 10F, new Color(17, 17, 17));
                             }
                             FontManager.bold13.drawCenteredString(multiBooleanValue.getName() + "...", 50F,
                                     moduleHeight + 5F, -1);
-                            if (mouseHovered(x, y + moduleHeight, 100, 11F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight + 2, 100, 10F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         multiBooleanValue.setExpanded(!multiBooleanValue.isExpanded());
@@ -365,11 +372,11 @@ public class Window {
                                 }
                             }
                             if (multiBooleanValue.isExpanded()) {
-                                RenderUtils.drawRect(3F, moduleHeight + 11F, 95F,
-                                        multiBooleanValue.getValue().length * 11F, new Color(17, 17, 17));
+                                RenderUtils.drawRect(3F, moduleHeight + 10F, 95F,
+                                        multiBooleanValue.getValue().length * 10F, new Color(17, 17, 17));
                                 for (final Pair<String, Boolean> pair : multiBooleanValue.getValue()) {
-                                    moduleHeight += 11F;
-                                    if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
+                                    moduleHeight += 10F;
+                                    if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
                                         if (Mouse.isButtonDown(0)) {
                                             if (!leftMouseClicked) {
                                                 leftMouseClicked = true;
@@ -380,8 +387,8 @@ public class Window {
                                         }
                                     }
                                     if (pair.getValue()) {
-                                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F,
-                                                ModuleHUD.color(ModuleHUD.colortick.getValue()));
+                                        RenderUtils.drawRect(3F, moduleHeight, 95F, 10F,
+                                                ModuleHUD.maincolor.getValue());
                                     }
                                     FontManager.bold13.drawString(pair.getKey(), 5F, moduleHeight + 5F, -1);
                                 }
@@ -393,7 +400,7 @@ public class Window {
 
                 }
             }
-            moduleHeight += 11F;
+            moduleHeight += 10F;
         }
 
         if (mouseHovered(x, y, 100F, 20F, mouseX, mouseY)) {

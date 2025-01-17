@@ -633,16 +633,16 @@ public class GuiIngame extends Gui
             int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
             int l = scaledRes.getScaledWidth() - k1 + 2;
             drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
-            if (j == 1) {
-                if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-                //    FontManager.sf20.drawString("skidonion.tech", l1, k, rainbow.getRGB());
-                    this.getFontRenderer().drawString("skidonion.tech", l1, k,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-                } else {
-                    this.getFontRenderer().drawString("skidonion.tech", l1, k, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-                }
-            } else {
+//            if (j == 1) {
+//                if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
+//                //    FontManager.sf20.drawString("skidonion.tech", l1, k, rainbow.getRGB());
+//                    this.getFontRenderer().drawString("skidonion.tech", l1, k,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+//                } else {
+//                    this.getFontRenderer().drawString("skidonion.tech", l1, k, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+//                }
+//            } else {
                 this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            }
+//            }
 
             if (Faiths.moduleManager.getModule(ModuleHUD.class).scoreboardpoint.getValue()) {
                 this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);

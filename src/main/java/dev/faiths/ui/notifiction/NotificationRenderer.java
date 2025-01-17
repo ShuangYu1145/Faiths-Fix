@@ -45,7 +45,7 @@ public final class NotificationRenderer {
 //            FontManager.sf19.drawString(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB(),false);
 //            FontManager.sf18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB(),false);
 
-            FontManager.sf19.drawStringWithShadow(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB());
+            FontManager.bold19.drawStringWithShadow(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB());
             FontManager.sf18.drawStringWithShadow(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB());
             //endregion
 

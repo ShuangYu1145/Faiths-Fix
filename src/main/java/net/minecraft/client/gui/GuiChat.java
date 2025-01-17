@@ -380,8 +380,8 @@ public class GuiChat extends GuiScreen
             else if (!this.foundPlayerNames.isEmpty())
             {
                 this.playerNamesFound = true;
-                if (!Faiths.commandManager.getLatestAutoComplete().isEmpty()) return;
                 this.autocompletePlayerNames();
+                if (!Faiths.commandManager.getLatestAutoComplete().isEmpty()) return;
             }
         }
     }

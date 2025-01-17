@@ -258,7 +258,7 @@ public class GuiAltManager extends GuiScreen implements GuiYesNoCallback
                 Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
                 if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
                     try {
-                        desktop.browse(URI.create("https://shop.lishangmc.com/"));
+                        desktop.browse(URI.create("https://dahaikw.com/"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

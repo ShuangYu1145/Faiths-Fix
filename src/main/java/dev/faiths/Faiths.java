@@ -29,7 +29,7 @@ import java.util.Comparator;
 public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
-    public static String VERSION = "250115";
+    public static String VERSION = "250117";
     public static boolean IS_BETA = true;
     @NativeObfuscation.Inline
     public static boolean verified = false; // this is a temporary boolean

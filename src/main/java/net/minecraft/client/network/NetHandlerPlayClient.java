@@ -81,6 +81,7 @@ import java.util.zip.GZIPOutputStream;
 
 import static com.github.stachelbeere1248.zombiesutils.mixin.MixinNetHandlerPlayClient.zombies_utils$handleSound;
 import static com.github.stachelbeere1248.zombiesutils.mixin.MixinNetHandlerPlayClient.zombies_utils$handleTitle;
+import static dev.faiths.module.fun.ModuleIRC.sendToServer;
 import static dev.faiths.utils.IMinecraft.mc;
 
 @NativeObfuscation
@@ -744,14 +745,30 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void addToSendQueue(Packet p_147297_1_)
-    {
-        this.netManager.sendPacket(p_147297_1_);
-    }
+//    public void addToSendQueue(Packet p_147297_1_)
+//    {
+//        this.netManager.sendPacket(p_147297_1_);
+//    }
+//
+//    public void addToSendQueue(Packet p_147297_1_, boolean noEvent)
+//    {
+//        this.netManager.sendPacket(p_147297_1_, noEvent);
+//    }
 
-    public void addToSendQueue(Packet p_147297_1_, boolean noEvent)
-    {
-        this.netManager.sendPacket(p_147297_1_, noEvent);
+    public void addToSendQueue1(Packet p_147297_1_) {
+        this.netManager.sendPacket(p_147297_1_);}
+    public void addToSendQueue(Packet packet) {
+        if (packet instanceof C01PacketChatMessage) {
+            C01PacketChatMessage chatPacket = (C01PacketChatMessage) packet;
+            String message = chatPacket.getMessage();
+            if (message.startsWith("!")) {
+                sendToServer(message.substring(1));
+            } else {
+                addToSendQueue1(packet);
+            }
+        } else {
+            this.netManager.sendPacket(packet);
+        }
     }
 
     public void sendPacketNoEvent(Packet packetIn) {
