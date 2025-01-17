@@ -63,6 +63,8 @@ public class ModuleHUD extends CheatModule {
 
     public static ValueInt colortick = new ValueInt("ColorTick", 10, 0, 100);
 
+    public static ValueBoolean glow = new ValueBoolean("Glow", false);
+
     private final ValueBoolean outline = new ValueBoolean("OutLine", true);
     public static FkCounter killCounter = new FkCounter();
 
@@ -489,9 +491,13 @@ public class ModuleHUD extends CheatModule {
             }
 
          //   RenderUtils.drawRect(-20, -10, width + 5, yPos, new Color(0, 0, 0, globalalpha.getValue()).getRGB());
-       //     BlurUtil.blurArea(-20, -10, width + 5, yPos, 10f);
+        //    BlurUtil.blurArea(-20, -10, width + 5, yPos, 10f,4);
+
             RoundedUtil.drawRound(-20, -10, width + 5, yPos, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
 
+            if (glow.getValue()) {
+                GlowUtils.drawGlow(-20, -10, width + 5, yPos, 4,new Color(0, 0, 0,globalalpha.getValue()));
+            }
 
             drawables.forEach(Runnable::run);
 

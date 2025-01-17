@@ -131,21 +131,21 @@ public class GuiNewChat extends Gui
 
 
 
-        /*try {
-            if (Minecraft.getMinecraft().theWorld != null && IRC.connected) {
-                for (String ingameName : IRC.playerMap.values()) {
-                    if (ingameName.length() >= 5 && !replacedMessage.toString().contains(ingameName + " §f(§b" + ingameName + "§f)")) {
-                        String username = IRC.getUsernameInGame(ingameName);
-                        String replacement = ingameName + " §f-§b " + username;
-                        int index = replacedMessage.indexOf(ingameName);
-                        if (index != -1) {
-                            replacedMessage = StringUtils.replace(replacedMessage, ingameName, replacement);
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) {}*/
-
+//        try {
+//            if (Minecraft.getMinecraft().theWorld != null && IRC.connected) {
+//                for (String ingameName : IRC.playerMap.values()) {
+//                    if (ingameName.length() >= 5 && !replacedMessage.toString().contains(ingameName + " §f(§b" + ingameName + "§f)")) {
+//                        String username = IRC.getUsernameInGame(ingameName);
+//                        String replacement = ingameName + " §f-§b " + username;
+//                        int index = replacedMessage.indexOf(ingameName);
+//                        if (index != -1) {
+//                            replacedMessage = StringUtils.replace(replacedMessage, ingameName, replacement);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception ignored) {}
+//
         return replacedMessage.toString();
     }
 

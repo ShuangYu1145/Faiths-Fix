@@ -1,23 +1,20 @@
 package dev.faiths.ui.clickgui;
 
 import dev.faiths.module.Category;
-import dev.faiths.utils.ClientUtils;
 import dev.faiths.utils.render.BlurUtil;
-import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.utils.render.animation.normal.Animation;
 import dev.faiths.utils.render.animation.normal.Direction;
 import dev.faiths.utils.render.animation.normal.easing.EaseBackIn;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.Display;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AstolfoGui extends GuiScreen {
     private final List<Window> windows = new ArrayList<>();
 
-    private Animation animation;
+    private Animation Animation;
 
     public AstolfoGui() {
         float x = 50, y = 50;
@@ -25,6 +22,12 @@ public class AstolfoGui extends GuiScreen {
             windows.add(new Window(category, x, y));
             x += 125;
         }
+    }
+
+    @Override
+    public void setup() {
+        Animation = new EaseBackIn(320, 1.0F, 2.0F);
+        Animation.setDirection(Direction.BACKWARDS);
     }
 
     @Override
@@ -44,6 +47,7 @@ public class AstolfoGui extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
      //   RenderUtils.drawRect(0, 0, Display.getWidth(), Display.getHeight(), new Color(0, 0, 0, 150));
+
         this.windows.forEach(window -> {
             window.renderWindow(mouseX, mouseY);
         });

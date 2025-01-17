@@ -523,6 +523,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
     }
 
+    public abstract void setup();
+
     /**
      * Called when a mouse button is released.  Args : mouseX, mouseY, releaseButton
      */

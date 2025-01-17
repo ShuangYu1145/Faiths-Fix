@@ -4,12 +4,10 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import dev.faiths.module.render.ModuleHUD;
 import dev.faiths.utils.render.animation.normal.Animation;
 import dev.faiths.utils.render.animation.normal.Direction;
 import dev.faiths.utils.render.animation.normal.easing.EaseBackIn;
 import dev.faiths.utils.render.animation.simple.SimpleAnimation;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -38,8 +36,6 @@ public class Window {
     private Runnable runnable = null;
     private DecimalFormat FLOAT_POINT_FORMAT = new DecimalFormat("0.00");
 
-    private Animation animation;
-
     public Window(Category category, float x, float y) {
         this.category = category;
         this.x = x;
@@ -47,7 +43,7 @@ public class Window {
     }
 
     private boolean mouseHovered(final float x, final float y, final float width, final float height, final int mouseX,
-            final int mouseY) {
+                                 final int mouseY) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
@@ -63,12 +59,9 @@ public class Window {
                     this.y += moveY;
                 };
                 dragging = true;
-
-
             }
 
         }
-
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, 0);
@@ -76,7 +69,7 @@ public class Window {
         float height = 15F;
         if (expand) {
             for (final CheatModule module : modules) {
-                height += 10F;
+                height += 11F;
                 if (module.isExpanded()) {
                     for (final AbstractValue<?> value : module.getValues()) {
                         if (!value.isVisible())
@@ -84,21 +77,19 @@ public class Window {
                         if (value instanceof ValueMultiBoolean) {
                             final ValueMultiBoolean multiBooleanValue = (ValueMultiBoolean) value;
                             height += (multiBooleanValue.isExpanded() ? multiBooleanValue.getValue().length + 1 : 1)
-                                    * 10F;
+                                    * 11F;
                         } else {
                             if (value instanceof ValueFloat || value instanceof ValueInt)
-                                height += 10F;
+                                height += 11F;
                             else
-                                height += 10F;
+                                height += 11F;
                         }
                     }
                 }
             }
         }
         // if (expand) height += 3F;
-     //   RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), ModuleHUD.color(ModuleHUD.colortick.getValue()));
-        RenderUtils.drawRoundedRect(0F, 0F, 100F, height, 5F, new Color(25, 25, 25,100).getRGB());
-
+        RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), new Color(160, 50, 145));
         if (!expand) {
             RenderUtils.drawImage(new ResourceLocation("client/icon/eye_close.png"), 80F, 3F, 8F, 8F,
                     new Color(60, 60, 60));
@@ -128,22 +119,20 @@ public class Window {
 
         }
 
-        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, ModuleHUD.maincolor.getValue());
-        float moduleHeight = 10F;
+        RenderUtils.drawImage(categoryResourceLocation, 90F, 3F, 8F, 8F, new Color(164, 53, 144));
+        float moduleHeight = 11F;
         for (final CheatModule module : modules) {
             if (expand) {
                 if (!module.isExpanded()) {
-            //        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(36, 36, 36));
+                    RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(36, 36, 36));
                     if (module.getState()) {
-               //         RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                        RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5,new Color(25, 25, 25,120).getRGB());
+                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(164, 53, 144));
                     }
                 }
 
-                if (mouseHovered(x, y + moduleHeight + 2, 100, 10F, mouseX, mouseY)) {
+                if (mouseHovered(x, y + moduleHeight, 100, 11F, mouseX, mouseY)) {
                     if (!module.isExpanded() && !module.getState()) {
-                  //      RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(255, 255, 255, 50));
-                        RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5 ,new Color(255, 255, 255, 50).getRGB());
+                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(255, 255, 255, 50));
                     }
                     if (Mouse.isButtonDown(1)) {
                         if (!rightMouseClicked) {
@@ -164,10 +153,10 @@ public class Window {
                         leftMouseClicked = false;
                     }
                 }
-                FontManager.bold15.drawString(module.getName(),
-                        100F - FontManager.bold15.getStringWidth(module.getName()) - 3F,
+                FontManager.bold15.drawString(module.getName().toLowerCase(),
+                        100F - FontManager.bold15.getStringWidth(module.getName().toLowerCase()) - 3F,
                         moduleHeight + 5F,
-                        module.getState() && module.isExpanded() ? ModuleHUD.maincolor.getValue().getRGB()
+                        module.getState() && module.isExpanded() ? new Color(164, 53, 144).getRGB()
                                 : new Color(160, 160, 160).getRGB());
 
                 if (module.isExpanded()) {
@@ -175,9 +164,9 @@ public class Window {
                         if (!value.isVisible())
                             continue;
                         if (value instanceof ValueBoolean) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueBoolean booleanValue = (ValueBoolean) value;
-                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         leftMouseClicked = true;
@@ -188,16 +177,15 @@ public class Window {
                                 }
                             }
                             if (booleanValue.getValue()) {
-                        //        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
-                                RenderUtils.drawRoundedRect(3F, moduleHeight + 2, 95F, 10F, 5,ModuleHUD.maincolor.getValue().getRGB());
+                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(164, 53, 144));
                             }
                             FontManager.bold13.drawString(booleanValue.getName(), 5F, moduleHeight + 5F, -1);
                         }
 
                         if (value instanceof ValueMode) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueMode modeValue = (ValueMode) value;
-                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         leftMouseClicked = true;
@@ -232,17 +220,17 @@ public class Window {
                         }
 
                         if (value instanceof ValueFloat) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueFloat floatValue = (ValueFloat) value;
                             RenderUtils.drawRect(3F, moduleHeight,
-                                    95F * (floatValue.getValue() / floatValue.getMaximum()), 10F,
-                                    ModuleHUD.maincolor.getValue());
+                                    95F * (floatValue.getValue() / floatValue.getMaximum()), 11F,
+                                    new Color(164, 53, 144));
 
                             FontManager.bold13.drawString(floatValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(FLOAT_POINT_FORMAT.format(floatValue.getValue()), 88F,
                                     moduleHeight + 5F, -1);
 
-                            if (mouseHovered(x, y + moduleHeight + 2, 95F, 10F, mouseX, mouseY) && Mouse.isButtonDown(0))
+                            if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
                                 floatValue.setValue(
                                         Float.valueOf(Math.max(floatValue.getMinimum(),
                                                 Float.valueOf(
@@ -252,7 +240,7 @@ public class Window {
                         }
 
                         if (value instanceof ValueColor) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueColor colorValue = (ValueColor) value;
                             HSBData data = new HSBData(colorValue.getValue());
                             final float[] hsba = {
@@ -266,7 +254,7 @@ public class Window {
                             FontManager.bold13.drawString(colorValue.getName(), 5f,
                                     5.5f + moduleHeight, 0xffffffff, false);
 
-                            if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         colorValue.setExpanded(!colorValue.isExpanded());
@@ -287,14 +275,14 @@ public class Window {
                                         0.5F + moduleHeight, 60, 60, getColor(Color.getHSBColor(hsba[0], 0, 1)).getRGB(),
                                         0x00F);
                                 RenderUtils.drawVerticalGradientSideways(98 + 3.5f,
-                                0.5F + moduleHeight, 60, 60, 0x00F,
+                                        0.5F + moduleHeight, 60, 60, 0x00F,
                                         getColor(Color.getHSBColor(hsba[0], 1, 0)).getRGB());
 
                                 RenderUtils.drawRect(98 + 3.5f + hsba[1] * 60 - .5f,
-                                0.5F + ((1 - hsba[2]) * 60) - .5f + moduleHeight, 1.5f, 1.5f,
+                                        0.5F + ((1 - hsba[2]) * 60) - .5f + moduleHeight, 1.5f, 1.5f,
                                         new Color(0, 0, 0));
                                 RenderUtils.drawRect(98 + 3.5F + hsba[1] * 60,
-                                0.5F + ((1 - hsba[2]) * 60) + moduleHeight, .5f, .5f, getColor(colorValue.getValue()));
+                                        0.5F + ((1 - hsba[2]) * 60) + moduleHeight, .5f, .5f, getColor(colorValue.getValue()));
 
                                 final boolean onSB = RenderUtils.isHovering(x + 98 + 3, y + 0.5F + moduleHeight, 61, 61,
                                         mouseX, mouseY);
@@ -314,7 +302,7 @@ public class Window {
                                     final Color lasCol = Color.getHSBColor(f / 5F, 1F, 1F);
                                     final Color tarCol = Color.getHSBColor(Math.min(f + 1F, 5F) / 5F, 1F, 1F);
                                     RenderUtils.drawVerticalGradientSideways(98 + 67.5F,
-                                    0.5F + f * 12 + moduleHeight, 9, 12, getColor(lasCol).getRGB(),
+                                            0.5F + f * 12 + moduleHeight, 9, 12, getColor(lasCol).getRGB(),
                                             getColor(tarCol).getRGB());
                                 }
 
@@ -324,7 +312,7 @@ public class Window {
                                         9, 1, new Color(204, 198, 255));
 
                                 final boolean onHue = RenderUtils.isHovering(x + 98 + 67,
-                                        y + moduleHeight + 2, 10, 61, mouseX, mouseY);
+                                        y + moduleHeight, 10, 61, mouseX, mouseY);
 
                                 if (onHue && Mouse.isButtonDown(0)) {
                                     data.setHue(Math.min(Math.max((mouseY - y - moduleHeight) / 60F, 0), 1));
@@ -334,19 +322,17 @@ public class Window {
                         }
 
                         if (value instanceof ValueInt) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueInt intValue = (ValueInt) value;
-                            RenderUtils.drawRoundedRect(3F, moduleHeight + 2,
-                                    95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 10F,5,
-                                    ModuleHUD.maincolor.getValue().getRGB());
-
-
+                            RenderUtils.drawRect(3F, moduleHeight,
+                                    95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 11F,
+                                    new Color(164, 53, 144));
 
                             FontManager.bold13.drawString(intValue.getName(), 5F, moduleHeight + 5F, -1);
                             FontManager.bold13.drawCenteredString(String.valueOf(intValue.getValue()), 90F,
                                     moduleHeight + 5F, -1);
 
-                            if (mouseHovered(x, y + moduleHeight + 2, 95F, 10F, mouseX, mouseY) && Mouse.isButtonDown(0))
+                            if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
                                 intValue.setValue(
                                         Integer.valueOf(Math.round(Math.max(intValue.getMinimum(),
                                                 ((((Math.max(0, ((mouseX - x) / 95F)) * (intValue.getMaximum())))))))));
@@ -354,14 +340,14 @@ public class Window {
                         }
 
                         if (value instanceof ValueMultiBoolean) {
-                            moduleHeight += 10F;
+                            moduleHeight += 11F;
                             final ValueMultiBoolean multiBooleanValue = (ValueMultiBoolean) value;
                             if (multiBooleanValue.isExpanded()) {
-                                RenderUtils.drawRect(3F, moduleHeight, 95F, 10F, new Color(17, 17, 17));
+                                RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(17, 17, 17));
                             }
                             FontManager.bold13.drawCenteredString(multiBooleanValue.getName() + "...", 50F,
                                     moduleHeight + 5F, -1);
-                            if (mouseHovered(x, y + moduleHeight + 2, 100, 10F, mouseX, mouseY)) {
+                            if (mouseHovered(x, y + moduleHeight, 100, 11F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
                                     if (!leftMouseClicked) {
                                         multiBooleanValue.setExpanded(!multiBooleanValue.isExpanded());
@@ -372,11 +358,11 @@ public class Window {
                                 }
                             }
                             if (multiBooleanValue.isExpanded()) {
-                                RenderUtils.drawRect(3F, moduleHeight + 10F, 95F,
-                                        multiBooleanValue.getValue().length * 10F, new Color(17, 17, 17));
+                                RenderUtils.drawRect(3F, moduleHeight + 11F, 95F,
+                                        multiBooleanValue.getValue().length * 11F, new Color(17, 17, 17));
                                 for (final Pair<String, Boolean> pair : multiBooleanValue.getValue()) {
-                                    moduleHeight += 10F;
-                                    if (mouseHovered(x, y + moduleHeight + 2, 100F, 10F, mouseX, mouseY)) {
+                                    moduleHeight += 11F;
+                                    if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
                                         if (Mouse.isButtonDown(0)) {
                                             if (!leftMouseClicked) {
                                                 leftMouseClicked = true;
@@ -387,8 +373,8 @@ public class Window {
                                         }
                                     }
                                     if (pair.getValue()) {
-                                        RenderUtils.drawRect(3F, moduleHeight, 95F, 10F,
-                                                ModuleHUD.maincolor.getValue());
+                                        RenderUtils.drawRect(3F, moduleHeight, 95F, 11F,
+                                                new Color(164, 53, 144));
                                     }
                                     FontManager.bold13.drawString(pair.getKey(), 5F, moduleHeight + 5F, -1);
                                 }
@@ -400,7 +386,7 @@ public class Window {
 
                 }
             }
-            moduleHeight += 10F;
+            moduleHeight += 11F;
         }
 
         if (mouseHovered(x, y, 100F, 20F, mouseX, mouseY)) {
@@ -413,7 +399,7 @@ public class Window {
                 rightMouseClicked = false;
             }
         }
-        FontManager.bold15.drawString(category.getDisplayName(), 5F, 5F, -1);
+        FontManager.bold15.drawString(category.getDisplayName().toLowerCase(), 5F, 5F, -1);
 
         GL11.glPopMatrix();
         if (runnable != null) {
