@@ -1,7 +1,5 @@
 package dev.faiths.module.render;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
 import dev.faiths.event.impl.PacketEvent;
@@ -36,7 +34,6 @@ import static com.viaversion.viaversion.util.ChatColorUtil.STRIP_COLOR_PATTERN;
 import static dev.faiths.module.Category.RENDER;
 import static dev.faiths.utils.IMinecraft.mc;
 import static dev.faiths.utils.megawalls.FkCounter.MW_GAME_START_MESSAGE;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.*;
@@ -46,7 +43,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.Color;
 import java.util.stream.Collectors;
 
-import tech.skidonion.obfuscator.inline.Wrapper;
 
 @SuppressWarnings("unused")
 public class ModuleHUD extends CheatModule {
@@ -55,9 +51,6 @@ public class ModuleHUD extends CheatModule {
             "Static");
     public static ValueInt globalalpha = new ValueInt("GlobalAlpha", 100, 0, 255);
 
-    public static ValueInt animationSpeed = new ValueInt("AnimationSpeed", 4,1, 10);
-
-
     public static final ValueColor maincolor = new ValueColor("Color", new Color(118, 2, 255, 255));
     public static final ValueColor secondcolor = new ValueColor("Color2", new Color(2, 166, 255, 255));
 
@@ -65,7 +58,11 @@ public class ModuleHUD extends CheatModule {
 
     public static ValueBoolean glow = new ValueBoolean("Glow", false);
 
-    private final ValueBoolean outline = new ValueBoolean("OutLine", true);
+
+    private final ValueMultiBoolean modulelist = new ValueMultiBoolean("ModuleList",
+            new Pair("OutLine", true),
+            new Pair("Background", true));
+
     public static FkCounter killCounter = new FkCounter();
 
     private final ValueMultiBoolean information = new ValueMultiBoolean("Information",
@@ -235,7 +232,7 @@ public class ModuleHUD extends CheatModule {
                 if (module.slideStep > width)
                     module.slide = width;
                 final float slide = -module.slide - 2f;
-                if (outline.getValue()) {
+                if (modulelist.isEnabled("OutLine")) {
                     RenderUtils.drawRectOriginal(slide - 3, module.height, slide - 2,
                             module.height + fontRenderer.getHeight() + 4F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
@@ -255,9 +252,12 @@ public class ModuleHUD extends CheatModule {
                                 module.height + fontRenderer.getHeight() + 5F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                 }
 
-                RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
-                        module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
+                if (modulelist.isEnabled("Background")) {
 
+                    RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
+                            module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
+
+                }
                 fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
                 fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
                         module.height + 2F,
@@ -300,7 +300,7 @@ public class ModuleHUD extends CheatModule {
                     module.slide = width;
 //1
                 final float slide = -module.slide - 2f;
-                if (outline.getValue()) {
+                if (modulelist.isEnabled("OutLine")) {
                     RenderUtils.drawRectOriginal(slide - 3, module.height, slide - 2,
                             module.height + font.FONT_HEIGHT + 4F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
@@ -319,8 +319,12 @@ public class ModuleHUD extends CheatModule {
                         RenderUtils.drawRectOriginal(slide - 3F, module.height + font.FONT_HEIGHT + 4F, 0F,
                                 module.height + font.FONT_HEIGHT + 5F, ModuleHUD.color(ModuleHUD.colortick.getValue()));
                 }
-                RenderUtils.drawRectOriginal(slide - 2, module.height, 0F, module.height + font.FONT_HEIGHT + 4F,
-                        new Color(0, 0, 0, globalalpha.getValue()));
+
+                if (modulelist.isEnabled("Background")) {
+                    RenderUtils.drawRectOriginal(slide - 2, module.height, 0F, module.height + font.FONT_HEIGHT + 4F,
+                            new Color(0, 0, 0, globalalpha.getValue()));
+
+                }
                 font.drawString(displayText, slide, module.height + 2.5F,
                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), true);
                 font.drawString(module.getSuffix(), slide + font.getStringWidth(displayText) + 2, module.height + 3F,
@@ -363,12 +367,18 @@ public class ModuleHUD extends CheatModule {
             if (facyfont.getValue()) {
                 RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
                 FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);
+                if (glow.getValue()) {
+                    GlowUtils.drawGlow(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4,new Color(0, 0, 0,globalalpha.getValue()));
+                }
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
-                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name), mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
-                mc.fontRendererObj.drawStringWithShadow(name, 2.0f, 4.0f,
+                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 1, mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
+                mc.fontRendererObj.drawStringWithShadow(name, 2.5f, 4.5f,
                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
              // }
+                if (glow.getValue()) {
+                    GlowUtils.drawGlow(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 1, mc.fontRendererObj.getHeight(name) + 1, 4,new Color(0, 0, 0,globalalpha.getValue()));
+                }
             }
         }
 

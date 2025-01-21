@@ -306,6 +306,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private Rectangle _savedWindowedBounds;
     public boolean crashed;
 
+    public boolean lastTickToggledFlight = false;
+
 
     public Minecraft(GameConfiguration gameConfig)
     {
@@ -1490,8 +1492,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     /**
      * Called when user clicked he's mouse right button (place)
-     */
-    private void rightClickMouse()
+     */ public void rightClickMouse()
     {
         if (!this.playerController.getIsHittingBlock())
         {
@@ -1667,7 +1668,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         long l = System.nanoTime();
         this.mcProfiler.startSection("tick");
 
+
         for (int j = 0; j < this.timer.elapsedTicks; ++j) {
+
             if (ModuleDisabler.getGrimPost()) {
                 lastTickSentC03 = false;
                 this.runTick();
@@ -3428,5 +3431,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
 
         return screenBounds;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

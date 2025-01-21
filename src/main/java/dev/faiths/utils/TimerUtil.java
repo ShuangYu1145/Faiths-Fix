@@ -50,6 +50,10 @@ public class TimerUtil {
         return System.currentTimeMillis() - this.lastMS;
     }
 
+    public long passed() {
+        return this.getCurrentMS() - this.lastMS;
+    }
+
     public void setTime(long time) {
         this.lastMS = time;
     }

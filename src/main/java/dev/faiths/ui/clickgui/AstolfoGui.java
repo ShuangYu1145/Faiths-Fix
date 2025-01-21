@@ -24,11 +24,6 @@ public class AstolfoGui extends GuiScreen {
         }
     }
 
-    @Override
-    public void setup() {
-        Animation = new EaseBackIn(320, 1.0F, 2.0F);
-        Animation.setDirection(Direction.BACKWARDS);
-    }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {

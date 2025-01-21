@@ -334,7 +334,7 @@ public class GuiChat extends GuiScreen
         this.inputField.drawTextBox();
 
         ScaledResolution sr = new ScaledResolution(mc);
-        FontManager.sf40.drawStringDynamic("主播你可以移动模块位置", sr.getScaledHeight() - FontManager.sf40.getStringWidth("主播你可以移动模块位置") + 80, 5,1,50);
+    //    FontManager.sf40.drawStringDynamic("主播你可以移动模块位置", sr.getScaledHeight() - FontManager.sf40.getStringWidth("主播你可以移动模块位置") + 80, 5,1,50);
 
 
         try {

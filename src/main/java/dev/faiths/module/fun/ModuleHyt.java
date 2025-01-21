@@ -10,7 +10,9 @@ import dev.faiths.module.combat.ModuleKillAura;
 import dev.faiths.module.movement.ModuleSpeed;
 import dev.faiths.module.player.ModuleContainerStealer;
 import dev.faiths.module.player.ModuleInvManager;
+import dev.faiths.module.player.ModuleStuck;
 import dev.faiths.module.world.ModuleContainerAura;
+import dev.faiths.module.world.ModuleScaffold;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.utils.tasks.FutureTask;
 import dev.faiths.value.ValueBoolean;
@@ -47,9 +49,11 @@ public class ModuleHyt extends CheatModule {
                 Faiths.moduleManager.getModule(ModuleInvManager.class).setState(false);
                 Faiths.moduleManager.getModule(ModuleContainerStealer.class).setState(false);
                 Faiths.moduleManager.getModule(ModuleContainerAura.class).setState(false);
+                Faiths.moduleManager.getModule(ModuleScaffold.class).setState(false);
+                Faiths.moduleManager.getModule(ModuleStuck.class).setState(false);
                 Faiths.moduleManager.getModule(ModuleGapple.class).setState(false);
 
-                mc.getNetHandler().sendPacketNoEvent(new C01PacketChatMessage("/hub"));
+                mc.getNetHandler().sendPacketNoEvent(new C01PacketChatMessage("/hub 100"));
             }
 
             //开始

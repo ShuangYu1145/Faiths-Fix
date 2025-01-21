@@ -44,16 +44,16 @@ public class ModuleIRC extends CheatModule {
     @SneakyThrows
     @Override
     public void onDisable() {
-//            if (isConnected){
-//                try {
-//                socket.close();
-//                } catch (Exception ignored) {
-//            }
-//
-//            }
-//            A = false;
-//            isConnected = false;
-        Faiths.moduleManager.getModule(ModuleIRC.class).setState(true);
+            if (isConnected){
+                try {
+                socket.close();
+                } catch (Exception ignored) {
+            }
+
+            }
+            A = false;
+            isConnected = false;
+//        Faiths.moduleManager.getModule(ModuleIRC.class).setState(true);
     }
 
 

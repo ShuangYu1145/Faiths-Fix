@@ -14,6 +14,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -66,6 +67,17 @@ public class PlayerUtils {
         double mz = Math.sin(Math.toRadians((yaw + 90.0F)));
         mc.thePlayer.motionX = forward * moveSpeed * mx + strafe * moveSpeed * mz;
         mc.thePlayer.motionZ = forward * moveSpeed * mz - strafe * moveSpeed * mx;
+    }
+
+    public static boolean isBlockUnder(final double height) {
+        for (int offset = 0; offset < height; offset += 2) {
+            final AxisAlignedBB bb = mc.thePlayer.getEntityBoundingBox().offset(0, -offset, 0);
+
+            if (!mc.theWorld.getCollisionBoxes(bb).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isBlockUnder(Entity ent) {
