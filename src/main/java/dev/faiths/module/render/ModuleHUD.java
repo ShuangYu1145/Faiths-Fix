@@ -363,7 +363,7 @@ public class ModuleHUD extends CheatModule {
         }
 
         if (information.isEnabled("ClientName")) {
-            final String name = "Faiths" + " | " + mc.getSession().getUsername() + " | " + "FPS:" + mc.getDebugFPS();
+            final String name = "Faiths" + " | " + mc.thePlayer.getName() + " | " + "FPS:" + mc.getDebugFPS();
             if (facyfont.getValue()) {
                 RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
                 FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);

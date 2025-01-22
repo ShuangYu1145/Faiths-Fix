@@ -363,22 +363,34 @@ public class GuiChat extends GuiScreen
 
     public void onAutocompleteResponse(String[] p_146406_1_)
     {
+        // 如果等待自动补全响应
         if (this.waitingOnAutocomplete)
         {
             this.playerNamesFound = false;
             this.foundPlayerNames.clear();
 
-            for (String s : p_146406_1_)
-            {
-                if (!s.isEmpty())
-                {
-                    this.foundPlayerNames.add(s);
+            // 首先检查 Faiths.commandManager.getLatestAutoComplete() 是否为 null
+            List<String> autoCompleteList = Faiths.commandManager.getLatestAutoComplete();
+            if (autoCompleteList != null && !autoCompleteList.isEmpty()) {
+                // 如果 autoCompleteList 不为空，使用此补全数据
+                this.foundPlayerNames.addAll(autoCompleteList);
+            } else {
+                // 如果为空，则使用 p_146406_1_ 中的数据
+                if (p_146406_1_ != null) {
+                    for (String s : p_146406_1_)
+                    {
+                        if (s != null && !s.isEmpty()) {
+                            this.foundPlayerNames.add(s);
+                        }
+                    }
                 }
             }
 
+            // 获取当前输入框文本中光标位置之后的部分
             String s1 = this.inputField.getText().substring(this.inputField.func_146197_a(-1, this.inputField.getCursorPosition(), false));
-            String s2 = StringUtils.getCommonPrefix(p_146406_1_);
+            String s2 = StringUtils.getCommonPrefix(this.foundPlayerNames.toArray(new String[0]));
 
+            // 如果找到的公共前缀不为空，并且与当前输入内容不同，更新输入框内容
             if (!s2.isEmpty() && !s1.equalsIgnoreCase(s2))
             {
                 this.inputField.deleteFromCursor(this.inputField.func_146197_a(-1, this.inputField.getCursorPosition(), false) - this.inputField.getCursorPosition());
@@ -388,7 +400,6 @@ public class GuiChat extends GuiScreen
             {
                 this.playerNamesFound = true;
                 this.autocompletePlayerNames();
-                if (!Faiths.commandManager.getLatestAutoComplete().isEmpty()) return;
             }
         }
     }

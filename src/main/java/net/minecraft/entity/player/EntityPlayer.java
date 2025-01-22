@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.faiths.Faiths;
 import dev.faiths.component.SmoothCameraComponent;
+import dev.faiths.event.impl.EyeHeightEvent;
 import dev.faiths.hackerdetector.data.PlayerDataSamples;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -51,6 +52,8 @@ import net.vialoadingbase.ViaLoadingBase;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import static dev.faiths.utils.IMinecraft.mc;
 
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
@@ -2327,6 +2330,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         {
             f -= 0.08F;
         }
+
 
         return f;
     }

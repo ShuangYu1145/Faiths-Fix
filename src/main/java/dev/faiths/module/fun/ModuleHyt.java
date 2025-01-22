@@ -96,33 +96,29 @@ public class ModuleHyt extends CheatModule {
 
     public static boolean AutoScreenshot(PacketEvent e) {
         if (e.getPacket() instanceof S45PacketTitle) {
+
             S45PacketTitle packet = (S45PacketTitle) e.getPacket();
+            if (packet.getMessage() != null && packet.getMessage().getUnformattedText() != null) {
+                String message = packet.getMessage().getUnformattedText();
+                if (message.contains("VICTORY") || message.contains("恭喜!")) {
+                    if (Faiths.INSTANCE != null && Faiths.INSTANCE.getTaskManager() != null) {
+                        Faiths.INSTANCE.getTaskManager().queue(new FutureTask(1200) {
+                            @Override
+                            public void execute() {
+                                ScreenShotHelper.safeSaveScreenshot();
+                            }
 
-            if (packet.getMessage().getUnformattedText().contains("VICTORY")) {
-                Faiths.INSTANCE.getTaskManager().queue(new FutureTask(1200) {
-                    @Override
-                    public void execute() {
-                        ScreenShotHelper.safeSaveScreenshot();
+                            @Override
+                            public void run() {
+                            }
+                        });
+                    } else {
+                        // Log a message or handle the case where Faiths.INSTANCE or TaskManager is null
+                        System.out.println("Error: Faiths.INSTANCE or TaskManager is null.");
                     }
-
-                    @Override
-                    public void run() {
-                    }
-                });
+                }
             }
 
-            if (packet.getMessage().getUnformattedText().contains("恭喜!")) {
-                Faiths.INSTANCE.getTaskManager().queue(new FutureTask(1200) {
-                    @Override
-                    public void execute() {
-                        ScreenShotHelper.safeSaveScreenshot();
-                    }
-
-                    @Override
-                    public void run() {
-                    }
-                });
-            }
         }
         return false;
     }
