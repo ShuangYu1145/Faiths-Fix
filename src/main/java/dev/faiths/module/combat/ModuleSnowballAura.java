@@ -32,7 +32,7 @@ public class ModuleSnowballAura extends CheatModule {
     private final TimerUtil timer = new TimerUtil();
     private int lastSlot = -1;
     public ModuleSnowballAura() {
-        super("SnowballAura", Category.COMBAT);
+        super("SnowballAura", Category.COMBAT,"自动扔雪球");
     }
 
     @Override

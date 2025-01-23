@@ -22,7 +22,7 @@ public class ModuleNoFluid extends CheatModule {
     private final ValueMode modeValue = new ValueMode("Mode", new String[]{"Vanilla", "Grim"}, "Grim");
     public static boolean shouldCancelWater;
     public ModuleNoFluid() {
-        super("NoFluid", Category.MOVEMENT);
+        super("NoFluid", Category.MOVEMENT,"无液体");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ModuleCamera extends CheatModule {
 	private boolean released;
 
 	public ModuleCamera() {
-		super("Camera", Category.RENDER);
+		super("Camera", Category.RENDER,"相机");
 	}
 
 	private final Handler<MotionEvent> motionEventHandler = event -> {

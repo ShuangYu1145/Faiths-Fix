@@ -27,7 +27,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleContainerAura extends CheatModule {
     public ModuleContainerAura() {
-        super("ContainerAura", Category.WORLD);
+        super("ContainerAura", Category.WORLD,"箱子光环");
     }
 
     public final ValueBoolean thoughtWall = new ValueBoolean("ThoughtWall", false);

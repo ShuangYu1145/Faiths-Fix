@@ -19,7 +19,7 @@ public class ModuleAutoTool extends CheatModule {
 
     /* constructors */
     public ModuleAutoTool() {
-        super("AutoTool", Category.WORLD);
+        super("AutoTool", Category.WORLD,"自动工具");
     }
 
     /* methods */

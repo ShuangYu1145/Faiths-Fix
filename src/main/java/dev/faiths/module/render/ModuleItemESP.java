@@ -24,7 +24,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public class ModuleItemESP extends CheatModule
 {
     public ModuleItemESP() {
-        super("ItemESP", Category.RENDER);
+        super("ItemESP", Category.RENDER,"物品显示");
     }
 
     private final Handler<Render3DEvent> renderHandler = event -> {

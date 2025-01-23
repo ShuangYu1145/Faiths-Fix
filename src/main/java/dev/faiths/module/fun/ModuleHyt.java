@@ -25,8 +25,9 @@ import static dev.faiths.utils.IMinecraft.mc;
 
 public class ModuleHyt extends CheatModule {
     public ModuleHyt() {
-        super("Hyt",Category.FUN);
+        super("Hyt",Category.FUN,"花雨庭功能");
     }
+
 
     @Override
     public void onEnable() {

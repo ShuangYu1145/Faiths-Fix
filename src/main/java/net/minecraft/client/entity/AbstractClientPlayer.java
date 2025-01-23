@@ -28,7 +28,6 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.io.File;
 
-import static dev.faiths.module.fun.ModuleCape.cape;
 import static net.minecraft.client.Minecraft.getMinecraft;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
@@ -107,7 +106,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             return locationOfCape;
         } else {
             if(this == getMinecraft().thePlayer)
-                return cape;
+                return new ResourceLocation("client/cape/" + ModuleCape.capes.getValue() + ".png");
             NetworkPlayerInfo networkplayerinfo = getPlayerInfo();
             return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
         }

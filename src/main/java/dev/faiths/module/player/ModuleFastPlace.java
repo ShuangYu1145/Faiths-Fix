@@ -6,6 +6,6 @@ import dev.faiths.module.CheatModule;
 @SuppressWarnings("unused")
 public class ModuleFastPlace extends CheatModule {
     public ModuleFastPlace() {
-        super("FastPlace", Category.PLAYER);
+        super("FastPlace", Category.PLAYER, "快速放置");
     }
 }

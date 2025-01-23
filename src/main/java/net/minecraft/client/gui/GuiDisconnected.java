@@ -1,9 +1,6 @@
 package net.minecraft.client.gui;
 
 import dev.faiths.Faiths;
-import dev.faiths.module.fun.ModuleAutoBan;
-import dev.faiths.module.player.ModuleBlink;
-import dev.faiths.module.world.ModuleScaffold;
 import dev.faiths.ui.notifiction.NotificationType;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;

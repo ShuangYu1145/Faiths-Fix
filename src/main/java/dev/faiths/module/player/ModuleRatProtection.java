@@ -21,7 +21,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleRatProtection extends CheatModule {
     public ModuleRatProtection() {
-        super("RatProtection", Category.PLAYER);
+        super("RatProtection", Category.PLAYER,"RatProtection");
     }
 
     public MSTimer ms = new MSTimer();

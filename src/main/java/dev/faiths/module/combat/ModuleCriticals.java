@@ -12,7 +12,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleCriticals extends CheatModule {
     public ModuleCriticals() {
-        super("Criticals", Category.COMBAT);
+        super("Criticals", Category.COMBAT, "刀刀暴击");
     }
     public static ValueFloat timer0 = new ValueFloat("Timer-0", 0.5f, 0.0f, 1.0f);
     public static ValueFloat timer1 = new ValueFloat("Timer-1", 1.2f, 0.0f, 2.0f);

@@ -9,7 +9,7 @@ import dev.faiths.value.ValueMode;
 @SuppressWarnings("unused")
 public class ModuleAnimation extends CheatModule {
     public ModuleAnimation() {
-        super("Animation", Category.RENDER);
+        super("Animation", Category.RENDER,"格挡动画");
     }
     @Override
     public void onEnable() {

@@ -24,7 +24,7 @@ public class ModuleSpeedMine extends CheatModule {
     private ValueInt percent = new ValueInt("Percent",10,1,100).visible(()->mode.is("Percentage"));
     private ValueFloat speed = new ValueFloat("Speed",1.1f,1f,3f).visible(()->mode.is("Packet"));
     public ModuleSpeedMine() {
-        super("SpeedMine", Category.PLAYER);
+        super("SpeedMine", Category.PLAYER,"快速挖掘");
     }
     private EnumFacing facing;
     private BlockPos pos;

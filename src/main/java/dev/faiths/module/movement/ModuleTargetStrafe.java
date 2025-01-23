@@ -68,7 +68,7 @@ public class ModuleTargetStrafe extends CheatModule {
     };
 
     public ModuleTargetStrafe() {
-        super("TargetStrafe", Category.MOVEMENT);
+        super("TargetStrafe", Category.MOVEMENT,"目标环绕");
     }
 
     private boolean canStrafe() {

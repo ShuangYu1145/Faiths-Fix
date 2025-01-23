@@ -33,7 +33,7 @@ public class ModuleAutoSoup extends CheatModule {
     private int soup = -37;
 
     public ModuleAutoSoup(){
-        super("AutoSoup", Category.COMBAT);
+        super("AutoSoup", Category.COMBAT, "自动喝汤");
     }
 
     @Override

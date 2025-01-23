@@ -25,7 +25,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleSpeed extends CheatModule {
     public ModuleSpeed() {
-        super("Speed",Category.MOVEMENT);
+        super("Speed",Category.MOVEMENT,"速度");
     }
 
     private ValueMode mode = new ValueMode("Mode", new String[]{"Watchdog", "EntityBoost"}, "Watchdog");

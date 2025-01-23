@@ -28,7 +28,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleVelocity extends CheatModule {
     public ModuleVelocity() {
-        super("Velocity", Category.COMBAT);
+        super("Velocity", Category.COMBAT,"反击退");
     }
 
     private ValueMode mode = new ValueMode("Mode", new String[]{"Cancel", "Watchdog","WatchDog2", "Grim"}, "Watchdog");

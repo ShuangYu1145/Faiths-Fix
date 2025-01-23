@@ -21,7 +21,7 @@ public class ModuleAntiBot extends CheatModule {
     private final CheckPlayer botCheck;
 
     public ModuleAntiBot() {
-        super("AntiBot", Category.COMBAT);
+        super("AntiBot", Category.COMBAT, "防假入");
         this.botCheck = PlayerUtils::hasInvalidNetInfo;
     }
 

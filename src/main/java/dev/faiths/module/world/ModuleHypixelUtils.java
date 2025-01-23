@@ -38,7 +38,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleHypixelUtils extends CheatModule {
     public ModuleHypixelUtils() {
-        super("HypixelUtils", Category.WORLD);
+        super("HypixelUtils", Category.WORLD,"Hypixel工具");
     }
 
     private static Servers currentServer = Servers.NONE;

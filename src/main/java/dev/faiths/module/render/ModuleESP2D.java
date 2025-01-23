@@ -50,7 +50,7 @@ public class ModuleESP2D extends CheatModule {
     private final DecimalFormat dFormat = new DecimalFormat("0.0");
 
     public ModuleESP2D() {
-        super("ESP2D", Category.RENDER);
+        super("ESP2D", Category.RENDER,"人物显示");
     }
 
     private Handler<Render2DEvent> eventHandler = event -> {

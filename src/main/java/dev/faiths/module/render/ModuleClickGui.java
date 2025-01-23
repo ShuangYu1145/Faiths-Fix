@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 public class ModuleClickGui extends CheatModule {
     private final AstolfoGui astolfoGui = new AstolfoGui();
     public ModuleClickGui() {
-        super("ClickGui", Category.RENDER, Keyboard.KEY_RSHIFT);
+        super("ClickGui", Category.RENDER, Keyboard.KEY_RSHIFT,"点击菜单");
     }
 
     @Override

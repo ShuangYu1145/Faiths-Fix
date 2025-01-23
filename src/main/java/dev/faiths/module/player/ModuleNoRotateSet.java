@@ -6,7 +6,7 @@ import dev.faiths.module.CheatModule;
 @SuppressWarnings("unused")
 public class ModuleNoRotateSet extends CheatModule {
     public ModuleNoRotateSet() {
-        super("NoRotateSet", Category.PLAYER);
+        super("NoRotateSet", Category.PLAYER,"无视摇头动作");
     }
 
 }

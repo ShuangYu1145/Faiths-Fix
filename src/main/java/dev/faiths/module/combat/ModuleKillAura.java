@@ -103,7 +103,7 @@ public class ModuleKillAura extends CheatModule {
     public static Vector2f currentRotation = new Vector2f(0, 0);
 
     public ModuleKillAura() {
-        super("KillAura", Category.COMBAT, Keyboard.KEY_R);
+        super("KillAura", Category.COMBAT, Keyboard.KEY_R,"杀戮光环");
     }
 
     private boolean heldSword() {

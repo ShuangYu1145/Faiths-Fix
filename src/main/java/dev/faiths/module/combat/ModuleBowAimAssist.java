@@ -34,7 +34,7 @@ public class ModuleBowAimAssist extends CheatModule {
     private final ValueBoolean autoRelease = new ValueBoolean("AutoRelease", true);
     private final ValueBoolean silent = new ValueBoolean("Silent", true);
     public ModuleBowAimAssist() {
-        super("BowAimAssist", Category.COMBAT);
+        super("BowAimAssist", Category.COMBAT, "弓箭自瞄");
     }
 
     private final Handler<MotionEvent> motionHandler = event -> {

@@ -3,6 +3,7 @@ package dev.faiths.module;
 import dev.faiths.Faiths;
 import dev.faiths.event.Listener;
 import dev.faiths.module.combat.ModuleGapple;
+import dev.faiths.module.fun.ModuleCNname;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.value.AbstractValue;
 import org.lwjgl.input.Keyboard;
@@ -17,6 +18,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public abstract class CheatModule implements Listener {
     private String name;
     protected Category category;
+    private String CNname;
     private int keyBind;
     private boolean state;
     private boolean isHidden = false;
@@ -27,14 +29,15 @@ public abstract class CheatModule implements Listener {
     public float slideStep = 0F;
     public float height = 0F;
 
-    public CheatModule(final String name, final Category category) {
-        this(name, category, Keyboard.KEY_NONE);
+    public CheatModule(final String name, final Category category, final String CNname) {
+        this(name, category, Keyboard.KEY_NONE , CNname);
     }
 
-    public CheatModule(final String name, final Category category, final int keyBind) {
+    public CheatModule(final String name, final Category category, final int keyBind,final String CNname) {
         this.name = name;
         this.category = category;
         this.keyBind = keyBind;
+        this.CNname = CNname;
     }
 
     public int getKeyBind() {
@@ -46,6 +49,10 @@ public abstract class CheatModule implements Listener {
     }
 
     public String getName() {
+        if (Faiths.moduleManager.getModule(ModuleCNname.class).getState())
+        {
+            name = CNname;
+        }
         return name;
     }
 

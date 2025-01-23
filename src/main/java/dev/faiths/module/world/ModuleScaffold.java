@@ -89,7 +89,7 @@ public class ModuleScaffold extends CheatModule {
     public int bigVelocityTick = 0;
 
     public ModuleScaffold() {
-        super("Scaffold", Category.WORLD);
+        super("Scaffold", Category.WORLD,"自动搭路");
         /*towerMove.setValue(false);*/
     }
 

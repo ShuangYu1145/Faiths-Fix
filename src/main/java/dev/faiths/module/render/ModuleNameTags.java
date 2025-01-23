@@ -43,7 +43,7 @@ public class ModuleNameTags extends CheatModule {
     private final Map<EntityPlayer, float[]> entityPosMap = new HashMap<>();
 
     public ModuleNameTags() {
-        super("NameTags", Category.RENDER);
+        super("NameTags", Category.RENDER,"名字标签");
     }
 
     private final Handler<RenderNameTagEvent> renderNameTagEventHandler = event -> {

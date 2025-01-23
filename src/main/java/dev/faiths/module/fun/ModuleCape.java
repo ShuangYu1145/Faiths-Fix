@@ -9,13 +9,13 @@ import net.minecraft.util.ResourceLocation;
 @SuppressWarnings("unused")
 public class ModuleCape extends CheatModule {
     public ModuleCape() {
-        super("Cape", Category.FUN);
+        super("Cape", Category.FUN,"披风");
     }
 
 
     public static  ValueMode capes = new ValueMode("Mode", new String[] { "yu" , "furry" , "huoying"}, "yu");
 
-    public static final ResourceLocation cape = new ResourceLocation("client/cape/" + ModuleCape.capes.getValue() + ".png");
+ //   public static final ResourceLocation cape = new ResourceLocation("client/cape/" + ModuleCape.capes.getValue() + ".png");
 
 
 }

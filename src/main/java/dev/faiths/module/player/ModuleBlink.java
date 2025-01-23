@@ -44,7 +44,7 @@ public class ModuleBlink extends CheatModule {
     public static EntityOtherPlayerMP fakePlayer;
     private int ticks;
     public ModuleBlink() {
-        super("Blink", Category.PLAYER);
+        super("Blink", Category.PLAYER,"瞬移");
     }
     private int maxTicksBeforeRelease;
     private static boolean fakePlayerDisabled;

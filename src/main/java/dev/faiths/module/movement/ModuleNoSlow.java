@@ -34,7 +34,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleNoSlow extends CheatModule {
     public ModuleNoSlow() {
-        super("NoSlow", Category.MOVEMENT);
+        super("NoSlow", Category.MOVEMENT,"无减速");
     }
 
     int usingItemTick = 0;

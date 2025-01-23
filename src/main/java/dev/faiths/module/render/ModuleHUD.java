@@ -84,7 +84,7 @@ public class ModuleHUD extends CheatModule {
     private boolean colorsSet;
 
     public ModuleHUD() {
-        super("HUD", RENDER);
+        super("HUD", RENDER,"HUD");
     }
 
     @Override

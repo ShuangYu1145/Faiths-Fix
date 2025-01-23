@@ -18,7 +18,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleBackTrack extends CheatModule {
     public ModuleBackTrack() {
-        super("BackTrack", Category.COMBAT);
+        super("BackTrack", Category.COMBAT, "回溯");
     }
 
     private ValueInt length = new ValueInt("BackTrackLength", 5, 1, 20);

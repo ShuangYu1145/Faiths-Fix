@@ -29,8 +29,9 @@ public class ModuleIRC extends CheatModule {
     private String Verifyname = "";
 
     public ModuleIRC() {
-        super("IRC", Category.FUN);
+        super("IRC", Category.FUN,"IRC");
     }
+
 
     public static boolean isConnected() {
         return isConnected;

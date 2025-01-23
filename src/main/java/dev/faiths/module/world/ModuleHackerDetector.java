@@ -6,6 +6,6 @@ import dev.faiths.module.CheatModule;
 @SuppressWarnings("unused")
 public class ModuleHackerDetector extends CheatModule {
     public ModuleHackerDetector() {
-        super("HackerDetector",Category.WORLD);
+        super("HackerDetector",Category.WORLD,"黑客检测");
     }
 }

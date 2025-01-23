@@ -31,7 +31,7 @@ public class ModuleGuiMove extends CheatModule {
     ValueBoolean blink = new ValueBoolean("Blink", false);
 
     public ModuleGuiMove() {
-        super("GuiMove", Category.MOVEMENT);
+        super("GuiMove", Category.MOVEMENT,"背包移动");
     }
 
     public static KeyBinding[] keyBindings = new KeyBinding[] {

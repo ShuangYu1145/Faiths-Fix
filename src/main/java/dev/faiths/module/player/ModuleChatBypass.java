@@ -14,7 +14,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public class ModuleChatBypass extends CheatModule {
     public String lastSend = "";
     public ModuleChatBypass() {
-        super("ChatBypass", Category.PLAYER);
+        super("ChatBypass", Category.PLAYER,"聊天绕过");
     }
 
     public final Handler<PacketEvent> packetEventHandler = event -> {

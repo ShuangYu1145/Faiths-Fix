@@ -19,7 +19,7 @@ public class ModuleTeams extends CheatModule {
 
 
     public ModuleTeams() {
-        super("Teams", Category.WORLD);
+        super("Teams", Category.WORLD,"队伍");
     }
 
     public static boolean isSameTeam(Entity entity) {

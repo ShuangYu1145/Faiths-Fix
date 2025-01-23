@@ -6,7 +6,7 @@ import dev.faiths.module.CheatModule;
 @SuppressWarnings("unused")
 public class ModuleNoJumpDelay extends CheatModule {
     public ModuleNoJumpDelay() {
-        super("NoJumpDelay", Category.MOVEMENT);
+        super("NoJumpDelay", Category.MOVEMENT,"无跳跃延迟");
     }
 
 }

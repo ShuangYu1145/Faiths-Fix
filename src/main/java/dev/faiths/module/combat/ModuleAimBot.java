@@ -134,7 +134,7 @@ public class ModuleAimBot extends CheatModule {
     }
 
     public ModuleAimBot() {
-        super("AimBot", Category.COMBAT);
+        super("AimBot", Category.COMBAT , "瞄人");
         lastX = 0;
         lastY = 0;
     }

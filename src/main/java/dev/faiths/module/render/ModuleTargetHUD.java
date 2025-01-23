@@ -54,7 +54,7 @@ public class ModuleTargetHUD extends CheatModule {
     private int prevX = 0, prevY = 0;
 
     public ModuleTargetHUD() {
-        super("TargetHUD", Category.RENDER);
+        super("TargetHUD", Category.RENDER,"目标HUD");
     }
 
     private final Handler<Render2DEvent> renderHandler = event -> {

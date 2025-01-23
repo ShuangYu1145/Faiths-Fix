@@ -44,7 +44,7 @@ public class ModuleBedBreaker extends CheatModule {
     private final ValueInt radius = new ValueInt("Radius", 4, 3, 5);
 
     public ModuleBedBreaker() {
-        super("BedBreaker", Category.WORLD);
+        super("BedBreaker", Category.WORLD,"挖床器");
     }
 
     protected final Vec3 getVectorForRotation(float pitch, float yaw) {

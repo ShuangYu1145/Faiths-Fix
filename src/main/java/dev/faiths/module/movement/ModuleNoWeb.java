@@ -21,7 +21,7 @@ public class ModuleNoWeb extends CheatModule {
     private final ValueMode modeValue = new ValueMode("Mode", new String[]{"Vanilla", "Grim"}, "Grim");
 
     public ModuleNoWeb() {
-        super("NoWeb", Category.MOVEMENT);
+        super("NoWeb", Category.MOVEMENT,"无蜘蛛网");
     }
 
     @Override

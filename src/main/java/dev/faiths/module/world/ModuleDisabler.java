@@ -34,7 +34,7 @@ public class ModuleDisabler extends CheatModule {
     private ValueBoolean c0fFix = new ValueBoolean("C0FFix", false).visible(()->mode.is("Grim"));
     private ValueBoolean lowhop = new ValueBoolean("Lowhop", false).visible(()->mode.is("Watchdog"));
     public ModuleDisabler() {
-        super("Disabler",Category.WORLD);
+        super("Disabler",Category.WORLD,"禁用器");
         INSTANCE = this;
     }
 

@@ -51,7 +51,7 @@ public class ModuleInvManager extends CheatModule {
     private long nextClick;
 
     public ModuleInvManager() {
-        super("InvManager", Category.PLAYER);
+        super("InvManager", Category.PLAYER,"背包整理");
     }
 
     public final Handler<MotionEvent> onPreMotionEvent = event -> {

@@ -30,7 +30,7 @@ public class ModuleNotify extends CheatModule {
     private static CopyOnWriteArrayList<EntityPlayer> enchantedGApplePlayer = new CopyOnWriteArrayList<>();
     private static CopyOnWriteArrayList<EntityPlayer> isxinxindogPlayer = new CopyOnWriteArrayList<>();
     public ModuleNotify() {
-        super("Notify", Category.PLAYER);
+        super("Notify", Category.PLAYER,"通知");
     }
 
     private Handler<UpdateEvent> handler = event -> {

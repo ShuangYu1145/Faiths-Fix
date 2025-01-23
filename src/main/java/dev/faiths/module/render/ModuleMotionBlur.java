@@ -16,7 +16,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public class ModuleMotionBlur  extends CheatModule {
 
     public ModuleMotionBlur() {
-        super("MotionBlur", Category.RENDER);
+        super("MotionBlur", Category.RENDER,"动态模糊");
     }
 
     public static ValueFloat blurAmount = new ValueFloat("Amount", 5.0f, 0.0f, 20.0f);

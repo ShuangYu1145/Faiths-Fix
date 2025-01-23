@@ -38,7 +38,7 @@ public class ModuleFarmHunterESP extends CheatModule {
     public static HashMap<Entity, Integer> offGroundTick = new HashMap<>();
 
     public ModuleFarmHunterESP() {
-        super("FarmHunterESP", Category.RENDER);
+        super("FarmHunterESP", Category.RENDER,"农场猎手显示");
     }
 
     @Override

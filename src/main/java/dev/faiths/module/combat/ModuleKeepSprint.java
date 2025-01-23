@@ -6,7 +6,7 @@ import dev.faiths.module.CheatModule;
 @SuppressWarnings("unused")
 public class ModuleKeepSprint extends CheatModule {
     public ModuleKeepSprint() {
-        super("KeepSprint", Category.COMBAT);
+        super("KeepSprint", Category.COMBAT,"保持疾跑");
     }
 
 }

@@ -32,7 +32,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleStuck extends CheatModule {
     public ModuleStuck() {
-        super("Stuck", Category.PLAYER);
+        super("Stuck", Category.PLAYER,"卡空");
     }
 
     private double x, y, z, motionX, motionY, motionZ;

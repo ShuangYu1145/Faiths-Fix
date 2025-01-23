@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 @SuppressWarnings("unused")
 public class ModuleGhostHand extends CheatModule {
     public ModuleGhostHand() {
-        super("GhostHand",Category.COMBAT);
+        super("GhostHand",Category.COMBAT, "鬼手");
     }
 
     public static boolean shouldHitThrough(Entity e) {

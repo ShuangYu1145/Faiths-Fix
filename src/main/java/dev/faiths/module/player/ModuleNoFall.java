@@ -34,7 +34,7 @@ public class ModuleNoFall extends CheatModule {
     public long lastIllegalTeleport = System.currentTimeMillis();
 
     public ModuleNoFall() {
-        super("NoFall",Category.PLAYER);
+        super("NoFall",Category.PLAYER,"无摔落伤害");
     }
     private TimerUtil timer = new TimerUtil();
 

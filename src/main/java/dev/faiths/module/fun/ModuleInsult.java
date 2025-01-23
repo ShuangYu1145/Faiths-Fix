@@ -24,7 +24,8 @@ public class ModuleInsult extends CheatModule {
     private ArrayList<String> xinxinAbuseContent = new ArrayList<>();
 
     public ModuleInsult() {
-        super("Insult", Category.FUN);
+        super("Insult", Category.FUN,"自动发L");
+
         xinxinAbuseContent.add("@[欣欣公益14.50]起床同距离同装备嘴强对刀客户端 免费获取点击右边的代码xinxin.liq ><" +  Minecraft.getSystemTime() % 1000L);
         xinxinAbuseContent.add("@[欣欣提醒]别用欣欣的水影 诈骗且垃记 而且不稳定 免费获取点击右边代码xinxin.liq >" +  Minecraft.getSystemTime() % 1000L + "<");
         xinxinAbuseContent.add("@[SilenceFix14.50]免费嘴强客户端点击右边代码xinxin.liq无法获取");
@@ -38,14 +39,13 @@ public class ModuleInsult extends CheatModule {
             switch (priority.getValue()) {
                 case "xinxin":
                     mc.thePlayer.sendChatMessage(xinxinAbuseContent.get((int)(Math.random() * xinxinAbuseContent.size())).replace("%s", target.getDisplayName().getUnformattedTextForChat()));
-                    Faiths.notificationManager.pop("Send", NotificationType.INFO);
                     break;
                 case "nzhm":
                     mc.thePlayer.sendChatMessage(xinxinAbuseContent.get((int)(Math.random() * xinxinAbuseContent.size())).replace("%s", target.getDisplayName().getUnformattedTextForChat()));
-                    Faiths.notificationManager.pop("Send", NotificationType.INFO);
                     break;
             }
             target = null;
+            Faiths.notificationManager.pop("Send", NotificationType.INFO);
         }
     };
 

@@ -35,7 +35,7 @@ public class ModuleContainerStealer extends CheatModule {
     private int nextDelay = 0;
 
     public ModuleContainerStealer() {
-        super("ContainerStealer", Category.PLAYER);
+        super("ContainerStealer", Category.PLAYER,"箱子小偷");
     }
 
     private final Handler<MotionEvent> motionEventHandler = event -> {

@@ -14,7 +14,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 public class ModuleSprint extends CheatModule {
 
     public ModuleSprint() {
-        super("Sprint", Category.MOVEMENT);
+        super("Sprint", Category.MOVEMENT,"疾跑");
     }
     public static ValueBoolean allDirection = new ValueBoolean("AllDirection", false);
 

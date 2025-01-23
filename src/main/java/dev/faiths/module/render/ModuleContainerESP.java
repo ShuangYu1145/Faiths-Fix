@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL11.*;
 @SuppressWarnings("unused")
 public class ModuleContainerESP extends CheatModule {
     public ModuleContainerESP() {
-        super("ContainerESP", Category.RENDER);
+        super("ContainerESP", Category.RENDER,"箱子透视");
     }
 
     private Handler<Render3DEvent> render3DEventHandler = event -> {

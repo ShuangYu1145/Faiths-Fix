@@ -26,7 +26,7 @@ public class ModuleAutoPearl extends CheatModule {
     private CalculateThread calculateThread1;
 
     public ModuleAutoPearl() {
-        super("AutoPearl", Category.WORLD);
+        super("AutoPearl", Category.WORLD,"自动珍珠");
     }
 
     private Handler<UpdateEvent> updateEventHandler = event -> {

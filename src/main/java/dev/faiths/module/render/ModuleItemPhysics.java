@@ -5,6 +5,6 @@ import dev.faiths.module.CheatModule;
 
 public class ModuleItemPhysics  extends CheatModule {
     public ModuleItemPhysics() {
-        super("ItemPhysics", Category.RENDER);
+        super("ItemPhysics", Category.RENDER,"物理掉落物");
     }
 }

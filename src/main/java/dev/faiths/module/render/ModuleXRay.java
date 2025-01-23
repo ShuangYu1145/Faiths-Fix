@@ -77,7 +77,7 @@ public class ModuleXRay extends CheatModule {
     private final ValueFloat delay = new ValueFloat("Delay", 10f, 1f, 30f);
 
     public ModuleXRay() {
-        super("XRay", Category.RENDER);
+        super("XRay", Category.RENDER,"X射线");
         this._extreme_var0 = new Block[] { Blocks.diamond_ore, Blocks.gold_ore, Blocks.iron_ore, Blocks.coal_ore, Blocks.redstone_ore, Blocks.gold_ore };
     }
 

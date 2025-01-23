@@ -45,7 +45,7 @@ public class ModuleLongJump extends CheatModule {
     private boolean thrown;
 
     public ModuleLongJump() {
-        super("LongJump", Category.MOVEMENT);
+        super("LongJump", Category.MOVEMENT,"远跳");
     }
 
     @Override

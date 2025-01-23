@@ -58,7 +58,7 @@ public class ModuleGapple extends CheatModule {
     public static boolean isS12;
 
     public ModuleGapple() {
-        super("Gapple", Category.COMBAT);
+        super("Gapple", Category.COMBAT, "自动金苹果");
     }
 
 

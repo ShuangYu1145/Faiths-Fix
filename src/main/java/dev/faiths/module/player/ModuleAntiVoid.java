@@ -42,7 +42,7 @@ public class ModuleAntiVoid extends CheatModule {
 
 
     public ModuleAntiVoid() {
-        super("AntiVoid", Category.PLAYER);
+        super("AntiVoid", Category.PLAYER,"防虚空");
     }
 
     private final Handler<WorldEvent> worldEventHandler = event -> {
