@@ -49,11 +49,16 @@ public abstract class CheatModule implements Listener {
     }
 
     public String getName() {
+        return name;
+    }
+
+    public String getCNName() {
+        String name1 = getName();
         if (Faiths.moduleManager.getModule(ModuleCNname.class).getState())
         {
-            name = CNname;
+            name1 = CNname;
         }
-        return name;
+        return name1;
     }
 
     public String getSuffix() {
@@ -110,7 +115,7 @@ public abstract class CheatModule implements Listener {
             }
             mc.thePlayer.playSound("random.click",0.5F,1F);
         }
-    }   
+    }
 
     public void toggle() {
         setState(!getState());

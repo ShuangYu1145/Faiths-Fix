@@ -29,7 +29,7 @@ public class ModuleProjectile extends CheatModule {
     float yaw, pitch;
 
     public ModuleProjectile() {
-        super("抛射物显示", Category.RENDER,"");
+        super("Projectile", Category.RENDER,"抛射物显示");
     }
 
     private final Handler<MotionEvent> motionEventHandler = event -> {

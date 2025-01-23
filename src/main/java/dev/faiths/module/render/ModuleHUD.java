@@ -182,26 +182,28 @@ public class ModuleHUD extends CheatModule {
         CustomFont fontRenderer = FontManager.sf18;
         FontRenderer mcFont = mc.fontRendererObj;
 
-
+  //      modules.sort(Comparator.comparingDouble(m -> m.height));
 
         if (facyfont.getValue()) {
 
             modules.sort((o1, o2) -> Float.valueOf(
-                    (fontRenderer.getStringWidth(o2.getName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2 : 0)))
-                    .compareTo((float) (fontRenderer.getStringWidth(o1.getName() + o1.getSuffix())
+                    (fontRenderer.getStringWidth(o2.getCNName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2 : 0)))
+                    .compareTo((float) (fontRenderer.getStringWidth(o1.getCNName() + o1.getSuffix())
                                                 + (o1.suffixIsNotEmpty() ? 2 : 0))));
         } else {
             modules.sort((o1, o2) -> Float.valueOf(
-                    (mcFont.getStringWidth(o2.getName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2F : 0)))
-                    .compareTo((mcFont.getStringWidth(o1.getName() + o1.getSuffix())
+                    (mcFont.getStringWidth(o2.getCNName() + o2.getSuffix()) + (o2.suffixIsNotEmpty() ? 2F : 0)))
+                    .compareTo((mcFont.getStringWidth(o1.getCNName() + o1.getSuffix())
                             + (o1.suffixIsNotEmpty() ? 2F : 0))));
         }
 
         for (final CheatModule module : modules) {
             if (facyfont.getValue()) {
-                final float width = fontRenderer.getStringWidth(module.getName() + module.getSuffix())
+
+                final float width = fontRenderer.getStringWidth(module.getCNName() + module.getSuffix())
                         + (module.suffixIsNotEmpty() ? 2 : 0);
-                final String displayText = module.getName();
+                final String displayText = module.getCNName();
+
                 if (module.getState()) {
                     if (module.slide < width) {
                         module.slide = easeOut(module.slideStep, width) * width;
@@ -239,7 +241,7 @@ public class ModuleHUD extends CheatModule {
                     if (index > 0) {
                         RenderUtils
                                 .drawRectOriginal(
-                                        slide - 3 - fontRenderer.getStringWidth(modules.get(index - 1).getName())
+                                        slide - 3 - fontRenderer.getStringWidth(modules.get(index - 1).getCNName())
                                                 - fontRenderer.getStringWidth(modules.get(index - 1).getSuffix())
                                                 - (modules.get(index - 1).suffixIsNotEmpty() ? 2 : 0)
                                                 + fontRenderer.getStringWidth(displayText)
@@ -258,17 +260,17 @@ public class ModuleHUD extends CheatModule {
                             module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
                 }
-                fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-                fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
+                fontRenderer.drawStringDynamic(displayText, slide, module.height + 2.5F, 1,50);
+                fontRenderer.drawStringDynamic(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
                         module.height + 2F,
-                        new Color(160, 160, 160).getRGB());
+                       1,50);
                 counter[0]++;
                 posY[0] += fontRenderer.getHeight() + 4;
             } else {
                 final FontRenderer font = mc.fontRendererObj;
-                final float width = font.getStringWidth(module.getName() + module.getSuffix())
+                final float width = font.getStringWidth(module.getCNName() + module.getSuffix())
                         + (module.suffixIsNotEmpty() ? 2 : 0);
-                final String displayText = module.getName();
+                final String displayText = module.getCNName();
                 if (module.getState()) {
                     if (module.slide < width) {
                         module.slide = easeOut(module.slideStep, width) * width;
@@ -307,7 +309,7 @@ public class ModuleHUD extends CheatModule {
                     if (index > 0) {
                         RenderUtils
                                 .drawRectOriginal(
-                                        slide - 3 - font.getStringWidth(modules.get(index - 1).getName())
+                                        slide - 3 - font.getStringWidth(modules.get(index - 1).getCNName())
                                                 - font.getStringWidth(modules.get(index - 1).getSuffix())
                                                 - (modules.get(index - 1).suffixIsNotEmpty() ? 2 : 0)
                                                 + font.getStringWidth(displayText)

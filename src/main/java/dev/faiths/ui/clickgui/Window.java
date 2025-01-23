@@ -3,11 +3,6 @@ package dev.faiths.ui.clickgui;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.List;
-
-import dev.faiths.utils.render.animation.normal.Animation;
-import dev.faiths.utils.render.animation.normal.Direction;
-import dev.faiths.utils.render.animation.normal.easing.EaseBackIn;
-import dev.faiths.utils.render.animation.simple.SimpleAnimation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -153,8 +148,8 @@ public class Window {
                         leftMouseClicked = false;
                     }
                 }
-                FontManager.bold15.drawString(module.getName().toLowerCase(),
-                        100F - FontManager.bold15.getStringWidth(module.getName().toLowerCase()) - 3F,
+                FontManager.bold15.drawString(module.getCNName().toLowerCase(),
+                        100F - FontManager.bold15.getStringWidth(module.getCNName().toLowerCase()) - 3F,
                         moduleHeight + 5F,
                         module.getState() && module.isExpanded() ? new Color(164, 53, 144).getRGB()
                                 : new Color(160, 160, 160).getRGB());
