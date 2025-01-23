@@ -1086,25 +1086,23 @@ public class RenderUtils {
     }
 
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed, double alpha) {
-        long now = (long) (speed * System.currentTimeMillis() + index * timePerIndex);
-
-        float redDiff = (firstColor.getRed() - secondColor.getRed()) / time;
-        float greenDiff = (firstColor.getGreen() - secondColor.getGreen()) / time;
-        float blueDiff = (firstColor.getBlue() - secondColor.getBlue()) / time;
-        int red = Math.round(secondColor.getRed() + redDiff * (now % (long) time));
-        int green = Math.round(secondColor.getGreen() + greenDiff * (now % (long) time));
-        int blue = Math.round(secondColor.getBlue() + blueDiff * (now % (long) time));
-
-        float redInverseDiff = (secondColor.getRed() - firstColor.getRed()) / time;
-        float greenInverseDiff = (secondColor.getGreen() - firstColor.getGreen()) / time;
-        float blueInverseDiff = (secondColor.getBlue() - firstColor.getBlue()) / time;
-        int inverseRed = Math.round(firstColor.getRed() + redInverseDiff * (now % (long) time));
-        int inverseGreen = Math.round(firstColor.getGreen() + greenInverseDiff * (now % (long) time));
-        int inverseBlue = Math.round(firstColor.getBlue() + blueInverseDiff * (now % (long) time));
-
-        if (now % ((long) time * 2) < (long) time)
-            return ColorUtil.getColor(inverseRed, inverseGreen, inverseBlue, (int) alpha);
-        else return ColorUtil.getColor(red, green, blue, (int) alpha);
+        long now = (long)(speed * (double)System.currentTimeMillis() + (double)((long)index * timePerIndex));
+        float redDiff = (float)(firstColor.getRed() - secondColor.getRed()) / time;
+        float greenDiff = (float)(firstColor.getGreen() - secondColor.getGreen()) / time;
+        float blueDiff = (float)(firstColor.getBlue() - secondColor.getBlue()) / time;
+        int red = Math.round((float)secondColor.getRed() + redDiff * (float)(now % (long)time));
+        int green = Math.round((float)secondColor.getGreen() + greenDiff * (float)(now % (long)time));
+        int blue = Math.round((float)secondColor.getBlue() + blueDiff * (float)(now % (long)time));
+        float redInverseDiff = (float)(secondColor.getRed() - firstColor.getRed()) / time;
+        float greenInverseDiff = (float)(secondColor.getGreen() - firstColor.getGreen()) / time;
+        float blueInverseDiff = (float)(secondColor.getBlue() - firstColor.getBlue()) / time;
+        int inverseRed = Math.round((float)firstColor.getRed() + redInverseDiff * (float)(now % (long)time));
+        int inverseGreen = Math.round((float)firstColor.getGreen() + greenInverseDiff * (float)(now % (long)time));
+        int inverseBlue = Math.round((float)firstColor.getBlue() + blueInverseDiff * (float)(now % (long)time));
+        if (now % ((long)time * 2L) < (long)time) {
+            return ColorUtil.getColor(inverseRed, inverseGreen, inverseBlue, (int)alpha);
+        }
+        return ColorUtil.getColor(red, green, blue, (int)alpha);
     }
 
 

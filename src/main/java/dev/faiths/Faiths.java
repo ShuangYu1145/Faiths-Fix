@@ -29,7 +29,7 @@ import java.util.Comparator;
 public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
-    public static String VERSION = "250118";
+    public static String VERSION = "250123";
     public static boolean IS_BETA = true;
     @NativeObfuscation.Inline
     public static boolean verified = false; // this is a temporary boolean
@@ -94,10 +94,6 @@ public class Faiths {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Faiths.configManager.loadConfigs();
-        Runtime.getRuntime().addShutdownHook(new Thread(Faiths.configManager::saveConfigs));
-        Faiths.INSTANCE.getEventManager().registerEvent(Faiths.INSTANCE.getRotationManager());
-        Faiths.INSTANCE.getEventManager().registerEvent(new SmoothCameraComponent());
         Faiths.moduleManager.modules.sort(Comparator.comparing(CheatModule::getName));
         Faiths.moduleManager.modules.forEach(Faiths.INSTANCE.getEventManager()::registerEvent);
         Faiths.moduleManager.modules.forEach(module -> {
@@ -105,6 +101,11 @@ public class Faiths {
                 Faiths.commandManager.registerCommand(new ModuleCommand(module, module.getValues()));
         });
         Faiths.moduleManager.copiedModules = new ArrayList<>(Faiths.moduleManager.modules);
+        Faiths.configManager.loadConfigs();
+        Runtime.getRuntime().addShutdownHook(new Thread(Faiths.configManager::saveConfigs));
+        Faiths.INSTANCE.getEventManager().registerEvent(Faiths.INSTANCE.getRotationManager());
+        Faiths.INSTANCE.getEventManager().registerEvent(new SmoothCameraComponent());
+
         new ZombiesUtils().init();
 
                 /*if (!IRC.isRunning()) {

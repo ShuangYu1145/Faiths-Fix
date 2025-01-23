@@ -86,8 +86,6 @@ public class ModuleScaffold extends CheatModule {
     private int lastY;
     private float keepYaw;
 
-    public int bigVelocityTick = 0;
-
     public ModuleScaffold() {
         super("Scaffold", Category.WORLD,"自动搭路");
         /*towerMove.setValue(false);*/
@@ -172,7 +170,6 @@ public class ModuleScaffold extends CheatModule {
         lastKeepYMode = modeValue.is("WatchdogKeepY");
         targetCalculated = false;
         keepYaw = PlayerUtils.getMoveYaw(mc.thePlayer.rotationYaw) - 180f;
-        bigVelocityTick = 0;
     }
 
     @Override
@@ -534,13 +531,6 @@ public class ModuleScaffold extends CheatModule {
 
         if (getBlockSlot() < 0) {
             return;
-        }
-
-        if (bigVelocityTick > 0) {
-            bigVelocityTick--;
-        }
-        if (mc.thePlayer.onGround && bigVelocityTick <= 30) {
-            bigVelocityTick = 0;
         }
 
         this.findBlock();

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import static dev.faiths.utils.IMinecraft.mc;
 
 public class ModuleAntiVoid extends CheatModule {
-    public ValueMode mode = new ValueMode("Mode", new String[]{"Watchdog","AutoScaffold"}, "Watchdog");
+    public ValueMode mode = new ValueMode("Mode", new String[]{"Watchdog"}, "Watchdog");
     private final ValueInt pullbackTime = new ValueInt("PullbackTime", 800, 500, 2000).visible(() -> mode.is("Watchdog"));
     private final ValueBoolean onlyVoid = new ValueBoolean("OnlyVoid", false).visible(() -> mode.is("Watchdog"));
     public double[] lastGroundPos = new double[3];
@@ -102,64 +102,6 @@ public class ModuleAntiVoid extends CheatModule {
                             mc.getNetHandler().sendPacketNoEvent(packet);
                     }
                     packets.clear();
-                }
-            }
-        }
-        if (mode.is("AutoScaffold")) {
-            if (mc.thePlayer == null) return;
-            if (mc.thePlayer.onGround) {
-                if (scaffoldEnabled) {
-                    Faiths.moduleManager.getModule(ModuleScaffold.class).setState(false);
-                    scaffoldEnabled = false;
-                }
-                attempted = 0;
-                calculating = false;
-            }
-            if (mc.thePlayer.motionY < 0.1 && new FallingPlayer(mc.thePlayer).findCollision(60) == null && !PlayerUtils.isBlockUnder(mc.thePlayer.posY + mc.thePlayer.getEyeHeight()) && mc.thePlayer.fallDistance > 3) {
-                ModuleScaffold scaffold = (ModuleScaffold) Faiths.moduleManager.getModule(ModuleScaffold.class);
-                ModuleStuck stuck = (ModuleStuck) Faiths.moduleManager.getModule(ModuleStuck.class);
-                if (mc.thePlayer.motionY >= -1 && !scaffold.getState() && !stuck.getState()) {
-                    ClientUtils.displayChatMessage("ok");
-                    scaffoldEnabled = true;
-                    scaffold.setState(true);
-                    scaffold.bigVelocityTick = 10;
-                } else if (mc.thePlayer.motionY < -1 && attempted <= 1 && !mc.thePlayer.onGround) {
-                    ClientUtils.displayChatMessage("ok1");
-//                ticksLeft = 10;
-                    attempted += 1;
-
-                    int findSlot = -1;
-                    for (int i = 36; i <= 44; i++) {
-                        if (mc.thePlayer.inventoryContainer.getSlot(i).getStack().getItem() instanceof ItemEnderPearl) {
-                            ClientUtils.displayChatMessage("ok2");
-                            findSlot = i;
-                            break;
-                        }
-                    }
-
-                    if (findSlot == -1) {
-                        ClientUtils.displayChatMessage("ok3");
-                        for (int i = 0; i <= 35; i++) {
-                            if (mc.thePlayer.inventoryContainer.getSlot(i).getStack().getItem() instanceof ItemEnderPearl) {
-                                findSlot = i;
-                                break;
-                            }
-                        }
-                        if (findSlot == -1) {
-                            return;
-                        }
-
-                        InventoryUtil.swap(findSlot, 8);
-                        findSlot = 44;
-                    }
-                    if (scaffold.getState()) {
-                        ClientUtils.displayChatMessage("ok4");
-                        scaffold.setState(true);
-                        scaffoldEnabled = false;
-                    }
-                    mc.thePlayer.inventory.currentItem = findSlot - 36;
-
-                    stuck.setState(true);
                 }
             }
         }

@@ -3,6 +3,8 @@ package net.minecraft.client.gui;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.utils.render.GradientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -353,6 +355,14 @@ public class FontRenderer extends BaseFontRender implements IResourceManagerRelo
      */
     public int drawStringWithShadow(String text, float x, float y, int color) {
         return this.drawString(text, x, y, color, true);
+    }
+
+    public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {
+        GradientUtil.applyGradientHorizontal((float)x2, (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
+            GlStateManager.enableAlpha();
+            GlStateManager.alphaFunc(516, 0.0f);
+            this.drawString(text, (float)x2, (float)y2, -1);
+        });
     }
 
     @Override

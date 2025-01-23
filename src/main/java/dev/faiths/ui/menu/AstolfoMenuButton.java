@@ -103,23 +103,24 @@ public class AstolfoMenuButton extends Gui
 
 
             try {
-                /*
-                Gui.drawRect(xPosition, yPosition,
-                        xPosition + width, yPosition + height,
-                        enabled ? new Color(0F, 0F, 0F, alpha / 255F).getRGB() :
-                                new Color(0.5F, 0.5F, 0.5F, 0.5F).getRGB());
 
-                 */
+//                Gui.drawRect(xPosition, yPosition,
+//                        xPosition + width, yPosition + height,
+//                        enabled ? new Color(0F, 0F, 0F, alpha / 255F).getRGB() :
+//                                new Color(0.5F, 0.5F, 0.5F, 0.5F).getRGB());
+//
 
-/*
+
+
                 RoundedUtil.drawRound(xPosition, yPosition,
                         width, height, 4,
                         enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150));
 
- */
-                RoundedUtil.drawRoundOutline(xPosition, yPosition,
-                        width, height, 4,0.5f,
-                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150),ModuleHUD.color(ModuleHUD.colortick.getValue()));
+
+//                RoundedUtil.drawRoundOutline(xPosition, yPosition,
+//                        width, height, 4,0.5f,
+//                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150),ModuleHUD.color(ModuleHUD.colortick.getValue()));
+
             } catch (final Exception ignored) {
                 
             }

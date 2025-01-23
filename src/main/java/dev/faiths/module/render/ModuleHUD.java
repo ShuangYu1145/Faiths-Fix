@@ -179,7 +179,7 @@ public class ModuleHUD extends CheatModule {
         int index = 0;
         GL11.glPushMatrix();
         GL11.glTranslatef(scaledResolution.getScaledWidth(), 0F, 0F);
-        CustomFont fontRenderer = FontManager.sf18;
+        CustomFont fontRenderer = FontManager.sf20;
         FontRenderer mcFont = mc.fontRendererObj;
 
   //      modules.sort(Comparator.comparingDouble(m -> m.height));
@@ -260,10 +260,11 @@ public class ModuleHUD extends CheatModule {
                             module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
 
                 }
-                fontRenderer.drawStringDynamic(displayText, slide, module.height + 2.5F, 1,50);
-                fontRenderer.drawStringDynamic(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
-                        module.height + 2F,
-                       1,50);
+                fontRenderer.drawStringWithShadow(displayText, slide, module.height + 2.5F,
+                         ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                fontRenderer.drawStringWithShadow(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2,
+                        module.height + 3F,
+                        new Color(160, 160, 160).getRGB());
                 counter[0]++;
                 posY[0] += fontRenderer.getHeight() + 4;
             } else {
@@ -367,11 +368,11 @@ public class ModuleHUD extends CheatModule {
         if (information.isEnabled("ClientName")) {
             final String name = "Faiths" + " | " + mc.thePlayer.getName() + " | " + "FPS:" + mc.getDebugFPS();
             if (facyfont.getValue()) {
-                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
-                FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);
+           FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);
                 if (glow.getValue()) {
                     GlowUtils.drawGlow(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4,new Color(0, 0, 0,globalalpha.getValue()));
                 }
+                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
                 RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 1, mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
@@ -602,7 +603,7 @@ public class ModuleHUD extends CheatModule {
         } else if (colorsetting.is("Static")) {
             textColor = new Color(maincolor.getValue().getRGB());
         } else if (colorsetting.is("Double")) {
-            textColor = new Color(RenderUtils.colorSwitch(new Color(maincolor.getValue().getRGB()), new Color(secondcolor.getValue().getRGB()), 2000.0f, -(tick * 200) / 40, 75L, 2.0));
+            textColor = new Color(RenderUtils.colorSwitch(new Color(maincolor.getValue().getRGB()), new Color(secondcolor.getValue().getRGB()), 2000.0f, -(tick * 200) / 40, 75L, 2.0D));
         }
         return textColor;
     }
