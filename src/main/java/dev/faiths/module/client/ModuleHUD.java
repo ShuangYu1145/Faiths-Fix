@@ -1,4 +1,4 @@
-package dev.faiths.module.render;
+package dev.faiths.module.client;
 
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
@@ -22,15 +22,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.scoreboard.Score;
-import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import static com.viaversion.viaversion.util.ChatColorUtil.STRIP_COLOR_PATTERN;
+import static dev.faiths.module.Category.CLIENT;
 import static dev.faiths.module.Category.RENDER;
 import static dev.faiths.utils.IMinecraft.mc;
 import static dev.faiths.utils.megawalls.FkCounter.MW_GAME_START_MESSAGE;
@@ -84,7 +81,7 @@ public class ModuleHUD extends CheatModule {
     private boolean colorsSet;
 
     public ModuleHUD() {
-        super("HUD", RENDER,"HUD");
+        super("HUD", CLIENT,"HUD");
     }
 
     @Override
@@ -368,7 +365,7 @@ public class ModuleHUD extends CheatModule {
         if (information.isEnabled("ClientName")) {
             final String name = "Faiths" + " | " + mc.thePlayer.getName() + " | " + "FPS:" + mc.getDebugFPS();
             if (facyfont.getValue()) {
-           FontManager.sf24.drawStringDynamic(name, 3f, 5f,1,50);
+           FontManager.sf24.drawStringDynamicWithShadow(name, 3f, 5f,1,50);
                 if (glow.getValue()) {
                     GlowUtils.drawGlow(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4,new Color(0, 0, 0,globalalpha.getValue()));
                 }

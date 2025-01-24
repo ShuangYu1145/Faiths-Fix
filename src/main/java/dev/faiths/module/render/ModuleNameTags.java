@@ -7,22 +7,19 @@ import dev.faiths.event.impl.Render3DEvent;
 import dev.faiths.event.impl.RenderNameTagEvent;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.module.combat.ModuleAntiBot;
 import dev.faiths.module.player.ModuleNotify;
 import dev.faiths.module.world.ModuleTeams;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.RoundedUtil;
 import dev.faiths.value.ValueBoolean;
 import ltd.guimc.silencefix.SilenceFixIRC;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -32,7 +29,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static dev.faiths.module.render.ModuleHUD.color;
 import static dev.faiths.utils.IMinecraft.mc;
 
 @SuppressWarnings("unused")

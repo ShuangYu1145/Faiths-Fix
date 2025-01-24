@@ -1,28 +1,19 @@
 package dev.faiths.module.combat;
 
-import dev.faiths.Faiths;
-import dev.faiths.component.MovementComponent;
 import dev.faiths.event.Handler;
 import dev.faiths.event.impl.*;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
-import dev.faiths.module.player.ModuleBlink;
-import dev.faiths.module.render.ModuleHUD;
-import dev.faiths.ui.font.FontManager;
-import dev.faiths.utils.ClientUtils;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.utils.PacketUtils;
-import dev.faiths.utils.player.BlinkUtils;
 import dev.faiths.utils.render.RoundedUtil;
 import dev.faiths.value.ValueBoolean;
 import dev.faiths.value.ValueFloat;
 import dev.faiths.value.ValueInt;
-import io.netty.buffer.Unpooled;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.init.Items;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.network.play.client.*;
@@ -31,11 +22,8 @@ import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.status.client.C00PacketServerQuery;
 
 import java.awt.*;
-import java.util.Hashtable;
 import java.util.LinkedList;
 
-import static dev.faiths.module.combat.ModuleKillAura.target;
-import static dev.faiths.module.render.ModuleHUD.color;
 import static dev.faiths.utils.IMinecraft.mc;
 
 

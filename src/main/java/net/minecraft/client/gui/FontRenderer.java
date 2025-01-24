@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.utils.render.GradientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

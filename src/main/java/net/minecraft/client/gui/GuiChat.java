@@ -25,6 +25,8 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import static dev.faiths.module.client.ModuleHUD.globalalpha;
+import static dev.faiths.module.client.ModuleHUD.glow;
 import static dev.faiths.utils.IMinecraft.mc;
 
 public class GuiChat extends GuiScreen
@@ -329,12 +331,14 @@ public class GuiChat extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
       //  drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-        RoundedUtil.drawRound(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4,new Color(0, 0, 0,150));
-        GlowUtils.drawGlow(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4,new Color(0, 0, 0,100));
+        RoundedUtil.drawRound(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4,new Color(0, 0, 0,globalalpha.getValue()));
+        if (glow.getValue()) {
+            GlowUtils.drawGlow(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4, new Color(0, 0, 0, globalalpha.getValue()));
+        }
         this.inputField.drawTextBox();
 
         ScaledResolution sr = new ScaledResolution(mc);
-    //    FontManager.sf40.drawStringDynamic("主播你可以移动模块位置", sr.getScaledHeight() - FontManager.sf40.getStringWidth("主播你可以移动模块位置") + 80, 5,1,50);
+     //   FontManager.sf40.drawStringDynamic("主播你可以移动模块位置", sr.getScaledHeight() - FontManager.sf40.getStringWidth("主播你可以移动模块位置") + 80, 5,1,50);
 
 
         try {

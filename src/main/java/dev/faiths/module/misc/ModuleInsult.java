@@ -1,4 +1,4 @@
-package dev.faiths.module.fun;
+package dev.faiths.module.misc;
 
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
@@ -24,7 +24,7 @@ public class ModuleInsult extends CheatModule {
     private ArrayList<String> xinxinAbuseContent = new ArrayList<>();
 
     public ModuleInsult() {
-        super("Insult", Category.FUN,"自动发L");
+        super("Insult", Category.Misc,"自动发L");
 
         xinxinAbuseContent.add("@[欣欣公益14.50]起床同距离同装备嘴强对刀客户端 免费获取点击右边的代码xinxin.liq ><" +  Minecraft.getSystemTime() % 1000L);
         xinxinAbuseContent.add("@[欣欣提醒]别用欣欣的水影 诈骗且垃记 而且不稳定 免费获取点击右边代码xinxin.liq >" +  Minecraft.getSystemTime() % 1000L + "<");

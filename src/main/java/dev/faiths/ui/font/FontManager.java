@@ -26,6 +26,7 @@ public class FontManager {
     public static CustomFont bold15;
     public static CustomFont bold14;
     public static CustomFont bold13;
+    public static CustomFont bold12;
 
     public static void init() {
 
@@ -48,6 +49,7 @@ public class FontManager {
         bold15 = new CustomFont(getFont("MiSans-Demibold.ttf", 15));
         bold14 = new CustomFont(getFont("MiSans-Demibold.ttf", 14));
         bold13 = new CustomFont(getFont("MiSans-Demibold.ttf", 13));
+        bold12 = new CustomFont(getFont("MiSans-Demibold.ttf", 12));
 
     }
 

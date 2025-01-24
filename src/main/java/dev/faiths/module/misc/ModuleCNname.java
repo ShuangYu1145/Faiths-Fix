@@ -1,4 +1,4 @@
-package dev.faiths.module.fun;
+package dev.faiths.module.misc;
 
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
@@ -6,6 +6,6 @@ import dev.faiths.module.CheatModule;
 public class ModuleCNname extends CheatModule {
 
     public ModuleCNname() {
-        super("CNname", Category.FUN,"中文");
+        super("CNname", Category.Misc,"中文");
     }
 }

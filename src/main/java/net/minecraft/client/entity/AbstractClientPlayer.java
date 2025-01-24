@@ -3,7 +3,7 @@ package net.minecraft.client.entity;
 import com.mojang.authlib.GameProfile;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.LookEvent;
-import dev.faiths.module.fun.ModuleCape;
+import dev.faiths.module.misc.ModuleCape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;

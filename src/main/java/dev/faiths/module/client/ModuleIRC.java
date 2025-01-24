@@ -1,4 +1,4 @@
-package dev.faiths.module.fun;
+package dev.faiths.module.client;
 
 import dev.faiths.Faiths;
 
@@ -29,7 +29,7 @@ public class ModuleIRC extends CheatModule {
     private String Verifyname = "";
 
     public ModuleIRC() {
-        super("IRC", Category.FUN,"IRC");
+        super("IRC", Category.CLIENT,"IRC");
     }
 
 

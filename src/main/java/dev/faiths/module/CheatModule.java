@@ -3,7 +3,7 @@ package dev.faiths.module;
 import dev.faiths.Faiths;
 import dev.faiths.event.Listener;
 import dev.faiths.module.combat.ModuleGapple;
-import dev.faiths.module.fun.ModuleCNname;
+import dev.faiths.module.misc.ModuleCNname;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.value.AbstractValue;
 import org.lwjgl.input.Keyboard;
@@ -107,11 +107,24 @@ public abstract class CheatModule implements Listener {
         if (!Faiths.INSTANCE.isInitializing()) {
             if (state) {
                 onEnable();
-                Faiths.notificationManager.pop("Enabled",  "Enabled " + getName() + ".", 1000, NotificationType.SUCCESS);
+
+                if (Faiths.moduleManager.getModule(ModuleCNname.class).getState())
+                {
+                    Faiths.notificationManager.pop("模块",  "开启 " + getCNName() + ".", 1000, NotificationType.SUCCESS);
+                } else {
+                    Faiths.notificationManager.pop("Enabled",  "Enabled " + getName() + ".", 1000, NotificationType.SUCCESS);
+                }
 
             } else {
                 onDisable();
-                Faiths.notificationManager.pop("Disabled", "Disabled " + getName() + ".", 1000, NotificationType.ERROR);
+
+                if (Faiths.moduleManager.getModule(ModuleCNname.class).getState())
+                {
+                    Faiths.notificationManager.pop("模块", "关闭 " + getCNName() + ".", 1000, NotificationType.ERROR);
+                } else {
+                    Faiths.notificationManager.pop("Disabled", "Disabled " + getName() + ".", 1000, NotificationType.ERROR);
+          }
+
             }
             mc.thePlayer.playSound("random.click",0.5F,1F);
         }

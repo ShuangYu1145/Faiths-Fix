@@ -1,6 +1,6 @@
 package dev.faiths.ui.font;
 
-import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.utils.render.GradientUtil;
 import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -306,18 +306,18 @@ public class CustomFont {
         return this.charwidth[id];
     }
 
+    public void drawStringDynamicWithShadow(String text, double x2, double y2, int tick1, int tick2) {
+        GradientUtil.applyGradientHorizontal((float)x2, (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
+            GlStateManager.enableAlpha();
+            GlStateManager.alphaFunc(516, 0.0f);
+            this.drawStringWithShadow(text, (float)x2, (float)y2, -1);
+        });
+    }
     public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {
         GradientUtil.applyGradientHorizontal((float)x2, (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
             GlStateManager.enableAlpha();
             GlStateManager.alphaFunc(516, 0.0f);
             this.drawString(text, (float)x2, (float)y2, -1);
-        });
-    }
-    public void drawStringDynamic2(String text, double x2, double y2, int tick1, int tick2) {
-        GradientUtil.applyGradientHorizontal((float)x2 - (float)(this.getStringWidth(text) / 2), (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
-            GlStateManager.enableAlpha();
-            GlStateManager.alphaFunc(516, 0.0f);
-            this.drawString(text, (float)x2 - (float)(this.getStringWidth(text) / 2), (float)y2, -1);
         });
     }
 

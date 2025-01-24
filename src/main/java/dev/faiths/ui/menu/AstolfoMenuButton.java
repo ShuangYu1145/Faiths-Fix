@@ -1,7 +1,8 @@
 package dev.faiths.ui.menu;
 
 import dev.faiths.Faiths;
-import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.module.client.ModuleHUD;
+import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -11,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
-import static dev.faiths.module.render.ModuleHUD.color;
+import static dev.faiths.module.client.ModuleHUD.globalalpha;
 import static net.minecraft.client.renderer.GlStateManager.resetColor;
 
 public class AstolfoMenuButton extends Gui
@@ -114,7 +115,7 @@ public class AstolfoMenuButton extends Gui
 
                 RoundedUtil.drawRound(xPosition, yPosition,
                         width, height, 4,
-                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150));
+                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, globalalpha.getValue()));
 
 
 //                RoundedUtil.drawRoundOutline(xPosition, yPosition,
@@ -128,8 +129,13 @@ public class AstolfoMenuButton extends Gui
             mc.getTextureManager().bindTexture(buttonTextures);
             mouseDragged(mc, mouseX, mouseY);
 
-            mc.fontRendererObj.drawString(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
-                    yPosition + (height - 5) / 2F, new Color(187, 187, 187, 189).getRGB());
+            if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
+                FontManager.bold18.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
+                        yPosition + (height - 5) / 2F,1,50);
+            } else {
+                mc.fontRendererObj.drawString(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
+                        yPosition + (height - 5) / 2F, new Color(187, 187, 187, 189).getRGB());
+            }
 
             resetColor();
         }

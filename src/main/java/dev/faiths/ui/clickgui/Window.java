@@ -83,15 +83,15 @@ public class Window {
                 }
             }
         }
-        // if (expand) height += 3F;
+         if (expand) height += 3F;
         RenderUtils.drawOutLineRect(0F, 0F, 100F, height, 1F, new Color(25, 25, 25), new Color(160, 50, 145));
-        if (!expand) {
-            RenderUtils.drawImage(new ResourceLocation("client/icon/eye_close.png"), 80F, 3F, 8F, 8F,
-                    new Color(60, 60, 60));
-        } else {
-            RenderUtils.drawImage(new ResourceLocation("client/icon/eye_open.png"), 80F, 3F, 8F, 8F,
-                    new Color(164, 53, 144));
-        }
+//        if (!expand) {
+//            RenderUtils.drawImage(new ResourceLocation("client/icon/eye_close.png"), 80F, 3F, 8F, 8F,
+//                    new Color(60, 60, 60));
+//        } else {
+//            RenderUtils.drawImage(new ResourceLocation("client/icon/eye_open.png"), 80F, 3F, 8F, 8F,
+//                    new Color(164, 53, 144));
+//        }
         final ResourceLocation categoryResourceLocation;
         switch (category) {
             case COMBAT:
@@ -107,6 +107,9 @@ public class Window {
 
             case PLAYER:
                 categoryResourceLocation = new ResourceLocation("client/icon/player_good.png");
+                break;
+            case CLIENT:
+                categoryResourceLocation = new ResourceLocation("client/icon/options.png");
                 break;
             default:
                 categoryResourceLocation = new ResourceLocation("client/icon/world_good.png");
@@ -148,8 +151,8 @@ public class Window {
                         leftMouseClicked = false;
                     }
                 }
-                FontManager.bold15.drawString(module.getCNName().toLowerCase(),
-                        100F - FontManager.bold15.getStringWidth(module.getCNName().toLowerCase()) - 3F,
+                FontManager.bold14.drawString(module.getCNName(),
+                        100F - FontManager.bold14.getStringWidth(module.getCNName()) - 3F,
                         moduleHeight + 5F,
                         module.getState() && module.isExpanded() ? new Color(164, 53, 144).getRGB()
                                 : new Color(160, 160, 160).getRGB());
@@ -174,7 +177,7 @@ public class Window {
                             if (booleanValue.getValue()) {
                                 RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(164, 53, 144));
                             }
-                            FontManager.bold13.drawString(booleanValue.getName(), 5F, moduleHeight + 5F, -1);
+                            FontManager.bold14.drawString(booleanValue.getName(), 5F, moduleHeight + 5F, -1);
                         }
 
                         if (value instanceof ValueMode) {
@@ -208,9 +211,9 @@ public class Window {
                                 }
                             }
 
-                            FontManager.bold13.drawString(modeValue.getName(), 5F, moduleHeight + 5F, -1);
-                            FontManager.bold13.drawString(modeValue.getValue(),
-                                    95F - FontManager.bold13.getStringWidth(modeValue.getValue()), moduleHeight + 5F,
+                            FontManager.bold14.drawString(modeValue.getName(), 5F, moduleHeight + 5F, -1);
+                            FontManager.bold14.drawString(modeValue.getValue(),
+                                    95F - FontManager.bold14.getStringWidth(modeValue.getValue()), moduleHeight + 5F,
                                     -1);
                         }
 
@@ -221,8 +224,8 @@ public class Window {
                                     95F * (floatValue.getValue() / floatValue.getMaximum()), 11F,
                                     new Color(164, 53, 144));
 
-                            FontManager.bold13.drawString(floatValue.getName(), 5F, moduleHeight + 5F, -1);
-                            FontManager.bold13.drawCenteredString(FLOAT_POINT_FORMAT.format(floatValue.getValue()), 88F,
+                            FontManager.bold14.drawString(floatValue.getName(), 5F, moduleHeight + 5F, -1);
+                            FontManager.bold14.drawCenteredString(FLOAT_POINT_FORMAT.format(floatValue.getValue()), 88F,
                                     moduleHeight + 5F, -1);
 
                             if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
@@ -246,7 +249,7 @@ public class Window {
                             };
                             RenderUtils.drawRoundedRect(88, moduleHeight + 1F, 9F, 9F, 3f,
                                     colorValue.getValue().getRGB());
-                            FontManager.bold13.drawString(colorValue.getName(), 5f,
+                            FontManager.bold14.drawString(colorValue.getName(), 5f,
                                     5.5f + moduleHeight, 0xffffffff, false);
 
                             if (mouseHovered(x, y + moduleHeight, 100F, 11F, mouseX, mouseY)) {
@@ -323,8 +326,8 @@ public class Window {
                                     95F * ((float) intValue.getValue() / (float) intValue.getMaximum()), 11F,
                                     new Color(164, 53, 144));
 
-                            FontManager.bold13.drawString(intValue.getName(), 5F, moduleHeight + 5F, -1);
-                            FontManager.bold13.drawCenteredString(String.valueOf(intValue.getValue()), 90F,
+                            FontManager.bold14.drawString(intValue.getName(), 5F, moduleHeight + 5F, -1);
+                            FontManager.bold14.drawCenteredString(String.valueOf(intValue.getValue()), 90F,
                                     moduleHeight + 5F, -1);
 
                             if (mouseHovered(x, y + moduleHeight, 95F, 11F, mouseX, mouseY) && Mouse.isButtonDown(0))
@@ -340,7 +343,7 @@ public class Window {
                             if (multiBooleanValue.isExpanded()) {
                                 RenderUtils.drawRect(3F, moduleHeight, 95F, 11F, new Color(17, 17, 17));
                             }
-                            FontManager.bold13.drawCenteredString(multiBooleanValue.getName() + "...", 50F,
+                            FontManager.bold14.drawCenteredString(multiBooleanValue.getName() + "...", 50F,
                                     moduleHeight + 5F, -1);
                             if (mouseHovered(x, y + moduleHeight, 100, 11F, mouseX, mouseY)) {
                                 if (Mouse.isButtonDown(0)) {
@@ -371,7 +374,7 @@ public class Window {
                                         RenderUtils.drawRect(3F, moduleHeight, 95F, 11F,
                                                 new Color(164, 53, 144));
                                     }
-                                    FontManager.bold13.drawString(pair.getKey(), 5F, moduleHeight + 5F, -1);
+                                    FontManager.bold14.drawString(pair.getKey(), 5F, moduleHeight + 5F, -1);
                                 }
                             }
 
@@ -394,7 +397,7 @@ public class Window {
                 rightMouseClicked = false;
             }
         }
-        FontManager.bold15.drawString(category.getDisplayName().toLowerCase(), 5F, 5F, -1);
+        FontManager.bold14.drawString(category.getDisplayCNName(), 5F, 5F, -1);
 
         GL11.glPopMatrix();
         if (runnable != null) {

@@ -7,7 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.EntityHealthUpdateEvent;
-import dev.faiths.module.world.ModuleProtocol;
+import dev.faiths.module.misc.ModuleProtocol;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.client.ClientBrandRetriever;
@@ -81,7 +81,7 @@ import java.util.zip.GZIPOutputStream;
 
 import static com.github.stachelbeere1248.zombiesutils.mixin.MixinNetHandlerPlayClient.zombies_utils$handleSound;
 import static com.github.stachelbeere1248.zombiesutils.mixin.MixinNetHandlerPlayClient.zombies_utils$handleTitle;
-import static dev.faiths.module.fun.ModuleIRC.sendToServer;
+import static dev.faiths.module.client.ModuleIRC.sendToServer;
 import static dev.faiths.utils.IMinecraft.mc;
 
 @NativeObfuscation

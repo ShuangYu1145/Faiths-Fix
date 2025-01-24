@@ -2,7 +2,7 @@ package dev.faiths.utils.render;
 
 import dev.faiths.Faiths;
 import dev.faiths.module.combat.ModuleBackTrack;
-import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.module.client.ModuleHUD;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;

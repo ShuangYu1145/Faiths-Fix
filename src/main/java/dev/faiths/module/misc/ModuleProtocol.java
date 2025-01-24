@@ -1,4 +1,4 @@
-package dev.faiths.module.world;
+package dev.faiths.module.misc;
 
 import dev.faiths.event.Handler;
 import dev.faiths.event.impl.PacketEvent;
@@ -21,7 +21,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleProtocol extends CheatModule {
     public ModuleProtocol() {
-        super("Protocol",Category.WORLD,"协议");
+        super("Protocol",Category.Misc,"协议");
         data.put("练习场", new byte[]{0, 0, 0, 26, 20, 71, 85, 73, 36, 109, 97, 105, 110, 109, 101, 110, 117, 64, 101, 110, 116, 114, 121, 47, 48, 34, 123, 34, 101, 110, 116, 114, 121, 34, 58, 48, 44, 34, 115, 105, 100, 34, 58, 34, 66, 69, 68, 87, 65, 82, 47, 98, 119, 45, 100, 97, 108, 117, 34, 125});
         data.put("单人起床", new byte[]{0, 0, 0, 26, 20, 71, 85, 73, 36, 109, 97, 105, 110, 109, 101, 110, 117, 64, 101, 110, 116, 114, 121, 47, 49, 34, 123, 34, 101, 110, 116, 114, 121, 34, 58, 49, 44, 34, 115, 105, 100, 34, 58, 34, 66, 69, 68, 87, 65, 82, 47, 98, 119, 45, 115, 111, 108, 111, 34, 125});
         data.put("双人起床", new byte[]{0, 0, 0, 26, 20, 71, 85, 73, 36, 109, 97, 105, 110, 109, 101, 110, 117, 64, 101, 110, 116, 114, 121, 47, 50, 36, 123, 34, 101, 110, 116, 114, 121, 34, 58, 50, 44, 34, 115, 105, 100, 34, 58, 34, 66, 69, 68, 87, 65, 82, 47, 98, 119, 45, 100, 111, 117, 98, 108, 101, 34, 125});

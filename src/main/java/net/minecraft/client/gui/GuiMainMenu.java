@@ -2,25 +2,19 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
-import dev.faiths.module.render.ModuleHUD;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.ui.altmanager.GuiAltManager;
 import dev.faiths.ui.menu.AstolfoMenuButton;
 import dev.faiths.utils.render.RenderUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import tech.skidonion.obfuscator.inline.Wrapper;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
-
-import static dev.faiths.module.render.ModuleHUD.color;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     protected List<AstolfoMenuButton> buttons = Lists.<AstolfoMenuButton>newArrayList();

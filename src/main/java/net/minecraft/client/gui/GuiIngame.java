@@ -5,8 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.Render2DEvent;
-import dev.faiths.module.render.ModuleHUD;
-import dev.faiths.ui.font.FontManager;
+import dev.faiths.module.client.ModuleHUD;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,13 +37,9 @@ import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-
-import static dev.faiths.module.render.ModuleHUD.color;
-import static dev.faiths.utils.IMinecraft.mc;
 
 public class GuiIngame extends Gui
 {

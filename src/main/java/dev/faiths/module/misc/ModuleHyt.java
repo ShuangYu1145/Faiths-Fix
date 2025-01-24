@@ -1,4 +1,4 @@
-package dev.faiths.module.fun;
+package dev.faiths.module.misc;
 
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
@@ -25,7 +25,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 
 public class ModuleHyt extends CheatModule {
     public ModuleHyt() {
-        super("Hyt",Category.FUN,"花雨庭功能");
+        super("Hyt",Category.Misc,"花雨庭功能");
     }
 
 
