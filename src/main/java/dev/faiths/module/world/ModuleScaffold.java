@@ -45,11 +45,11 @@ import static dev.faiths.utils.player.PlayerUtils.isMoving;
 
 @SuppressWarnings("unused")
 public class ModuleScaffold extends CheatModule {
-    private final ValueMode modeValue = new ValueMode("Mode", new String[]{"Normal", "WatchdogJump", "WatchdogGround", "WatchdogKeepY"}, "Normal");
+    private final ValueMode modeValue = new ValueMode("Mode", new String[]{"Normal"}, "Normal");
     private final ValueBoolean swing = new ValueBoolean("Swing", true);
-    private final ValueBoolean towerMove = new ValueBoolean("Tower", false)/*.visible(() -> false)*/;
     private final ValueBoolean eagle = new ValueBoolean("Eagle", false);
     private final ValueBoolean telly = new ValueBoolean("Telly", true);
+    private final ValueMode tellymode = new ValueMode("TellyMode",new String[]{"SkyWras","BedWars"}, "BedWars").visible(telly::getValue);
     private final ValueBoolean moveFix = new ValueBoolean("MoveFix", false);
     private final ValueBoolean bugFlyValue = new ValueBoolean("BugFly", false).visible(Faiths::getIsBeta);
     private final ValueBoolean swap = new ValueBoolean("Swap", true);
@@ -71,24 +71,12 @@ public class ModuleScaffold extends CheatModule {
     private int c08PacketSize = 0;
     private boolean packetHandlerFlag = true;
     private float[] lastRotation = null;
-    private boolean placeFlag = false;
-    private boolean lastKeepYMode = false;
-    private boolean lastJumpMode = false;
     private int placedAfterTower = 0;
-    private boolean wasTowering;
-    private int slowTicks;
-    private int ticks;
-    private int tickCounter;
-    private float angle;
-    private double targetZ;
     private boolean targetCalculated;
-    private int ticks2;
-    private int lastY;
     private float keepYaw;
 
     public ModuleScaffold() {
         super("Scaffold", Category.WORLD,"自动搭路");
-        /*towerMove.setValue(false);*/
     }
 
     public void sendPacketHook(Packet packet) {
@@ -102,14 +90,6 @@ public class ModuleScaffold extends CheatModule {
     }
 
     public double getYLevel() {
-        if (modeValue.is("WatchdogKeepY")) {
-            if (mc.gameSettings.keyBindJump.pressed) return mc.thePlayer.posY - 1;
-            if (mc.thePlayer.offGroundTicks == 4) {
-                return mc.thePlayer.posY - 1;
-            } else {
-                return keepYCoord;
-            }
-        }
         if (!keepY) {
             return mc.thePlayer.posY - 1.0;
         }
@@ -166,8 +146,6 @@ public class ModuleScaffold extends CheatModule {
         c08PacketSize = 0;
         packetHandlerFlag = true;
         lastOnGroundPosY = mc.thePlayer.posY;
-        lastJumpMode = modeValue.is("WatchdogJump");
-        lastKeepYMode = modeValue.is("WatchdogKeepY");
         targetCalculated = false;
         keepYaw = PlayerUtils.getMoveYaw(mc.thePlayer.rotationYaw) - 180f;
     }
@@ -183,12 +161,6 @@ public class ModuleScaffold extends CheatModule {
             packets.clear();
             mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem + 1));
             mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-        }
-        if (modeValue.is("WatchdogGround")) {
-            if (lastJumpMode || lastKeepYMode)
-                modeValue.setValue(lastJumpMode?"WatchdogJump":"WatchdogKeepY");
-            mc.gameSettings.keyBindRight.pressed = false;
-            mc.gameSettings.keyBindLeft.pressed = false;
         }
     }
 
@@ -214,21 +186,9 @@ public class ModuleScaffold extends CheatModule {
                 }
             }
 
-            if (modeValue.is("WatchdogGround")) {
-                mc.thePlayer.setSprinting(false);
-                PlayerUtils.strafe(getSpeed() / 1.3f);
-            }
 
-            if (modeValue.is("WatchdogKeepY")) {
-                if (mc.thePlayer.onGround && PlayerUtils.isMoving()) {
-                    mc.thePlayer.setSprinting(false);
-                    MoveUtils.setMotion(0.47F);
-                    mc.thePlayer.jump();
-                }
-                if (mc.thePlayer.offGroundTicks == 1 && PlayerUtils.isMoving()) {
-                    MoveUtils.setMotion(0.30F);
-                }
-            }
+
+
             if (this.getBlockCount() <= 5 && getAllBlockCount() > 5) {
                 int spoofSlot = this.getBestSpoofSlot();
                 this.getBlock(spoofSlot);
@@ -236,13 +196,6 @@ public class ModuleScaffold extends CheatModule {
             final ItemStack itemStack = switchToBlock();
             if (itemStack == null) return;
 
-            if (modeValue.is("WatchdogJump")) {
-                mc.thePlayer.setSprinting(false);
-                if (mc.thePlayer.onGround && isMoving()) {
-                    PlayerUtils.strafe(0.44);
-                    mc.thePlayer.jump();
-                }
-            }
 
             if (mc.gameSettings.keyBindJump.pressed && isMoving()) {
                 if (mc.thePlayer.onGround) {
@@ -251,118 +204,10 @@ public class ModuleScaffold extends CheatModule {
             } else {
                 onGround = false;
             }
-
-            if (towerMove.getValue()) {
-                if (!mc.gameSettings.keyBindJump.isKeyDown()) {
-                    angle = mc.thePlayer.rotationYaw;
-                    ticks = 100;
-                    return;
-                }
-
-                tickCounter++;
-                ticks++;
-
-                if (tickCounter >= 23) {
-                    tickCounter = 1; // Reset the counter
-                    angle = mc.thePlayer.rotationYaw;
-                    ticks = 100;
-                }
-
-                if (mc.thePlayer.onGround) {
-                    ticks = 0;
-                }
-
-                if (!PlayerUtils.isMoving()) {
-                    if (!targetCalculated) {
-                        // Calculate the targetZ position only once
-                        targetZ = Math.floor(mc.thePlayer.posZ) + 0.99999999999998;
-                        targetCalculated = true;
-                    }
-
-                    ticks2++;
-
-                    if (Math.abs(lastY - mc.thePlayer.posY) >= 1) {
-                        if (ticks2 == 1) {
-                            // Move to the middle position
-                            PlayerUtils.stop();
-                            mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY, (mc.thePlayer.posZ + targetZ) / 2);
-                        } else if (ticks2 == 2) {
-                            // Move to the final target position after 2 ticks
-                            PlayerUtils.stop();
-                            mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY, targetZ);
-                            ticks2 = 0; // Reset the tick counter after reaching the final position
-                            targetCalculated = false; // Reset the flag for the next cycle
-                        }
-                    } else {
-                        // Reset ticks2 if the Y position condition is not met
-                        ticks2 = 0;
-                        targetCalculated = false; // Reset the flag if the condition is not met
-                    }
-                } else {
-                    return;
-                }
-
-                if (modeValue.is("WatchdogJump") || modeValue.is("WatchdogKeepY")) {
-                    lastJumpMode = modeValue.is("WatchdogJump");
-                    lastKeepYMode = modeValue.is("WatchdogKeepY");
-                    modeValue.setValue("WatchdogGround");
-                    placedAfterTower = 0;
-                }
-
-
-                float step = ticks == 1 ? 90 : 0;
-
-                if (MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - angle) < step) {
-                    angle = mc.thePlayer.rotationYaw;
-                } else if (MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - angle) < 0) {
-                    angle -= step;
-                } else if (MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - angle) > 0) {
-                    angle += step;
-                }
-
-                mc.thePlayer.movementYaw = angle;
-
-                if (tickCounter < 20) {
-                    PlayerUtils.strafe(.26);
-                    if (mc.gameSettings.keyBindJump.isKeyDown()) {
-
-//            getParent().startY = Math.floor(mc.thePlayer.posY);
-
-                        switch (ticks) {
-                            case 0:
-                                if (mc.thePlayer.posY % 1 == 0) {
-                                    event.setGround(true);
-                                }
-                                mc.thePlayer.motionY = 0.42f;
-                                break;
-                            case 1:
-                                mc.thePlayer.motionY = 0.33;
-                                break;
-                            case 2:
-                                mc.thePlayer.motionY = 1 - mc.thePlayer.posY % 1;
-                                break;
-                        }
-                    }
-                } else {
-
-                    if (mc.thePlayer.onGround) {
-                        mc.thePlayer.motionY = 0.4196F;
-                    } else if (mc.thePlayer.offGroundTicks == 3) {
-                        mc.thePlayer.motionY = 0F;
-                    }
-                }
-
-                if (ticks == 2) ticks = -1;
-            }
         }
 
     };
 
-    private final Handler<JumpEvent> jumpEventHandler = event -> {
-        if (mc.gameSettings.keyBindJump.pressed && towerMove.getValue() && isMoving()) {
-            event.setCancelled(true);
-        }
-    };
 
     private final Handler<StrafeEvent> strafeEventHandler = event -> {
         if (mc.thePlayer == null || mc.theWorld == null) return;
@@ -523,7 +368,7 @@ public class ModuleScaffold extends CheatModule {
             keepY = !up;
         } else {
             up = upValue.getValue();
-            keepY = modeValue.is("WatchdogKeepY") || keepYValue.getValue();
+            keepY = keepYValue.getValue();
         }
         if (mc.thePlayer.onGround) {
             keepYCoord = Math.floor(mc.thePlayer.posY - 1.0);
@@ -539,9 +384,25 @@ public class ModuleScaffold extends CheatModule {
             mc.gameSettings.keyBindSprint.pressed = true;
             if (canTellyPlace && !mc.thePlayer.onGround && isMoving())
                 mc.thePlayer.setSprinting(false);
-            canTellyPlace = mc.thePlayer.offGroundTicks >= (up ? (mc.thePlayer.ticksExisted % 16 == 0 ? 2 : 1) : 2.9);
+
+            float tellyTicks;
+            switch (tellymode.getValue()) {
+                case "SkyWars" : {
+                    tellyTicks = 1F;
+                    break;
+                }
+                case "BedWars" : {
+                    tellyTicks = 3.8F;
+                    break;
+                }
+                default: {
+                    tellyTicks = 0.5F;
+                }
+            }
+            this.canTellyPlace = mc.thePlayer.offGroundTicks >= tellyTicks;
+
         }
-        if (!modeValue.is("Normal") && data != null && !modeValue.is("WatchdogKeepY")) {
+        if (!modeValue.is("Normal") && data != null) {
             try {
                 float[] rotations = lastRotation = ScaffoldUtils.faceBlock(data);
                 Faiths.INSTANCE.getRotationManager().setRotation(new Rotation(rotations[0], rotations[1]), 180, moveFix.getValue());
@@ -552,11 +413,6 @@ public class ModuleScaffold extends CheatModule {
                     e.printStackTrace();
                 }
             }
-        } else if (modeValue.is("WatchdogKeepY")) {
-            if (mc.thePlayer.onGround)
-                keepYaw = PlayerUtils.getMoveYaw(mc.thePlayer.rotationYaw) - 180f;
-            float[] rotations = new float[]{keepYaw, y};
-            Faiths.INSTANCE.getRotationManager().setRotation(new Rotation(rotations[0], rotations[1]), 180, moveFix.getValue());
         }
         if (!canTellyPlace) return;
         if (data != null && modeValue.is("Normal")) {
@@ -575,12 +431,7 @@ public class ModuleScaffold extends CheatModule {
             EnumFacing enumFacing = keepY ? this.enumFacing : this.getPlaceSide(this.data);
             if (enumFacing == null) return;
             if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, block, this.data, enumFacing, getVec3(data, enumFacing))) {
-                if ((lastJumpMode || lastKeepYMode) && modeValue.is("WatchdogGround")) {
-                    placedAfterTower++;
-                    if (placedAfterTower >= 2) {
-                        modeValue.setValue(lastJumpMode?"WatchdogJump":"WatchdogKeepY");
-                    }
-                }
+
                 y = 80.8964f;
                 if (swing.getValue()) {
                     mc.thePlayer.swingItem();
