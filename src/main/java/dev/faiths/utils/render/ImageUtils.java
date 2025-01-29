@@ -87,7 +87,7 @@ public class ImageUtils {
             URL url = new URL(imageUrl);
             return ImageIO.read(url);
         } catch (IOException e) {
-            e.printStackTrace();
+     //       e.printStackTrace();
             return null;
         }
     }

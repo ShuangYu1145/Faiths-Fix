@@ -130,11 +130,11 @@ public class AstolfoMenuButton extends Gui
             mouseDragged(mc, mouseX, mouseY);
 
             if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-                FontManager.bold18.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
+                FontManager.bold18.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2) - 1,
                         yPosition + (height - 5) / 2F,1,50);
             } else {
-                mc.fontRendererObj.drawString(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
-                        yPosition + (height - 5) / 2F, new Color(187, 187, 187, 189).getRGB());
+                mc.fontRendererObj.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
+                        yPosition + (height - 5) / 2F, 1,50);
             }
 
             resetColor();

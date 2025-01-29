@@ -1,7 +1,7 @@
 package dev.faiths.module;
 
 import dev.faiths.Faiths;
-import dev.faiths.module.misc.ModuleCNname;
+import dev.faiths.module.client.ModuleCNname;
 
 public enum Category {
     CLIENT("Client","客户端"),

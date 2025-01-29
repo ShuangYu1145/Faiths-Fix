@@ -3,7 +3,7 @@ package dev.faiths.module;
 import dev.faiths.Faiths;
 import dev.faiths.event.Listener;
 import dev.faiths.module.combat.ModuleGapple;
-import dev.faiths.module.misc.ModuleCNname;
+import dev.faiths.module.client.ModuleCNname;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.value.AbstractValue;
 import org.lwjgl.input.Keyboard;

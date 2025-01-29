@@ -6,6 +6,7 @@ import java.io.InputStream;
 import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
 public class FontManager {
+    public static CustomFont p100;
     public static CustomFont p40;
     public static CustomFont p24;
     public static CustomFont p20;
@@ -37,6 +38,7 @@ public class FontManager {
         sf18 = new CustomFont(getFont("MiSans-Regular.ttf", 18));
         sf15 = new CustomFont(getFont("MiSans-Regular.ttf", 15));
         sf14 = new CustomFont(getFont("MiSans-Regular.ttf", 14));
+        p100 = new CustomFont(getFont("Paw.ttf", 100));
         p40 = new CustomFont(getFont("Paw.ttf", 40));
         p24 = new CustomFont(getFont("Paw.ttf", 24));
         p20 = new CustomFont(getFont("Paw.ttf", 20));

@@ -19,7 +19,7 @@ import static dev.faiths.utils.IMinecraft.mc;
 
 public class ModuleIRC extends CheatModule {
 
-    private static Socket socket;
+    public static Socket socket;
     private static PrintWriter writer;
     private static boolean isConnected = false;
     private static final String SERVERIP = "141.11.125.53";//你服务器公网ip

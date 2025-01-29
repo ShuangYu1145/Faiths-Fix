@@ -4,10 +4,14 @@ import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.ui.altmanager.GuiAltManager;
+import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.menu.AstolfoMenuButton;
+
+import dev.faiths.utils.render.BlurUtil;
 import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.Display;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import tech.skidonion.obfuscator.inline.Wrapper;
 
@@ -142,17 +146,21 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
                 0,
                 this.width,
                 this.height);
+        BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
+
+
+
 
 
 
         String s = "Faiths Client #" + Faiths.VERSION;
-        fontRendererObj.drawString(s, 5, this.height - 10,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+        fontRendererObj.drawStringDynamic(s, 5, this.height - 10,1,50);
 
         Optional<String> username = Wrapper.getUsername();
         if (username.isPresent())
         {
-            String s2 = "Welcome, " + "Public User" + "!";
-            fontRendererObj.drawString(s2, this.width - fontRendererObj.getStringWidth(s2) - 2, this.height - 10, -1);
+            String s2 = "Welcome, " + "Furry User" + "!";
+            fontRendererObj.drawStringDynamic(s2, this.width - fontRendererObj.getStringWidth(s2) - 2, this.height - 10, 1,50);
         }
 
 
@@ -160,15 +168,16 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             (this.buttons.get(i2)).drawButton(this.mc, mouseX, mouseY);
         }
 
+        FontManager.p100.drawStringDynamicWithShadow("Faiths",this.width / 2F - 110F,this.height / 4f - 40F,1,50);
 
 
-        RenderUtils.drawImage(
-                new ResourceLocation("client/icon/logo.png"),
-                this.width / 2F - 30F,
-                this.height / 4f - 40F,
-                64F,
-                64F,
-                ModuleHUD.color(ModuleHUD.colortick.getValue()));
+//        RenderUtils.drawImage(
+//                new ResourceLocation("client/icon/logo.png"),
+//                this.width / 2F - 30F,
+//                this.height / 4f - 40F,
+//                64F,
+//                64F,
+//                ModuleHUD.color(ModuleHUD.colortick.getValue()));
 
 
         super.drawScreen(mouseX, mouseY, partialTicks);
