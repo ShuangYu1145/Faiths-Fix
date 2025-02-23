@@ -39,6 +39,8 @@ public class ModuleNoSlow extends CheatModule {
 
     int usingItemTick = 0;
 
+    public boolean noSlowing;
+
     private static final ValueMode mode = new ValueMode("Mode", new String[]{"Grim", "Watchdog"}, "Watchdog");
     public static ValueBoolean bow = new ValueBoolean("Bow", true).visible(() -> mode.is("Grim"));
     public static ValueBoolean food = new ValueBoolean("Food", true).visible(() -> mode.is("Grim"));

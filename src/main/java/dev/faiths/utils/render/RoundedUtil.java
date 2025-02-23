@@ -1,111 +1,155 @@
 package dev.faiths.utils.render;
 
+import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import dev.faiths.utils.render.RenderUtils;
-
-import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.*;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 public class RoundedUtil {
+    public static ShaderUtil roundedShader = new ShaderUtil("client/shaders/roundedRect.frag");
+    public static ShaderUtil roundedOutlineShader = new ShaderUtil("client/shaders/roundRectOutline.frag");
+    private static final ShaderUtil roundedTexturedShader = new ShaderUtil("client/shaders/roundRectTextured.frag");
+    private static final ShaderUtil roundedGradientShader = new ShaderUtil("client/shaders/roundedRectGradient.frag");
+    private static final ShaderUtil circleShader = new ShaderUtil("arc");
 
-    public static ShaderUtil roundedShader = new ShaderUtil("roundedRect");
-    public static ShaderUtil roundedOutlineShader = new ShaderUtil("roundRectOutline");
-    private static final ShaderUtil roundedTexturedShader = new ShaderUtil("roundRectTexture");
-    private static final ShaderUtil roundedGradientShader = new ShaderUtil("roundedRectGradient");
-
-
-    public static void drawRound(float x, float y, float width, float height, float radius, Color color) {
-        drawRound(x, y, width, height, radius, false, color);
+    public static void drawGradientRoundLR(float x2, float y2, float width, float height, float radius, Color color1, Color color2) {
+        RoundedUtil.drawGradientRound(x2, y2, width, height, radius, color1, color2, color2, color1);
     }
-
     public static void drawGradientHorizontal(float x, float y, float width, float height, float radius, Color left, Color right) {
         drawGradientRound(x, y, width, height, radius, left, left, right, right);
     }
-    public static void drawGradientVertical(float x, float y, float width, float height, float radius, Color top, Color bottom) {
-        drawGradientRound(x, y, width, height, radius, bottom, top, bottom, top);
-    }
 
-    public static void drawGradientRound(float x, float y, float width, float height, float radius, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight) {
-        RenderUtils.setAlphaLimit(0);
-        RenderUtils.resetColor();
+
+    public static void drawCircle(float x2, float y2, float radius, float progress, int change, Color color, float smoothness) {
         GLUtil.startBlend();
-        roundedGradientShader.init();
-        setupRoundedRectUniforms(x, y, width, height, radius, roundedGradientShader);
-        //Top left
-        roundedGradientShader.setUniformf("color1", topLeft.getRed() / 255f, topLeft.getGreen() / 255f, topLeft.getBlue() / 255f, topLeft.getAlpha() / 255f);
-        // Bottom Left
-        roundedGradientShader.setUniformf("color2", bottomLeft.getRed() / 255f, bottomLeft.getGreen() / 255f, bottomLeft.getBlue() / 255f, bottomLeft.getAlpha() / 255f);
-        //Top Right
-        roundedGradientShader.setUniformf("color3", topRight.getRed() / 255f, topRight.getGreen() / 255f, topRight.getBlue() / 255f, topRight.getAlpha() / 255f);
-        //Bottom Right
-        roundedGradientShader.setUniformf("color4", bottomRight.getRed() / 255f, bottomRight.getGreen() / 255f, bottomRight.getBlue() / 255f, bottomRight.getAlpha() / 255f);
-        ShaderUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
-        roundedGradientShader.unload();
-        GLUtil.endBlend();
-    }
-
-
-
-
-    public static void drawRound(float x, float y, float width, float height, float radius, boolean blur, Color color) {
-        RenderUtils.resetColor();
-        GLUtil.startBlend();
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        RenderUtils.setAlphaLimit(0);
-        roundedShader.init();
-
-        setupRoundedRectUniforms(x, y, width, height, radius, roundedShader);
-        roundedShader.setUniformi("blur", blur ? 1 : 0);
-        roundedShader.setUniformf("color", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-
-        ShaderUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
-        roundedShader.unload();
-        GLUtil.endBlend();
-    }
-
-
-    public static void drawRoundOutline(float x, float y, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
-        RenderUtils.resetColor();
-        GLUtil.startBlend();
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        RenderUtils.setAlphaLimit(0);
-        roundedOutlineShader.init();
-
+        float borderThickness = 1.0f;
+        circleShader.init();
+        circleShader.setUniformf("radialSmoothness", smoothness);
+        circleShader.setUniformf("radius", radius);
+        circleShader.setUniformf("borderThickness", borderThickness);
+        circleShader.setUniformf("progress", progress);
+        circleShader.setUniformi("change", change);
+        circleShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
+        float wh = radius + 10.0f;
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        setupRoundedRectUniforms(x, y, width, height, radius, roundedOutlineShader);
-        roundedOutlineShader.setUniformf("outlineThickness", outlineThickness * sr.getScaleFactor());
-        roundedOutlineShader.setUniformf("color", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-        roundedOutlineShader.setUniformf("outlineColor", outlineColor.getRed() / 255f, outlineColor.getGreen() / 255f, outlineColor.getBlue() / 255f, outlineColor.getAlpha() / 255f);
-
-
-        ShaderUtil.drawQuads(x - (2 + outlineThickness), y - (2 + outlineThickness), width + (4 + outlineThickness * 2), height + (4 + outlineThickness * 2));
-        roundedOutlineShader.unload();
+        circleShader.setUniformf("pos", (x2 + (wh / 2.0f - (radius + borderThickness) / 2.0f)) * (float)sr.getScaleFactor(), (float)Minecraft.getMinecraft().displayHeight - (radius + borderThickness) * (float)sr.getScaleFactor() - (y2 + (wh / 2.0f - (radius + borderThickness) / 2.0f)) * (float)sr.getScaleFactor());
+        ShaderUtil.drawQuads(x2, y2, wh, wh);
+        circleShader.unload();
         GLUtil.endBlend();
     }
 
-
-    public static void drawRoundTextured(float x, float y, float width, float height, float radius, float alpha) {
+    public static void drawRound(float x2, float y2, float width, float height, float radius, Color color) {
         RenderUtils.resetColor();
-        RenderUtils.setAlphaLimit(0);
-        GLUtil.startBlend();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(770, 771);
+        roundedShader.init();
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedShader);
+        roundedShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
+        ShaderUtil.drawQuads(x2 - 1.0f, y2 - 1.0f, width + 2.0f, height + 2.0f);
+        roundedShader.unload();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawRound(float x2, float y2, float width, float height, float radius, boolean blur, Color color) {
+        RenderUtils.resetColor();
+        GlStateManager.enableBlend();
+        GL11.glBlendFunc((int)770, (int)771);
+        RenderUtils.setAlphaLimit(0.0f);
+        roundedShader.init();
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedShader);
+        roundedShader.setUniformi("blur", blur ? 1 : 0);
+        roundedShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
+        ShaderUtil.drawQuads(x2 - 1.0f, y2 - 1.0f, width + 2.0f, height + 2.0f);
+        roundedShader.unload();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawGradientRound(float x2, float y2, float width, float height, float radius, Color bottomLeft, Color topLeft, Color bottomRight, Color topRight) {
+        RenderUtils.resetColor();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(770, 771);
+        roundedGradientShader.init();
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedGradientShader);
+        roundedGradientShader.setUniformf("color1", (float)topLeft.getRed() / 255.0f, (float)topLeft.getGreen() / 255.0f, (float)topLeft.getBlue() / 255.0f, (float)topLeft.getAlpha() / 255.0f);
+        roundedGradientShader.setUniformf("color2", (float)bottomRight.getRed() / 255.0f, (float)bottomRight.getGreen() / 255.0f, (float)bottomRight.getBlue() / 255.0f, (float)bottomRight.getAlpha() / 255.0f);
+        roundedGradientShader.setUniformf("color3", (float)bottomLeft.getRed() / 255.0f, (float)bottomLeft.getGreen() / 255.0f, (float)bottomLeft.getBlue() / 255.0f, (float)bottomLeft.getAlpha() / 255.0f);
+        roundedGradientShader.setUniformf("color4", (float)topRight.getRed() / 255.0f, (float)topRight.getGreen() / 255.0f, (float)topRight.getBlue() / 255.0f, (float)topRight.getAlpha() / 255.0f);
+        ShaderUtil.drawQuads(x2 - 1.0f, y2 - 1.0f, width + 2.0f, height + 2.0f);
+        roundedGradientShader.unload();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawRoundOutline(float x2, float y2, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
+        RenderUtils.resetColor();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(770, 771);
+        roundedOutlineShader.init();
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedOutlineShader);
+        roundedOutlineShader.setUniformf("outlineThickness", outlineThickness * (float)sr.getScaleFactor());
+        roundedOutlineShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
+        roundedOutlineShader.setUniformf("outlineColor", (float)outlineColor.getRed() / 255.0f, (float)outlineColor.getGreen() / 255.0f, (float)outlineColor.getBlue() / 255.0f, (float)outlineColor.getAlpha() / 255.0f);
+        ShaderUtil.drawQuads(x2 - (2.0f + outlineThickness), y2 - (2.0f + outlineThickness), width + (4.0f + outlineThickness * 2.0f), height + (4.0f + outlineThickness * 2.0f));
+        roundedOutlineShader.unload();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawGradientCornerLR(float x2, float y2, float width, float height, float radius, Color topLeft, Color bottomRight) {
+        Color mixedColor = ColorUtil.interpolateColorC(topLeft, bottomRight, 0.5f);
+        RoundedUtil.drawGradientRound(x2, y2, width, height, radius, mixedColor, topLeft, bottomRight, mixedColor);
+    }
+
+    public static void drawGradientCornerRL(float x2, float y2, float width, float height, float radius, Color bottomLeft, Color topRight) {
+        Color mixedColor = ColorUtil.interpolateColorC(topRight, bottomLeft, 0.5f);
+        RoundedUtil.drawGradientRound(x2, y2, width, height, radius, bottomLeft, mixedColor, mixedColor, topRight);
+    }
+
+    public static void drawRoundTextured(float x2, float y2, float width, float height, float radius, float alpha) {
+        RenderUtils.resetColor();
         roundedTexturedShader.init();
         roundedTexturedShader.setUniformi("textureIn", 0);
-        setupRoundedRectUniforms(x, y, width, height, radius, roundedTexturedShader);
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedTexturedShader);
         roundedTexturedShader.setUniformf("alpha", alpha);
-        ShaderUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
+        ShaderUtil.drawQuads(x2 - 1.0f, y2 - 1.0f, width + 2.0f, height + 2.0f);
         roundedTexturedShader.unload();
-        GLUtil.endBlend();
+        GlStateManager.disableBlend();
     }
 
-    private static void setupRoundedRectUniforms(float x, float y, float width, float height, float radius, ShaderUtil roundedTexturedShader) {
+    private static void setupRoundedRectUniforms(float x2, float y2, float width, float height, float radius, ShaderUtil roundedTexturedShader) {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        roundedTexturedShader.setUniformf("location", x * sr.getScaleFactor(),
-                (Minecraft.getMinecraft().displayHeight - (height * sr.getScaleFactor())) - (y * sr.getScaleFactor()));
-        roundedTexturedShader.setUniformf("rectSize", width * sr.getScaleFactor(), height * sr.getScaleFactor());
-        roundedTexturedShader.setUniformf("radius", radius * sr.getScaleFactor());
+        roundedTexturedShader.setUniformf("location", x2 * (float)sr.getScaleFactor(), (float)Minecraft.getMinecraft().displayHeight - height * (float)sr.getScaleFactor() - y2 * (float)sr.getScaleFactor());
+        roundedTexturedShader.setUniformf("rectSize", width * (float)sr.getScaleFactor(), height * (float)sr.getScaleFactor());
+        roundedTexturedShader.setUniformf("radius", radius * (float)sr.getScaleFactor());
     }
 
+    public static void round(float x2, float y2, float width, float height, float radius, Color color) {
+        RenderUtils.resetColor();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(770, 771);
+        roundedShader.init();
+        RoundedUtil.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedShader);
+        roundedShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
+        ShaderUtil.drawQuads(x2 - 1.0f, y2 - 1.0f, width + 2.0f, height + 2.0f);
+        roundedShader.unload();
+        GlStateManager.disableBlend();
+    }
 
+    public static void rect(float x2, float y2, float width, float height) {
+        GL11.glBegin((int)7);
+        GL11.glTexCoord2f((float)0.0f, (float)0.0f);
+        GL11.glVertex2f((float)x2, (float)y2);
+        GL11.glTexCoord2f((float)0.0f, (float)1.0f);
+        GL11.glVertex2f((float)x2, (float)(y2 + height));
+        GL11.glTexCoord2f((float)1.0f, (float)1.0f);
+        GL11.glVertex2f((float)(x2 + width), (float)(y2 + height));
+        GL11.glTexCoord2f((float)1.0f, (float)0.0f);
+        GL11.glVertex2f((float)(x2 + width), (float)y2);
+        GL11.glEnd();
+    }
+
+    public static void round(int x2, int y2, int width, int height, float radius, int rgb) {
+        RoundedUtil.round((float)x2, (float)y2, (float)width, (float)height, radius, new Color(rgb));
+    }
 }
+

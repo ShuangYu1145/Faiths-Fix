@@ -1,21 +1,18 @@
 package net.minecraft.client.gui;
 
 import dev.faiths.Faiths;
-import dev.faiths.module.client.ModuleHUD;
-import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.RoundedUtil;
-import dev.faiths.value.ValueBoolean;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
 import org.lwjgl.opengl.GL11;
 
-import static dev.faiths.module.client.ModuleHUD.globalalpha;
+import static dev.faiths.utils.render.RenderUtils.drawOutLineRect;
 import static net.minecraft.client.renderer.GlStateManager.resetColor;
 
 public class GuiButton extends Gui {
@@ -81,7 +78,7 @@ public class GuiButton extends Gui {
     }
 
     public void drawOutLineRect(final float x, final float y, final float width, final float height,
-            final float size, final int internalColor, final int borderColor) {
+                                final float size, final int internalColor, final int borderColor) {
         RenderUtils.drawRect(x, y, width, height, internalColor);
 
         RenderUtils.drawRect(x, y, size, height, borderColor);
@@ -98,58 +95,6 @@ public class GuiButton extends Gui {
      * Draws this button to the screen.
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-
-        if (visible) {
-            hovered = (mouseX >= xPosition && mouseY >= yPosition &&
-                    mouseX < xPosition + width && mouseY < yPosition + height);
-            final float deltaTime = Faiths.delta;
-
-            if (enabled && hovered) {
-                alpha += 0.3F * deltaTime;
-                if (alpha >= 210) alpha = 210;
-            } else {
-                alpha -= 0.3F * deltaTime;
-                if (alpha <= 120) alpha = 120;
-            }
-
-
-
-            try {
-                /*
-                Gui.drawRect(xPosition, yPosition,
-                        xPosition + width, yPosition + height,
-                        enabled ? new Color(0F, 0F, 0F, alpha / 255F).getRGB() :
-                                new Color(0.5F, 0.5F, 0.5F, 0.5F).getRGB());
-
-                 */
-
-                RoundedUtil.drawRound(xPosition, yPosition,
-                        width, height, 4,
-                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, globalalpha.getValue()));
-
-
-//                RoundedUtil.drawRoundOutline(xPosition, yPosition,
-//                        width, height, 4,0.5f,
-//                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, 150),ModuleHUD.color(ModuleHUD.colortick.getValue()));
-            } catch (final Exception ignored) {
-
-            }
-
-            mc.getTextureManager().bindTexture(buttonTextures);
-            mouseDragged(mc, mouseX, mouseY);
-
-
-            if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-                FontManager.bold15.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
-                        yPosition + (height - 5) / 2F,1,50);
-            } else {
-                mc.fontRendererObj.drawString(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
-                        yPosition + (height - 5) / 2F, new Color(187, 187, 187, 189).getRGB());
-                }
-
-            resetColor();
-
-        /*
         if (visible) {
             hovered = (mouseX >= xPosition && mouseY >= yPosition &&
                     mouseX < xPosition + width && mouseY < yPosition + height);
@@ -193,7 +138,6 @@ public class GuiButton extends Gui {
                         yPosition + (height - 5) / 2F, Color.gray.getRGB());
             }
             resetColor();
-         */
         }
     }
 

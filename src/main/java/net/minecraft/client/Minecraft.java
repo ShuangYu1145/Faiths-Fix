@@ -14,6 +14,7 @@ import dev.faiths.event.impl.*;
 import dev.faiths.module.player.ModuleFastPlace;
 import dev.faiths.module.render.ModuleMotionBlur;
 import dev.faiths.module.world.ModuleDisabler;
+import dev.faiths.ui.menu.GuiWelcome;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -453,6 +454,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.fontRendererObj = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
         this.fontRendererCrack = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/crack.png"), this.renderEngine, false);
 
+        new Faiths();
+        Faiths.onLoaded();
+
         if (this.gameSettings.language != null)
         {
             this.fontRendererObj.setUnicodeFlag(this.isUnicode());
@@ -515,15 +519,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
-        new Faiths();
-        Faiths.onLoaded();
         if (this.serverName != null)
         {
-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiConnecting(new GuiWelcome(), this, this.serverName, this.serverPort));
         }
         else
         {
-            this.displayGuiScreen(new GuiMainMenu());
+            this.displayGuiScreen(new GuiWelcome());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);

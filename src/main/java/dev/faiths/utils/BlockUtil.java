@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MovingObjectPosition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +15,35 @@ import static dev.faiths.utils.IMinecraft.mc;
 public class BlockUtil {
 
 
+    public static boolean isFluid(Block block) {
+        return block.getMaterial() == Material.lava || block.getMaterial() == Material.water;
+    }
+
+
+    public static boolean isInteractable(Block block) {
+        return block instanceof BlockFurnace || block instanceof BlockTrapDoor || block instanceof BlockDoor || block instanceof BlockContainer || block instanceof BlockJukebox || block instanceof BlockFenceGate || block instanceof BlockChest || block instanceof BlockEnderChest || block instanceof BlockEnchantmentTable || block instanceof BlockBrewingStand || block instanceof BlockBed || block instanceof BlockDropper || block instanceof BlockDispenser || block instanceof BlockHopper || block instanceof BlockAnvil || block instanceof BlockNote || block instanceof BlockWorkbench;
+    }
+
+    public static boolean isInteractable(MovingObjectPosition mv) {
+        if (mv == null || mv.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK || mv.getBlockPos() == null) {
+            return false;
+        }
+        if (!mc.thePlayer.isSneaking() || mc.thePlayer.getHeldItem() == null) {
+            return isInteractable(BlockUtil.getBlock(mv.getBlockPos()));
+        }
+        return false;
+    }
+
     public static boolean isAirBlock(final BlockPos blockPos) {
         final Block block = Minecraft.getMinecraft().theWorld.getBlockState(blockPos).getBlock();
         return block instanceof BlockAir;
+    }
+
+    public static boolean replaceable(BlockPos blockPos) {
+        if (!Utils.nullCheck()) {
+            return true;
+        }
+        return getBlock(blockPos).isReplaceable(mc.theWorld, blockPos);
     }
 
     public static boolean isValidBock(final BlockPos blockPos) {

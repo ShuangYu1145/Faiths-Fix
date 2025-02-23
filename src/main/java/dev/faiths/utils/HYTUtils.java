@@ -1,30 +1,14 @@
 package dev.faiths.utils;
 
 import dev.faiths.Faiths;
-import dev.faiths.event.impl.PacketEvent;
-import dev.faiths.module.combat.ModuleGapple;
-import dev.faiths.module.combat.ModuleKillAura;
-import dev.faiths.module.movement.ModuleSpeed;
-import dev.faiths.module.player.ModuleContainerStealer;
-import dev.faiths.module.player.ModuleInvManager;
-import dev.faiths.module.world.ModuleContainerAura;
-import dev.faiths.ui.notifiction.NotificationType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.client.C01PacketChatMessage;
-import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
-
-import java.util.Iterator;
-
 import static dev.faiths.utils.IMinecraft.mc;
 
 public class HYTUtils {

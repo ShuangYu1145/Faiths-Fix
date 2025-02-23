@@ -564,6 +564,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         this.buttonList.clear();
 
         this.initGui();
+        GuiMainMenu.restProgress();
     }
 
     /**

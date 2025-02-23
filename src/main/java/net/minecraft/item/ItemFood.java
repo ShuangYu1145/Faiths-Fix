@@ -21,7 +21,7 @@ public class ItemFood extends Item
     /**
      * If this field is true, the food can be consumed even if the player don't need to eat.
      */
-    private boolean alwaysEdible;
+    public boolean alwaysEdible;
 
     /**
      * represents the potion effect that will occurr upon eating this food. Set by setPotionEffect

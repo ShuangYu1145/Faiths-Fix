@@ -80,7 +80,7 @@ public class GuiIngame extends Gui
     private int titlesTimer;
 
     /** The current title displayed */
-    private String displayedTitle = "";
+    public String displayedTitle = "";
 
     /** The current sub-title displayed */
     private String displayedSubTitle = "";
@@ -307,7 +307,7 @@ public class GuiIngame extends Gui
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.displayedSubTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedSubTitle, "恭喜获得胜利", "啾啾");
+                this.displayedSubTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedSubTitle, "恭喜获得胜利", "凌言");
                 this.getFontRenderer().drawString(this.displayedSubTitle, (float)(-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.disableBlend();
@@ -382,6 +382,8 @@ public class GuiIngame extends Gui
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
+        ScaledResolution sr = new ScaledResolution(mc);
+        Faiths.INSTANCE.getEventManager().callEvent(new Render2DEvent(partialTicks, sr));
 
         ScreenShotHelper.checkScreenshotFlag();
     }
@@ -415,7 +417,6 @@ public class GuiIngame extends Gui
             GlStateManager.disableRescaleNormal();
             GlStateManager.disableBlend();
 
-            Faiths.INSTANCE.getEventManager().callEvent(new Render2DEvent(partialTicks, sr));
         }
     }
 

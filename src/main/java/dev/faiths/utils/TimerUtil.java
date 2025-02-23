@@ -57,4 +57,12 @@ public class TimerUtil {
     public void setTime(long time) {
         this.lastMS = time;
     }
+
+    public long getElapsedTime() {
+        return System.currentTimeMillis() - this.lastMS;
+    }
+
+    public void setLastMs(long lastMs) {
+        this.lastMS = lastMs;
+    }
 }

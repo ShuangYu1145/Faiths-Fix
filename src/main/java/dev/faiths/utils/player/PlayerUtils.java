@@ -1,5 +1,7 @@
 package dev.faiths.utils.player;
 
+import dev.faiths.Faiths;
+import dev.faiths.module.movement.ModuleNoSlow;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -23,6 +25,7 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.HashMap;
 
 import static dev.faiths.utils.IMinecraft.mc;
+import static dev.faiths.utils.Utils.bowBackwards;
 
 public class PlayerUtils {
     private static final HashMap<Integer, Integer> GOOD_POTIONS = new HashMap<Integer, Integer>() {{
@@ -308,5 +311,26 @@ public class PlayerUtils {
 
     public static boolean isGoingDiagonally(double amount) {
         return Math.abs(mc.thePlayer.motionX) > amount && Math.abs(mc.thePlayer.motionZ) > amount;
+    }
+    public static boolean noSlowingBackWithBow() {
+        if (Faiths.moduleManager.getModule(ModuleNoSlow.class).noSlowing && bowBackwards()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static double getHorizontalSpeed() {
+        return getHorizontalSpeed(mc.thePlayer);
+    }
+
+    public static double getHorizontalSpeed(Entity entity) {
+        return Math.sqrt(entity.motionX * entity.motionX + entity.motionZ * entity.motionZ);
+    }
+
+    public static int getSpeedAmplifier() {
+        if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+            return 1 + mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+        }
+        return 0;
     }
 }

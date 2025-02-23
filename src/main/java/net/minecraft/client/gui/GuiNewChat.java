@@ -1,9 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
-import dev.faiths.Faiths;
-import dev.faiths.ui.notifiction.NotificationType;
-import dev.faiths.utils.render.GlowUtils;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.utils.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,65 +43,57 @@ public class GuiNewChat extends Gui
             int k = this.drawnChatLines.size();
             float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
-            if (k > 0)
-            {
-                if (this.getChatOpen())
-                {
+            if (k > 0) {
+                if (this.getChatOpen()) {
                     flag = true;
                 }
 
                 float f1 = this.getChatScale();
-                int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
+                int l = MathHelper.ceiling_float_int((float) this.getChatWidth() / f1);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(2.0F, 20.0F, 0.0F);
                 GlStateManager.scale(f1, f1, 1.0F);
 
-                for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1)
-                {
-                    ChatLine chatline = (ChatLine)this.drawnChatLines.get(i1 + this.scrollPos);
+                int i2 = 0;
+                int j2 = 0;
 
-                    if (chatline != null)
-                    {
+                for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1) {
+                    ChatLine chatline = (ChatLine) this.drawnChatLines.get(i1 + this.scrollPos);
+
+                    if (chatline != null) {
                         int j1 = updateCounter - chatline.getUpdatedCounter();
 
-                        if (j1 < 200 || flag)
-                        {
-                            double d0 = (double)j1 / 200.0D;
+                        if (j1 < 200 || flag) {
+                            double d0 = (double) j1 / 200.0D;
                             d0 = 1.0D - d0;
                             d0 = d0 * 10.0D;
                             d0 = MathHelper.clamp_double(d0, 0.0D, 1.0D);
                             d0 = d0 * d0;
-                            int l1 = (int)(255.0D * d0);
+                            int l1 = (int) (255.0D * d0);
 
-                            if (flag)
-                            {
+                            if (flag) {
                                 l1 = 255;
                             }
 
-                            l1 = (int)((float)l1 * f);
+                            l1 = (int) ((float) l1 * f);
                             ++j;
 
-                            if (l1 > 3)
-                            {
-                                int i2 = 0;
-                                int j2 = -i1 * 9;
-                                drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
-                                /* NO USE
-                                RoundedUtil.drawRound(i2, j2 - 9, i2 + l + 4, 9,4,new Color(0, 0, 0,150));
-                                GlowUtils.drawGlow(i2, j2 - 9, i2 + l + 4, 9,4,new Color(0, 0, 0,50));
-                                */
+                            if (l1 > 3) {
+                                i2 = 0;
+                                j2 = -i1 * 9;
+
+                               drawRect(i2, j2 - 9 - ModuleHUD.chatheight, i2 + l + 4, j2 - ModuleHUD.chatheight, l1 / 2 << 24);
+
                                 String message = getReplacedMessage(chatline.getChatComponent());
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(message, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                this.mc.fontRendererObj.drawStringWithShadow(message, (float) i2, (float) (j2 - 8) - ModuleHUD.chatheight, 16777215 + (l1 << 24));
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
                         }
                     }
                 }
-
-                if (flag)
-                {
+                if (flag) {
                     int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int l2 = k * k2 + k;
@@ -111,8 +101,7 @@ public class GuiNewChat extends Gui
                     int j3 = this.scrollPos * i3 / k;
                     int k1 = i3 * i3 / l2;
 
-                    if (l2 != i3)
-                    {
+                    if (l2 != i3) {
                         int k3 = j3 > 0 ? 170 : 96;
                         int l3 = this.isScrolled ? 13382451 : 3355562;
                         drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
@@ -230,7 +219,7 @@ public class GuiNewChat extends Gui
 
     /**
      * Adds this string to the list of sent messages, for recall using the up/down arrow keys
-     *  
+     *
      * @param message The message to add in the sendMessage List
      */
     public void addToSentMessages(String message)
@@ -252,7 +241,7 @@ public class GuiNewChat extends Gui
 
     /**
      * Scrolls the chat by the given number of lines.
-     *  
+     *
      * @param amount The amount to scroll
      */
     public void scroll(int amount)
@@ -274,7 +263,7 @@ public class GuiNewChat extends Gui
 
     /**
      * Gets the chat component under the mouse
-     *  
+     *
      * @param mouseX The x position of the mouse
      * @param mouseY The y position of the mouse
      */
@@ -345,7 +334,7 @@ public class GuiNewChat extends Gui
 
     /**
      * finds and deletes a Chat line by ID
-     *  
+     *
      * @param id The ChatLine's id to delete
      */
     public void deleteChatLine(int id)

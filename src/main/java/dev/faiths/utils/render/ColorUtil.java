@@ -374,4 +374,14 @@ public class ColorUtil {
         return (color >> bitChange) & 255;
     }
 
+    public static Color getColorByInt(int color) {
+
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        float a = (float)(color >> 24 & 255) / 255.0F;
+
+        return new Color(r, g, b, a);
+    }
+
 }

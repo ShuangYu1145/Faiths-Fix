@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
@@ -60,7 +61,7 @@ public class ModuleTargetHUD extends CheatModule {
 
     private final Handler<Render2DEvent> renderHandler = event -> {
         EntityLivingBase target = ModuleKillAura.target;
-        if (!(target instanceof EntityPlayer)) return;
+        if (target == null) return;
         if (mc.currentScreen instanceof GuiChat) {
             MouseInputHandler.addMouseCallback((mouseX, mouseY) -> {
                 if (prevX == 0 && prevY == 0) {
@@ -214,12 +215,12 @@ public class ModuleTargetHUD extends CheatModule {
         GlStateManager.translate(x, y, 0f);
         if(easingHealth < 0) easingHealth = e.getHealth();
         RenderUtils.drawRoundedRect(0,0,70f+mc.fontRendererObj.getStringWidth(e.getName()),40f,12f,new Color(0,0,0, 92).getRGB());
-        RenderUtils.drawOutline(8,0,62f+mc.fontRendererObj.getStringWidth(e.getName()),24f,8f,2f,6f, ModuleHUD.maincolor.getValue(),ModuleHUD.secondcolor.getValue());
+        RenderUtils.drawOutline(8,0,62f+mc.fontRendererObj.getStringWidth(e.getName()),24f,8f,2f,6f,new Color(133 , 206 , 251),new Color(3 , 169 , 244));
         mc.fontRendererObj.drawStringWithShadow(e.getName(),7f,10f,new Color(244 , 67 , 54).getRGB());
         mc.fontRendererObj.drawStringWithShadow(e.getHealth() > mc.thePlayer.getHealth() ? "L" : "W",mc.fontRendererObj.getStringWidth(e.getName()) + 55f,10f,e.getHealth() > mc.thePlayer.getHealth() ? new Color(244 , 67 , 54).getRGB() : new Color(0 , 255 , 0).getRGB());
         mc.fontRendererObj.drawStringWithShadow(DF_1.format(e.getHealth()),7f+mc.fontRendererObj.getStringWidth(e.getName())+4f,10f,RenderUtils.getHealthColor(e.getHealth(),e.getMaxHealth()).getRGB());
 
-        RenderUtils.drawGradientRoundedRectH(6,10+15, (int) ((70f+mc.fontRendererObj.getStringWidth(e.getName())-5f) * (easingHealth / e.getMaxHealth())),10+15+5,2,ModuleHUD.maincolor.getValue().getRGB(),ModuleHUD.secondcolor.getValue().getRGB());
+        RenderUtils.drawGradientRoundedRectH(6,10+15, (int) ((70f+mc.fontRendererObj.getStringWidth(e.getName())-5f) * (easingHealth / e.getMaxHealth())),10+15+5,2,new Color(133 , 206 , 251).getRGB(),new Color(3 , 169 , 244).getRGB());
         easingHealth += (float) ((e.getHealth() - easingHealth) / Math.pow(1.2F, 10.0F - 4f));
         GlStateManager.resetColor();
         GlStateManager.enableAlpha();

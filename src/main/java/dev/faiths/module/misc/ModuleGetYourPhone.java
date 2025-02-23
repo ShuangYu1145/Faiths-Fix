@@ -35,7 +35,6 @@ public class ModuleGetYourPhone extends CheatModule {
             e.printStackTrace();
             ClientUtils.displayChatMessage("java.io.FileNotFoundException");
         }
-
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath2))) {
             String line;
             while ((line = reader.readLine()) != null) {

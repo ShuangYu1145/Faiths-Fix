@@ -35,7 +35,8 @@ public class ServerUtils {
     }
 
     public static boolean isHypixel() {
-        return mc.theWorld != null && mc.ingameGUI.getTabList() != null && mc.ingameGUI.getTabList().getHeader().getUnformattedText().toLowerCase(Locale.ROOT).contains("hypixel.net");
+        return !mc.isSingleplayer() && mc.getCurrentServerData() != null && mc.getCurrentServerData().serverIP.contains("hypixel.net");
+
     }
 
     public static boolean hostModified(String server) {

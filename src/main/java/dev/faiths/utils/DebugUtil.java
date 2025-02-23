@@ -25,12 +25,12 @@ public class DebugUtil {
     }
 
     public static void log(boolean prefix, Object message) {
-        String text = EnumChatFormatting.AQUA + "[" + "Faiths" + "] " + RESET + message;
+        String text = EnumChatFormatting.AQUA + "[" + "F" + "] " + RESET + message;
         mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(text));
     }
 
     public static void log(String prefix, Object message) {
-        String text = EnumChatFormatting.AQUA + "[" + "Faiths" + "-" + prefix + "] " + RESET + " " + message;
+        String text = EnumChatFormatting.AQUA + "[" + "F" + "-" + prefix + "] " + RESET + " " + message;
         mc.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(text));
     }
 

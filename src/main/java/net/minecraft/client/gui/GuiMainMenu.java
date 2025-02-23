@@ -9,6 +9,7 @@ import dev.faiths.ui.menu.AstolfoMenuButton;
 
 import dev.faiths.utils.render.BlurUtil;
 import dev.faiths.utils.render.RenderUtils;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.Display;
@@ -23,6 +24,9 @@ import java.util.Random;
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     protected List<AstolfoMenuButton> buttons = Lists.<AstolfoMenuButton>newArrayList();
     private static final Random RANDOM = new Random();
+
+    public static float progress;
+    public static long startTime;
 
     /**
      * Counts the number of screen updates.
@@ -138,20 +142,41 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
      * renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (progress < 1) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - startTime;
+            float totalTimeInSeconds = 1f;
+            progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 1000f));
+            double trueAnim = 1 - Math.pow(1 - progress, 8);
+            GlStateManager.translate((1 - trueAnim) * (this.width / 2D), (1 - trueAnim) * (this.height / 2D), 0D);
+            GlStateManager.scale(trueAnim, trueAnim, trueAnim);
+            RenderUtils.drawImage(
+                    new ResourceLocation("client/furry.png"),
+                    0,
+                    0,
+                    this.width,
+                    this.height);
+            BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
+        }
 
+        if (!(progress < 1)) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - startTime;
+            float totalTimeInSeconds = 1f;
+            progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 1000f));
+            double trueAnim = 1 - Math.pow(1 - progress, 8);
+            GlStateManager.translate((1 - trueAnim) * (this.width / 2D), (1 - trueAnim) * (this.height / 2D), 0D);
+            GlStateManager.scale(trueAnim, trueAnim, trueAnim);
+            RenderUtils.drawImage(
+                    new ResourceLocation("client/furry.png"),
+                    0,
+                    0,
+                    this.width,
+                    this.height);
+            BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
+        }
 
-        RenderUtils.drawImage(
-                new ResourceLocation("client/furry.png"),
-                0,
-                0,
-                this.width,
-                this.height);
-        BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
-
-
-
-
-
+        startProgress();
 
         String s = "Faiths Client #" + Faiths.VERSION;
         fontRendererObj.drawStringDynamic(s, 5, this.height - 10,1,50);
@@ -206,5 +231,22 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     public void onGuiClosed() {
         this.buttons.clear();
 
+    }
+
+    //界面动画
+    public void startProgress() {
+        if (progress < 1) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - startTime;
+            float totalTimeInSeconds = 5000f;
+            progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 0.2f));
+            double trueAnim = 1 - Math.pow(1 - progress, 4);
+            GlStateManager.translate((1 - trueAnim) * ((double) width), (1 - trueAnim) * ((double) height / 1000),  trueAnim);
+        }
+    }
+
+    public static void restProgress() {
+        progress = 0;
+        startTime = System.currentTimeMillis();
     }
 }

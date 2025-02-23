@@ -10,6 +10,7 @@ import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.player.PlayerUtils;
 import dev.faiths.utils.player.RotationUtils;
 import dev.faiths.utils.render.RenderUtils;
+import dev.faiths.value.ValueBoolean;
 import dev.faiths.value.ValueInt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -35,13 +36,14 @@ import static dev.faiths.utils.IMinecraft.mc;
 @SuppressWarnings("unused")
 public class ModuleBedBreaker extends CheatModule {
     public static double currentDamage;
-    private BlockPos currentPos;
+    public BlockPos currentPos;
     private int bestToolSlot = -1;
     public static boolean skipAb = false;
 
     static BlockPos whiteListed = new BlockPos(0, 0, 0);
     private final List<BlockPos> targets = new ArrayList<>();
-    private final ValueInt radius = new ValueInt("Radius", 4, 3, 5);
+    public final ValueInt radius = new ValueInt("Radius", 4, 3, 5);
+    public final ValueBoolean disableBHop = new ValueBoolean("Disable bhop", true);
 
     public ModuleBedBreaker() {
         super("BedBreaker", Category.WORLD,"挖床器");
@@ -108,7 +110,7 @@ public class ModuleBedBreaker extends CheatModule {
             mc.theWorld.sendBlockBreakProgress(mc.thePlayer.getEntityId(), currentPos, (int) (this.currentDamage * 10.0F) - 1);
         }
     };
-    
+
     private final Handler<MotionEvent> motionEventHandler = event -> {
         if (currentPos != null) {
             if (!bedAround()) {

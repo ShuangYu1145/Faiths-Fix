@@ -124,6 +124,12 @@ public class Faiths {
             e.printStackTrace();
         }
 
+//        try {
+//            ModuleIRC.startIRCThread();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         Faiths.isInitializing = false;
     }
 

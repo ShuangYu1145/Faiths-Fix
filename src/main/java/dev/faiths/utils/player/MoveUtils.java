@@ -39,4 +39,7 @@ public class MoveUtils {
             mc.thePlayer.motionZ = forward * speed * Math.sin(Math.toRadians(yaw + 90.0F)) - strafe * speed * Math.cos(Math.toRadians(yaw + 90.0F));
         }
     }
+    public static boolean isMoving() {
+        return mc.thePlayer.moveForward != 0 || mc.thePlayer.moveStrafing != 0;
+    }
 }
