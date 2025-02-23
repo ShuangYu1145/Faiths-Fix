@@ -65,4 +65,10 @@ Faiths Client
 
 #1/23
 [+]改了好多，都忘了
+
+#2/23
+[+]更新了一些Gui和一些Gui动画，看起来更丝滑
+[+]一些Utils
+[+/-]一些HUD(Bug)
+[+]Bhop(Bypass Watchdog)🐔🐔🐔
 ```
