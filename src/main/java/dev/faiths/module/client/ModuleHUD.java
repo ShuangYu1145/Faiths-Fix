@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.Packet;
@@ -261,11 +262,10 @@ public class ModuleHUD extends CheatModule {
                 }
 
                 if (modulelist.isEnabled("Background")) {
-
                     RenderUtils.drawRectOriginal(slide - 2, module.height, 0F,
                             module.height + fontRenderer.getHeight() + 4F, new Color(0, 0, 0, globalalpha.getValue()));
-
                 }
+
                 fontRenderer.drawString(displayText, slide, module.height + 2.5F,
                          ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB(), false);
                 fontRenderer.drawString(module.getSuffix(), slide + fontRenderer.getStringWidth(displayText) + 2, module.height + 3F, new Color(160, 160, 160).getRGB(), false);
@@ -372,20 +372,20 @@ public class ModuleHUD extends CheatModule {
         if (information.isEnabled("ClientName")) {
             final String name = "Faiths" + " | " + mc.thePlayer.getName() + " | " + "FPS:" + mc.getDebugFPS();
             if (facyfont.getValue()) {
-           FontManager.sf24.drawStringDynamicWithShadow(name, 3f, 5f,1,50);
+                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
                 if (glow.getValue()) {
                     GlowUtils.drawGlow(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4,new Color(0, 0, 0,globalalpha.getValue()));
                 }
-                RoundedUtil.drawRound(2.0f, 3.5f, FontManager.sf24.getStringWidth(name) + 2, FontManager.sf24.getHeight() + 4, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
+                FontManager.sf24.drawStringDynamicWithShadow(name, 3f, 5f,1,50);
             } else {
                 // for (int i = 0; i < name.length(); ++i) {
-                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 1, mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
-                mc.fontRendererObj.drawStringWithShadow(name, 2.5f, 4.5f,
-                        ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+                RoundedUtil.drawRound(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 2, mc.fontRendererObj.getHeight(name) + 1, 4 ,new Color(0, 0, 0, globalalpha.getValue()));
              // }
                 if (glow.getValue()) {
-                    GlowUtils.drawGlow(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 1, mc.fontRendererObj.getHeight(name) + 1, 4,new Color(0, 0, 0,globalalpha.getValue()));
+                    GlowUtils.drawGlow(2.0f, 3.5f, mc.fontRendererObj.getStringWidth(name) + 2, mc.fontRendererObj.getHeight(name) + 1, 4,new Color(0, 0, 0,globalalpha.getValue()));
                 }
+                mc.fontRendererObj.drawStringDynamic(name, 3.0f, 5f,
+                        1,50);
             }
         }
 

@@ -16,6 +16,7 @@ import org.lwjgl.opengl.Display;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import tech.skidonion.obfuscator.inline.Wrapper;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -142,6 +143,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
      * renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        RenderUtils.drawRect(0, 0, Display.getWidth(), Display.getHeight(),new Color(0,0,0));
         if (progress < 1) {
             long currentTime = System.currentTimeMillis();
             long elapsedTime = currentTime - startTime;

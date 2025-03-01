@@ -38,8 +38,9 @@ public class GuiWelcome extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         LocalTime currentTime = LocalTime.now();
         String greeting = getGreeting(currentTime);
+
         if(fadeAnimation == null) {
-            fadeAnimation = new DecelerateAnimation(5000, 1);
+            fadeAnimation = new DecelerateAnimation(3000, 1);
             fadeAnimation.setDirection(Direction.FORWARDS);
             fadeAnimation.reset();
         }
@@ -48,54 +49,11 @@ public class GuiWelcome extends GuiScreen {
         Date date = new Date(System.currentTimeMillis());
 
         if (progress < 1) {
-            long currentTime1 = System.currentTimeMillis();
-            long elapsedTime = currentTime1 - startTime;
-            float totalTimeInSeconds = 1f;
-            progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 1000f));
-            double trueAnim = 1 - Math.pow(1 - progress, 8);
-            GlStateManager.translate((1 - trueAnim) * (this.width / 2D), (1 - trueAnim) * (this.height / 2D), 0D);
-            GlStateManager.scale(trueAnim, trueAnim, trueAnim);
-            Color c = new Color(ModuleHUD.color.getValue().getRGB());
-            Color c2 = new Color(ModuleHUD.color2.getValue().getRGB());
-
-            mc.getTextureManager().bindTexture(new ResourceLocation("client/bg.png"));
-            Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer bufferbuilder = tessellator.getWorldRenderer();
-            bufferbuilder.begin(9, DefaultVertexFormats.POSITION_TEX_COLOR);
-            bufferbuilder.pos(0, this.height, 0.0).tex(0.0, 1.0).color(c.getRed(), c.getGreen(), c.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(this.width, this.height, 0.0).tex(1.0, 1.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(this.width, 0, 0.0).tex(1.0, 0.0).color(c.getRed(), c.getGreen(), c.getBlue(),(int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(0, 0, 0.0).tex(0.0, 0.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            GlStateManager.shadeModel(7425);
-            GlStateManager.depthMask(false);
-            tessellator.draw();
-            GlStateManager.depthMask(true);
-            GlStateManager.shadeModel(7424);
+            drawbg();
         }
-        if (!(progress < 1)) {
-            long currentTime1 = System.currentTimeMillis();
-            long elapsedTime = currentTime1 - startTime;
-            float totalTimeInSeconds = 1f;
-            progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 1000f));
-            double trueAnim = 1 - Math.pow(1 - progress, 8);
-            GlStateManager.translate((1 - trueAnim) * (this.width / 2D), (1 - trueAnim) * (this.height / 2D), 0D);
-            GlStateManager.scale(trueAnim, trueAnim, trueAnim);
-            Color c = new Color(ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-            Color c2 = new Color(ModuleHUD.color2.getValue().getRGB());
 
-            mc.getTextureManager().bindTexture(new ResourceLocation("client/bg.png"));
-            Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer bufferbuilder = tessellator.getWorldRenderer();
-            bufferbuilder.begin(9, DefaultVertexFormats.POSITION_TEX_COLOR);
-            bufferbuilder.pos(0, this.height, 0.0).tex(0.0, 1.0).color(c.getRed(), c.getGreen(), c.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(this.width, this.height, 0.0).tex(1.0, 1.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(this.width, 0, 0.0).tex(1.0, 0.0).color(c.getRed(), c.getGreen(), c.getBlue(),(int) (fadeAnimation.getValue() * 255)).endVertex();
-            bufferbuilder.pos(0, 0, 0.0).tex(0.0, 0.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
-            GlStateManager.shadeModel(7425);
-            GlStateManager.depthMask(false);
-            tessellator.draw();
-            GlStateManager.depthMask(true);
-            GlStateManager.shadeModel(7424);
+        if (!(progress < 1)) {
+            drawbg();
         }
 
 
@@ -129,5 +87,31 @@ public class GuiWelcome extends GuiScreen {
             mc.displayGuiScreen(new GuiMainMenu());
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    public void drawbg() {
+        long currentTime1 = System.currentTimeMillis();
+        long elapsedTime = currentTime1 - startTime;
+        float totalTimeInSeconds = 1f;
+        progress = Math.min(1.0f, elapsedTime / (totalTimeInSeconds * 1000f));
+        double trueAnim = 1 - Math.pow(1 - progress, 8);
+        GlStateManager.translate((1 - trueAnim) * (this.width / 2D), (1 - trueAnim) * (this.height / 2D), 0D);
+        GlStateManager.scale(trueAnim, trueAnim, trueAnim);
+        Color c = new Color(ModuleHUD.color.getValue().getRGB());
+        Color c2 = new Color(ModuleHUD.color2.getValue().getRGB());
+
+        mc.getTextureManager().bindTexture(new ResourceLocation("client/bg.png"));
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer bufferbuilder = tessellator.getWorldRenderer();
+        bufferbuilder.begin(9, DefaultVertexFormats.POSITION_TEX_COLOR);
+        bufferbuilder.pos(0, this.height, 0.0).tex(0.0, 1.0).color(c.getRed(), c.getGreen(), c.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
+        bufferbuilder.pos(this.width, this.height, 0.0).tex(1.0, 1.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
+        bufferbuilder.pos(this.width, 0, 0.0).tex(1.0, 0.0).color(c.getRed(), c.getGreen(), c.getBlue(),(int) (fadeAnimation.getValue() * 255)).endVertex();
+        bufferbuilder.pos(0, 0, 0.0).tex(0.0, 0.0).color(c2.getRed(), c2.getGreen(), c2.getBlue(), (int) (fadeAnimation.getValue() * 255)).endVertex();
+        GlStateManager.shadeModel(7425);
+        GlStateManager.depthMask(false);
+        tessellator.draw();
+        GlStateManager.depthMask(true);
+        GlStateManager.shadeModel(7424);
     }
 }

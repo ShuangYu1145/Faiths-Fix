@@ -4,7 +4,9 @@ import dev.faiths.event.Handler;
 import dev.faiths.event.impl.Render2DEvent;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
+import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.MouseInputHandler;
+import dev.faiths.utils.render.GlowUtils;
 import dev.faiths.utils.render.RoundedUtil;
 import dev.faiths.value.ValueInt;
 import net.minecraft.client.gui.GuiChat;
@@ -58,7 +60,7 @@ public class ModuleInventoryHUD extends CheatModule {
                 }
             });
             //打开聊天界面绘制
-            draw2();
+            draw();
             return;
         }
         prevX = 0;
@@ -69,42 +71,21 @@ public class ModuleInventoryHUD extends CheatModule {
 
     //绘制
     public void draw() {
-        boolean hasItems = false;
-        ItemStack[] inventory = mc.thePlayer.inventory.mainInventory;
-        for (int i = 9; i < inventory.length; i++) {
-            ItemStack stack = inventory[i];
-            if (stack != null) {
-                RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0,ModuleHUD.globalalpha.getValue()));
-            }
-        }
-        for (int i = 9; i < inventory.length; i++) {
-            ItemStack stack = inventory[i];
-            if (stack != null) {
-                hasItems = true;
-                int itemX = (int)xValue.getValue() + ((i - 9) % 9) * 18;
-                int itemY = (int)yValue.getValue() + ((i - 9) / 9) * 18 ;
-                drawItemStack(stack, itemX, itemY);
-            }
-        }
-    }
-
-
-    //绘制
-    public void draw2() {
-        boolean hasItems = false;
         ItemStack[] inventory = mc.thePlayer.inventory.mainInventory;
         RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0,ModuleHUD.globalalpha.getValue()));
+        if (ModuleHUD.glow.getValue()) {
+            GlowUtils.drawGlow(xValue.getValue() - 1, yValue.getValue() - 1, 162,55, 4,new Color(0, 0, 0,ModuleHUD.globalalpha.getValue()));
+        }
         for (int i = 9; i < inventory.length; i++) {
             ItemStack stack = inventory[i];
             if (stack != null) {
-                hasItems = true;
                 int itemX = (int)xValue.getValue() + ((i - 9) % 9) * 18;
                 int itemY = (int)yValue.getValue() + ((i - 9) / 9) * 18 ;
-
                 drawItemStack(stack, itemX, itemY);
             }
         }
     }
+
 
     private void drawItemStack(ItemStack stack, int x, int y) {
         RenderItem itemRender = mc.getRenderItem();
