@@ -307,7 +307,7 @@ public class GuiIngame extends Gui
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.displayedSubTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedSubTitle, "恭喜获得胜利", "凌言");
+                this.displayedSubTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedSubTitle, "恭喜获得胜利", "啾啾啾~");
                 this.getFontRenderer().drawString(this.displayedSubTitle, (float)(-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.disableBlend();
