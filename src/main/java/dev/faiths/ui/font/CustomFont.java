@@ -58,9 +58,6 @@ public class CustomFont {
         Rectangle2D maxBounds = font.getMaxCharBounds(this.context);
         this.fontWidth = (int)Math.ceil(maxBounds.getWidth());
         this.fontHeight = (int)Math.ceil(maxBounds.getHeight());
-        if (this.fontWidth > 127 || this.fontHeight > 127) {
-            throw new IllegalArgumentException("Font size to large!");
-        }
         this.textureWidth = this.resizeToOpenGLSupportResolution(this.fontWidth * 16);
         this.textureHeight = this.resizeToOpenGLSupportResolution(this.fontHeight * 16);
     }

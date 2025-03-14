@@ -13,6 +13,7 @@ public class FontManager {
     public static CustomFont p18;
     public static CustomFont p15;
     public static CustomFont p14;
+    public static CustomFont sf60;
     public static CustomFont sf72;
     public static CustomFont sf40;
     public static CustomFont sf24;
@@ -33,6 +34,7 @@ public class FontManager {
     public static void init() {
 
         sf72 = new CustomFont(getFont("MiSans-Regular.ttf", 65));
+        sf60 = new CustomFont(getFont("MiSans-Regular.ttf", 60));
         sf40 = new CustomFont(getFont("MiSans-Regular.ttf", 40));
         sf24 = new CustomFont(getFont("MiSans-Regular.ttf", 24));
         sf20 = new CustomFont(getFont("MiSans-Regular.ttf", 20));
@@ -40,6 +42,7 @@ public class FontManager {
         sf18 = new CustomFont(getFont("MiSans-Regular.ttf", 18));
         sf15 = new CustomFont(getFont("MiSans-Regular.ttf", 15));
         sf14 = new CustomFont(getFont("MiSans-Regular.ttf", 14));
+        sf12 = new CustomFont(getFont("MiSans-Regular.ttf", 12));
         p100 = new CustomFont(getFont("Paw.ttf", 100));
         p40 = new CustomFont(getFont("Paw.ttf", 40));
         p24 = new CustomFont(getFont("Paw.ttf", 24));

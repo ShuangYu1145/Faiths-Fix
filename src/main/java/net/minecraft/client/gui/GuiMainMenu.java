@@ -7,6 +7,7 @@ import dev.faiths.ui.altmanager.GuiAltManager;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.menu.AstolfoMenuButton;
 
+import dev.faiths.ui.menu.GuiAbout;
 import dev.faiths.utils.render.BlurUtil;
 import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -105,7 +106,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
                 p_73969_1_ + p_73969_2_ * 2, "AltManager"));
         this.buttons.add(new AstolfoMenuButton(3, this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 3,
                 "Options"));
-        this.buttons.add(new AstolfoMenuButton(4, this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 4,
+        this.buttons.add(new AstolfoMenuButton(5, this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 4,
+                "About"));
+        this.buttons.add(new AstolfoMenuButton(4, this.width / 2 - 50, p_73969_1_ + p_73969_2_ * 5,
                 "Quit"));
     }
 
@@ -130,6 +133,11 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         if (button.id == 4)
         {
             this.mc.shutdown();
+        }
+
+        if (button.id == 5)
+        {
+            this.mc.displayGuiScreen(new GuiAbout());
         }
 
         if (button.id == 14) {
