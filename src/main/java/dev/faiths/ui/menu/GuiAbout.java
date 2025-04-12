@@ -49,11 +49,11 @@ public class GuiAbout extends GuiScreen {
         FontManager.sf12.drawString("By ShuangYuTeam", width / 2.2F, 70, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
 
 
-        RoundedUtil.drawRound(width / 2.55F, 100,FontManager.sf60.getStringWidth(a) + 60, 150 , 4 , true , new Color(255,255,255, 170));
-
-        FontManager.sf24.drawString("Faiths-Fix", width / 2.5F, 107, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
-        FontManager.sf19.drawString("版本", width / 2.5F + 0.5F, 122, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
-        FontManager.sf19.drawString(Faiths.VERSION, width / 1.8F, 122, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 170)));
+//        RoundedUtil.drawRound(width / 2.55F, 100,200, 150 , 4 , true , new Color(255,255,255, 170));
+//
+//        FontManager.sf24.drawString("Faiths-Fix", width / 2.5F, 107, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
+//        FontManager.sf19.drawString("版本", width / 2.5F + 0.5F, 122, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
+//        FontManager.sf19.drawString(Faiths.VERSION, width / 1.8F, 122, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 170)));
 
         FontManager.sf19.drawString("github.com/ShuangYu1145/Faiths-Fix", this.width - fontRendererObj.getStringWidth("github.com/ShuangYu1145/Faiths-Fix") + 10, this.height - 10, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
         FontManager.sf19.drawString("本项目完全免费且开源", 2, this.height - 10, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));

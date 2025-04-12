@@ -4,20 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.faiths.Faiths;
 import dev.faiths.event.Handler;
-import dev.faiths.event.impl.PacketEvent;
 import dev.faiths.event.impl.Render2DEvent;
 import dev.faiths.event.impl.UpdateEvent;
 import dev.faiths.module.Category;
 import dev.faiths.module.CheatModule;
-import dev.faiths.ui.font.CustomFont;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.utils.ClientUtils;
 import dev.faiths.utils.MouseInputHandler;
 import dev.faiths.utils.render.GlowUtils;
-import dev.faiths.utils.render.ImageUtils;
-import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.utils.render.UrlImage;
 import dev.faiths.value.ValueBoolean;
 import dev.faiths.value.ValueInt;
 import net.minecraft.client.gui.GuiChat;
@@ -60,6 +57,13 @@ public class ModuleLXMusicDisplay extends CheatModule {
     String progress = null;
     String duration = null;
     String picurl = null;
+
+    UrlImage urlImage = new UrlImage(
+            picurl,
+            50, 50, 60, 60,
+            UrlImage.Type.Normal
+    );
+
 
 
     //开启的时候提示，可以删除
@@ -181,7 +185,9 @@ public class ModuleLXMusicDisplay extends CheatModule {
 
             //封面
             if(image.getValue()) {
-                ImageUtils.drawImageFromUrl(picurl, xValue.getValue(), yValue.getValue(), 60, 60);
+                urlImage.draw();
+                urlImage.setUrl(picurl);
+                urlImage.setBounds(xValue.getValue(), yValue.getValue(), 60, 60);
             }
 
             if (image.getValue()) {
