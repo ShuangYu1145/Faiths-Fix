@@ -1,9 +1,9 @@
 package dev.faiths.ui.font;
 
+import net.optifine.util.FontUtils;
+
 import java.awt.*;
 import java.io.InputStream;
-
-import static jdk.jfr.internal.SecuritySupport.getResourceAsStream;
 
 public class FontManager {
     public static CustomFont p100;
@@ -63,7 +63,7 @@ public class FontManager {
     private static Font getFont(String fontName, float fontSize) {
         Font font = null;
         try {
-            InputStream inputStream = getResourceAsStream("/assets/minecraft/client/font/" + fontName);
+            InputStream inputStream = FontUtils.class.getResourceAsStream("/assets/minecraft/client/font/" + fontName);
             assert (inputStream != null);
             font = Font.createFont(0, inputStream);
             font = font.deriveFont(fontSize);

@@ -33,7 +33,6 @@ public class ModuleGetYourPhone extends CheatModule {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ClientUtils.displayChatMessage("java.io.FileNotFoundException");
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath2))) {
             String line;
@@ -46,7 +45,6 @@ public class ModuleGetYourPhone extends CheatModule {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ClientUtils.displayChatMessage("java.io.FileNotFoundException");
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath3))) {
@@ -60,7 +58,6 @@ public class ModuleGetYourPhone extends CheatModule {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ClientUtils.displayChatMessage("java.io.FileNotFoundException");
         }
 
         Faiths.moduleManager.getModule(ModuleGetYourPhone.class).setState(false);
