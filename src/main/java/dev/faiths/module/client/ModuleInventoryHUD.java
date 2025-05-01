@@ -8,6 +8,7 @@ import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.MouseInputHandler;
 import dev.faiths.utils.render.GlowUtils;
 import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.utils.render.shader.ShaderElement;
 import dev.faiths.value.ValueInt;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
@@ -73,9 +74,8 @@ public class ModuleInventoryHUD extends CheatModule {
     public void draw() {
         ItemStack[] inventory = mc.thePlayer.inventory.mainInventory;
         RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0,ModuleHUD.globalalpha.getValue()));
-        if (ModuleHUD.glow.getValue()) {
-            GlowUtils.drawGlow(xValue.getValue() - 1, yValue.getValue() - 1, 162,55, 4,new Color(0, 0, 0,ModuleHUD.globalalpha.getValue()));
-        }
+        ShaderElement.addBlurTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0)));
+        ShaderElement.addBloomTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0)));
         for (int i = 9; i < inventory.length; i++) {
             ItemStack stack = inventory[i];
             if (stack != null) {

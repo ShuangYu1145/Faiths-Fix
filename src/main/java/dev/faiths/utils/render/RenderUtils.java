@@ -376,7 +376,7 @@ public class RenderUtils {
     }
     public static void drawWindow(float x, float y,float w,float h){
         drawBorderedRect(x,y,w,h,1,new Color(37, 38, 51).getRGB(),new Color(18,18,18,160).getRGB());
-        drawRect(x - 0.5,y - 1,w + 1,2, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
+        drawRect(x - 0.5,y - 1,w + 1,2, ModuleHUD.color.getValue().getRGB());
         drawRect(x - 0.5,y,w + 1,1,new Color(0,0,0,100).getRGB());
     }
 

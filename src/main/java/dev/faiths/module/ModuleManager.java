@@ -27,6 +27,9 @@ public class ModuleManager implements Listener {
     public ModuleManager() {
         Faiths.INSTANCE.getEventManager().registerEvent(this);
         // 注册模块
+        modules.add(new ModuleWatermark());
+        modules.add(new ModuleModuleList());
+        modules.add(new ModulePotionHUD());
         modules.add(new ModuleCNname());
         modules.add(new ModuleGetYourPhone());
         modules.add(new ModuleLXMusicDisplay());

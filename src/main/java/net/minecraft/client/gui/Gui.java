@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import dev.faiths.utils.render.GLUtil;
+import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -81,6 +83,21 @@ public class Gui
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
+    }
+
+    public static void drawRect3(double x, double y, double width, double height, int color) {
+        RenderUtils.resetColor();
+        RenderUtils.setAlphaLimit(0.0f);
+        GLUtil.setup2DRendering(true);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(x, y, 0.0).color(color).endVertex();
+        worldrenderer.pos(x, y + height, 0.0).color(color).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0).color(color).endVertex();
+        worldrenderer.pos(x + width, y, 0.0).color(color).endVertex();
+        tessellator.draw();
+        GLUtil.end2DRendering();
     }
 
     /**

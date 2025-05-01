@@ -189,13 +189,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         startProgress();
 
         String s = "Faiths Client #" + Faiths.VERSION;
-        fontRendererObj.drawStringDynamic(s, 5, this.height - 10,1,50);
+        fontRendererObj.drawString(s, 5, this.height - 10,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
 
         Optional<String> username = Wrapper.getUsername();
         if (username.isPresent())
         {
             String s2 = "Welcome, " + "Furry User" + "!";
-            fontRendererObj.drawStringDynamic(s2, this.width - fontRendererObj.getStringWidth(s2) - 2, this.height - 10, 1,50);
+            fontRendererObj.drawString(s2, this.width - fontRendererObj.getStringWidth(s2) - 2, this.height - 10, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
         }
 
 
@@ -212,7 +212,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 //                this.height / 4f - 40F,
 //                64F,
 //                64F,
-//                ModuleHUD.color(ModuleHUD.colortick.getValue()));
+//                ModuleHUD.color.getValue().getRGB());
 
 
         super.drawScreen(mouseX, mouseY, partialTicks);

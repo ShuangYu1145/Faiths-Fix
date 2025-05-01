@@ -77,4 +77,11 @@ public class RenderHelper
         enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
+    public static void glColor(int hex) {
+        float alpha = (float)(hex >> 24 & 0xFF) / 255.0f;
+        float red = (float)(hex >> 16 & 0xFF) / 255.0f;
+        float green = (float)(hex >> 8 & 0xFF) / 255.0f;
+        float blue = (float)(hex & 0xFF) / 255.0f;
+        GL11.glColor4f((float)red, (float)green, (float)blue, (float)alpha);
+    }
 }

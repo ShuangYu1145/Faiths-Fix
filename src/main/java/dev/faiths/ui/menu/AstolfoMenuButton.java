@@ -4,6 +4,7 @@ import dev.faiths.Faiths;
 import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.utils.render.shader.ShaderElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -116,7 +117,12 @@ public class AstolfoMenuButton extends Gui
                 RoundedUtil.drawRound(xPosition, yPosition,
                         width, height, 4,
                         enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0, globalalpha.getValue()));
-
+                ShaderElement.addBlurTask(() -> RoundedUtil.drawRound(xPosition, yPosition,
+                        width, height, 4,
+                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0)));
+                ShaderElement.addBloomTask(() -> RoundedUtil.drawRound(xPosition, yPosition,
+                        width, height, 4,
+                        enabled ? new Color(0, 0, 0, alpha / 255F) : new Color(0, 0, 0)));
 
 //                RoundedUtil.drawRoundOutline(xPosition, yPosition,
 //                        width, height, 4,0.5f,
@@ -129,13 +135,10 @@ public class AstolfoMenuButton extends Gui
             mc.getTextureManager().bindTexture(buttonTextures);
             mouseDragged(mc, mouseX, mouseY);
 
-            if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
+
                 FontManager.bold18.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2) - 1,
                         yPosition + (height - 5) / 2F,1,50);
-            } else {
-                mc.fontRendererObj.drawStringDynamic(displayString.toUpperCase(), (float) ((xPosition + width / 2) - mc.fontRendererObj.getStringWidth(displayString.toUpperCase()) / 2),
-                        yPosition + (height - 5) / 2F, 1,50);
-            }
+
 
             resetColor();
         }

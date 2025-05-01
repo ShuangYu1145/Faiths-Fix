@@ -28,7 +28,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static dev.faiths.module.client.ModuleHUD.globalalpha;
-import static dev.faiths.module.client.ModuleHUD.glow;
 import static dev.faiths.utils.IMinecraft.mc;
 
 
@@ -179,9 +178,6 @@ public class ModuleLXMusicDisplay extends CheatModule {
 
             //背景
             RoundedUtil.drawRound(xValue.getValue() - 5, yValue.getValue() - 5, 210, 60 + 20, 4, new Color(0, 0, 0, globalalpha.getValue()));
-            if (glow.getValue()) {
-                GlowUtils.drawGlow(xValue.getValue() - 5, yValue.getValue() - 5 , 210, 60 + 20, 4, new Color(0, 0, 0, globalalpha.getValue()));
-            }
 
             //封面
             if(image.getValue()) {

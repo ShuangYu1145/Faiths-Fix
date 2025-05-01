@@ -82,11 +82,11 @@ public class GuiNewChat extends Gui
                                 i2 = 0;
                                 j2 = -i1 * 9;
 
-                               drawRect(i2, j2 - 9 - ModuleHUD.chatheight, i2 + l + 4, j2 - ModuleHUD.chatheight, l1 / 2 << 24);
+                               drawRect(i2, j2 - 9 - ModuleHUD.getChatHeight(), i2 + l + 4, j2 - ModuleHUD.getChatHeight(), l1 / 2 << 24);
 
                                 String message = getReplacedMessage(chatline.getChatComponent());
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(message, (float) i2, (float) (j2 - 8) - ModuleHUD.chatheight, 16777215 + (l1 << 24));
+                                this.mc.fontRendererObj.drawStringWithShadow(message, (float) i2, (float) (j2 - 8) - ModuleHUD.getChatHeight(), 16777215 + (l1 << 24));
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }

@@ -1,62 +1,78 @@
 package dev.faiths.utils.render.shader;
 
+import dev.faiths.utils.render.GLUtil;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static dev.faiths.utils.IMinecraft.mc;
+import static dev.faiths.utils.render.shader.ShaderElement.createFrameBuffer;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 public class KawaseBlur {
+
     public static ShaderUtil kawaseDown = new ShaderUtil("kawaseDown");
     public static ShaderUtil kawaseUp = new ShaderUtil("kawaseUp");
+
     public static Framebuffer framebuffer = new Framebuffer(1, 1, false);
-    private static int currentIterations;
-    private static final List<Framebuffer> framebufferList;
 
     public static void setupUniforms(float offset) {
         kawaseDown.setUniformf("offset", offset, offset);
         kawaseUp.setUniformf("offset", offset, offset);
     }
 
+    private static int currentIterations;
+
+    private static final List<Framebuffer> framebufferList = new ArrayList<>();
+
     private static void initFramebuffers(float iterations) {
         for (Framebuffer framebuffer : framebufferList) {
             framebuffer.deleteFramebuffer();
         }
         framebufferList.clear();
-        framebuffer = RenderUtils.createFrameBuffer(null);
-        framebufferList.add(framebuffer);
-        int i = 1;
-        while ((float)i <= iterations) {
-            Framebuffer currentBuffer = new Framebuffer((int)((double) mc.displayWidth / Math.pow(2.0, i)), (int)((double) mc.displayHeight / Math.pow(2.0, i)), false);
-            currentBuffer.setFramebufferFilter(9729);
+
+        //Have to make the framebuffer null so that it does not try to delete a framebuffer that has already been deleted
+        framebufferList.add(framebuffer = createFrameBuffer(null));
+
+
+        for (int i = 1; i <= iterations; i++) {
+            Framebuffer currentBuffer = new Framebuffer((int) (mc.displayWidth / Math.pow(2, i)), (int) (mc.displayHeight / Math.pow(2, i)), false);
+            currentBuffer.setFramebufferFilter(GL_LINEAR);
             GlStateManager.bindTexture(currentBuffer.framebufferTexture);
-            GL11.glTexParameteri((int)3553, (int)10242, (int)33648);
-            GL11.glTexParameteri((int)3553, (int)10243, (int)33648);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL14.GL_MIRRORED_REPEAT);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL14.GL_MIRRORED_REPEAT);
             GlStateManager.bindTexture(0);
+
             framebufferList.add(currentBuffer);
-            ++i;
         }
     }
 
+
     public static void renderBlur(int stencilFrameBufferTexture, int iterations, int offset) {
-        int i;
-        if (currentIterations != iterations || KawaseBlur.framebuffer.framebufferWidth !=mc.displayWidth || KawaseBlur.framebuffer.framebufferHeight !=mc.displayHeight) {
-            KawaseBlur.initFramebuffers(iterations);
+        if (currentIterations != iterations || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight) {
+            initFramebuffers(iterations);
             currentIterations = iterations;
         }
-        KawaseBlur.renderFBO(framebufferList.get(1), mc.getFramebuffer().framebufferTexture, kawaseDown, offset);
-        for (i = 1; i < iterations; ++i) {
-            KawaseBlur.renderFBO(framebufferList.get(i + 1), KawaseBlur.framebufferList.get((int)i).framebufferTexture, kawaseDown, offset);
+
+        renderFBO(framebufferList.get(1), mc.getFramebuffer().framebufferTexture, kawaseDown, offset);
+
+        //Downsample
+        for (int i = 1; i < iterations; i++) {
+            renderFBO(framebufferList.get(i + 1), framebufferList.get(i).framebufferTexture, kawaseDown, offset);
         }
-        for (i = iterations; i > 1; --i) {
-            KawaseBlur.renderFBO(framebufferList.get(i - 1), KawaseBlur.framebufferList.get((int)i).framebufferTexture, kawaseUp, offset);
+
+        //Upsample
+        for (int i = iterations; i > 1; i--) {
+            renderFBO(framebufferList.get(i - 1), framebufferList.get(i).framebufferTexture, kawaseUp, offset);
         }
+
+
         Framebuffer lastBuffer = framebufferList.get(0);
         lastBuffer.framebufferClear();
         lastBuffer.bindFramebuffer(false);
@@ -65,20 +81,23 @@ public class KawaseBlur {
         kawaseUp.setUniformi("inTexture", 0);
         kawaseUp.setUniformi("check", 1);
         kawaseUp.setUniformi("textureToCheck", 16);
-        kawaseUp.setUniformf("halfpixel", 1.0f / (float)lastBuffer.framebufferWidth, 1.0f / (float)lastBuffer.framebufferHeight);
+        kawaseUp.setUniformf("halfpixel", 1.0f / lastBuffer.framebufferWidth, 1.0f / lastBuffer.framebufferHeight);
         kawaseUp.setUniformf("iResolution", lastBuffer.framebufferWidth, lastBuffer.framebufferHeight);
-        GL13.glActiveTexture((int)34000);
+        GL13.glActiveTexture(GL13.GL_TEXTURE16);
         RenderUtils.bindTexture(stencilFrameBufferTexture);
-        GL13.glActiveTexture((int)33984);
-        RenderUtils.bindTexture(KawaseBlur.framebufferList.get((int)1).framebufferTexture);
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        RenderUtils.bindTexture(framebufferList.get(1).framebufferTexture);
         ShaderUtil.drawQuads();
         kawaseUp.unload();
+
+
         mc.getFramebuffer().bindFramebuffer(true);
-        RenderUtils.bindTexture(KawaseBlur.framebufferList.get((int)0).framebufferTexture);
-        RenderUtils.setAlphaLimit(0.0f);
-        RenderUtils.startBlend();
+        RenderUtils.bindTexture(framebufferList.get(0).framebufferTexture);
+        RenderUtils.setAlphaLimit(0);
+        GLUtil.startBlend();
         ShaderUtil.drawQuads();
         GlStateManager.bindTexture(0);
+
     }
 
     private static void renderFBO(Framebuffer framebuffer, int framebufferTexture, ShaderUtil shader, float offset) {
@@ -89,14 +108,11 @@ public class KawaseBlur {
         shader.setUniformf("offset", offset, offset);
         shader.setUniformi("inTexture", 0);
         shader.setUniformi("check", 0);
-        shader.setUniformf("halfpixel", 1.0f / (float)framebuffer.framebufferWidth, 1.0f / (float)framebuffer.framebufferHeight);
+        shader.setUniformf("halfpixel", 1.0f / framebuffer.framebufferWidth, 1.0f / framebuffer.framebufferHeight);
         shader.setUniformf("iResolution", framebuffer.framebufferWidth, framebuffer.framebufferHeight);
         ShaderUtil.drawQuads();
         shader.unload();
     }
 
-    static {
-        framebufferList = new ArrayList<Framebuffer>();
-    }
-}
 
+}

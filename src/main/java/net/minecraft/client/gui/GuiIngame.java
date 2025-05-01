@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import dev.faiths.Faiths;
 import dev.faiths.event.impl.Render2DEvent;
 import dev.faiths.module.client.ModuleHUD;
+import dev.faiths.utils.render.shader.ShaderElement;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -165,6 +166,13 @@ public class GuiIngame extends Gui
         else
         {
             this.renderTooltip(scaledresolution, partialTicks);
+        }
+
+        if ((Faiths.moduleManager.getModule(ModuleHUD.class).blur.getValue())) {
+            Faiths.moduleManager.getModule(ModuleHUD.class).drawBlur();
+        }
+        if ((Faiths.moduleManager.getModule(ModuleHUD.class).bloom.getValue())) {
+            Faiths.moduleManager.getModule(ModuleHUD.class).drawBloom();
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -581,79 +589,141 @@ public class GuiIngame extends Gui
         this.streamIndicator.render(scaledRes.getScaledWidth() - 10, 10);
     }
 
-    private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes)
-    {
+//    private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes)
+//    {
+//        Scoreboard scoreboard = objective.getScoreboard();
+//        Collection<Score> collection = scoreboard.getSortedScores(objective);
+//        List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>()
+//        {
+//            public boolean apply(Score p_apply_1_)
+//            {
+//                return p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#");
+//            }
+//        }));
+//
+//        if (list.size() > 15)
+//        {
+//            collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
+//        }
+//        else
+//        {
+//            collection = list;
+//        }
+//
+//        int i = this.getFontRenderer().getStringWidth(objective.getDisplayName());
+//
+//
+//        for (Score score : collection)
+//        {
+//            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
+//            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
+//            i = Math.max(i, this.getFontRenderer().getStringWidth(s));
+//        }
+//
+//        int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
+//
+//
+//        int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3 + Faiths.moduleManager.getModule(ModuleHUD.class).scoreboardY.getValue();
+//        int k1 = 3;
+//        int l1 = scaledRes.getScaledWidth() - i - k1;
+//        int j = 0;
+//
+//        for (Score score1 : collection)
+//        {
+//            ++j;
+//            ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
+//            String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
+//            String s2 = EnumChatFormatting.RED + ""+ score1.getScorePoints();
+//            int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
+//            int l = scaledRes.getScaledWidth() - k1 + 2;
+//            drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
+////            ShaderElement.addBlurTask(() -> drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 0xFF000000));
+////            ShaderElement.addBloomTask(() -> drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 0xFF000000));
+////            if (j == 1) {
+////                if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
+////                //    FontManager.sf20.drawString("skidonion.tech", l1, k, rainbow.getRGB());
+////                    this.getFontRenderer().drawString("skidonion.tech", l1, k,ModuleHUD.color.getValue().getRGB());
+////                } else {
+////                    this.getFontRenderer().drawString("skidonion.tech", l1, k, ModuleHUD.color.getValue().getRGB());
+////                }
+////            } else {
+//                this.getFontRenderer().drawString(s1, l1, k, 553648127);
+////            }
+//
+//            if (Faiths.moduleManager.getModule(ModuleHUD.class).scoreboardpoint.getValue()) {
+//                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
+//            }
+//
+//
+//            if (j == collection.size())
+//            {
+//                String s3 = org.apache.commons.lang3.StringUtils.replace(org.apache.commons.lang3.StringUtils.replace(objective.getDisplayName(), "花雨庭", "破特庭"), "花雨币", "破特币");
+//                drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
+//                drawRect(l1 - 2, k - 1, l, k, 1342177280);
+//                this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, 553648127);
+//            }
+//
+//
+//        }
+//    }
+
+    private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes) {
         Scoreboard scoreboard = objective.getScoreboard();
         Collection<Score> collection = scoreboard.getSortedScores(objective);
-        List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>()
-        {
-            public boolean apply(Score p_apply_1_)
-            {
+        List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>() {
+            public boolean apply(Score p_apply_1_) {
                 return p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#");
             }
         }));
 
-        if (list.size() > 15)
-        {
+        if (list.size() > 15) {
             collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
-        }
-        else
-        {
+        } else {
             collection = list;
         }
 
         int i = this.getFontRenderer().getStringWidth(objective.getDisplayName());
 
-
-        for (Score score : collection)
-        {
+        for (Score score : collection) {
             ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
             String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
             i = Math.max(i, this.getFontRenderer().getStringWidth(s));
         }
 
         int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
-
-
         int j1 = scaledRes.getScaledHeight() / 2 + i1 / 3 + Faiths.moduleManager.getModule(ModuleHUD.class).scoreboardY.getValue();
         int k1 = 3;
         int l1 = scaledRes.getScaledWidth() - i - k1;
         int j = 0;
 
-        for (Score score1 : collection)
-        {
+        // 计算整个scoreboard的边界
+        int top = j1 - collection.size() * this.getFontRenderer().FONT_HEIGHT - this.getFontRenderer().FONT_HEIGHT - 1;
+        int bottom = j1;
+        int left = l1 - 2;
+        int right = scaledRes.getScaledWidth() - k1 + 2;
+
+        // 一次性绘制整个背景
+        drawRect(left, top, right, bottom, 1610612736); // 半透明黑色背景
+        ShaderElement.addBlurTask(() -> drawRect(left, top, right, bottom, 0xFF000000));
+        ShaderElement.addBloomTask(() -> drawRect(left, top, right, bottom, 0xFF000000));
+
+        for (Score score1 : collection) {
             ++j;
             ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
             String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
-            String s2 = EnumChatFormatting.RED + ""+ score1.getScorePoints();
+            String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
-            int l = scaledRes.getScaledWidth() - k1 + 2;
-            drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
-//            if (j == 1) {
-//                if (Faiths.moduleManager.getModule(ModuleHUD.class).facyfont.getValue()) {
-//                //    FontManager.sf20.drawString("skidonion.tech", l1, k, rainbow.getRGB());
-//                    this.getFontRenderer().drawString("skidonion.tech", l1, k,ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-//                } else {
-//                    this.getFontRenderer().drawString("skidonion.tech", l1, k, ModuleHUD.color(ModuleHUD.colortick.getValue()).getRGB());
-//                }
-//            } else {
-                this.getFontRenderer().drawString(s1, l1, k, 553648127);
-//            }
+
+            this.getFontRenderer().drawString(s1, l1, k, 553648127);
 
             if (Faiths.moduleManager.getModule(ModuleHUD.class).scoreboardpoint.getValue()) {
-                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
+                this.getFontRenderer().drawString(s2, right - this.getFontRenderer().getStringWidth(s2), k, 553648127);
             }
 
-
-            if (j == collection.size())
-            {
+            if (j == collection.size()) {
                 String s3 = org.apache.commons.lang3.StringUtils.replace(org.apache.commons.lang3.StringUtils.replace(objective.getDisplayName(), "花雨庭", "破特庭"), "花雨币", "破特币");
-                drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
-                drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, 553648127);
             }
-
-
         }
     }
 

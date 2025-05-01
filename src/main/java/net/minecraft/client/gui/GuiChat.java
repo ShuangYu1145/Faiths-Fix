@@ -12,7 +12,9 @@ import dev.faiths.module.render.ModuleTargetHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.MouseInputHandler;
 import dev.faiths.utils.render.GlowUtils;
+import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.utils.render.RoundedUtil;
+import dev.faiths.utils.render.shader.ShaderElement;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -26,7 +28,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import static dev.faiths.module.client.ModuleHUD.globalalpha;
-import static dev.faiths.module.client.ModuleHUD.glow;
 import static dev.faiths.utils.IMinecraft.mc;
 
 public class GuiChat extends GuiScreen
@@ -330,16 +331,9 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-      //  drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-        RoundedUtil.drawRound(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4,new Color(0, 0, 0,globalalpha.getValue()));
-        if (glow.getValue()) {
-            GlowUtils.drawGlow(2, this.height - 14, mc.fontRendererObj.getStringWidth(inputField.getText()) + 2, 12, 4, new Color(0, 0, 0, globalalpha.getValue()));
-        }
-        this.inputField.drawTextBox();
-
+      drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+      this.inputField.drawTextBox();
         ScaledResolution sr = new ScaledResolution(mc);
-     //   FontManager.sf40.drawStringDynamic("主播你可以移动模块位置", sr.getScaledHeight() - FontManager.sf40.getStringWidth("主播你可以移动模块位置") + 80, 5,1,50);
-
 
         try {
             if (!Faiths.commandManager.getLatestAutoComplete().isEmpty() && !inputField.getText().isEmpty() && inputField.getText().startsWith(String.valueOf(Faiths.commandManager.getPrefix()))) {

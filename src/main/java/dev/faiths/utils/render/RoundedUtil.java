@@ -1,6 +1,8 @@
 package dev.faiths.utils.render;
 
 import java.awt.Color;
+
+import dev.faiths.utils.render.shader.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;

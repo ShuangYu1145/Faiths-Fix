@@ -304,10 +304,11 @@ public class CustomFont {
     }
 
     public void drawStringDynamicWithShadow(String text, double x2, double y2, int tick1, int tick2) {
+        this.drawString(text, (float)x2 + 0.1F, (float)y2 + 0.1F, Color.DARK_GRAY);
         GradientUtil.applyGradientHorizontal((float)x2, (float)y2, this.getStringWidth(text), this.getFontHeight(), 1.0f, ModuleHUD.color(tick1), ModuleHUD.color(tick2), () -> {
             GlStateManager.enableAlpha();
             GlStateManager.alphaFunc(516, 0.0f);
-            this.drawStringWithShadow(text, (float)x2, (float)y2, -1);
+            this.drawString(text, (float)x2, (float)y2, -1);
         });
     }
     public void drawStringDynamic(String text, double x2, double y2, int tick1, int tick2) {

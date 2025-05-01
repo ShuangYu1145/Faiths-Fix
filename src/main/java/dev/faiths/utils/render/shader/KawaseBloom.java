@@ -1,7 +1,7 @@
 package dev.faiths.utils.render.shader;
 
+import dev.faiths.utils.render.GLUtil;
 import dev.faiths.utils.render.RenderUtils;
-import dev.faiths.utils.render.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
@@ -24,15 +24,15 @@ public class KawaseBloom {
             framebuffer.deleteFramebuffer();
         }
         framebufferList.clear();
-        framebuffer = RenderUtils.createFrameBuffer(null, true);
+        framebuffer = ShaderElement.createFrameBuffer(null, true);
         framebufferList.add(framebuffer);
         int i = 1;
         while ((float)i <= iterations) {
-            Framebuffer currentBuffer = new Framebuffer((int)((double) mc.displayWidth / Math.pow(2.0, i)), (int)((double) mc.displayHeight / Math.pow(2.0, i)), true);
+            Framebuffer currentBuffer = new Framebuffer((int)((double)mc.displayWidth / Math.pow(2.0, i)), (int)((double)mc.displayHeight / Math.pow(2.0, i)), true);
             currentBuffer.setFramebufferFilter(9729);
             GlStateManager.bindTexture(currentBuffer.framebufferTexture);
-            GL11.glTexParameteri((int)3553, (int)10242, (int)33648);
-            GL11.glTexParameteri((int)3553, (int)10243, (int)33648);
+            GL11.glTexParameteri(3553, 10242, 33648);
+            GL11.glTexParameteri(3553, 10243, 33648);
             GlStateManager.bindTexture(0);
             framebufferList.add(currentBuffer);
             ++i;
@@ -40,7 +40,7 @@ public class KawaseBloom {
     }
 
     public static void shadow2(Runnable drawMod) {
-        stencilFramebuffer = RenderUtils.createFrameBuffer(stencilFramebuffer);
+        stencilFramebuffer = ShaderElement.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();
         stencilFramebuffer.bindFramebuffer(false);
         drawMod.run();
@@ -49,7 +49,7 @@ public class KawaseBloom {
     }
 
     public static void shadow(Runnable drawMod) {
-        stencilFramebuffer = RenderUtils.createFrameBuffer(stencilFramebuffer);
+        stencilFramebuffer = ShaderElement.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();
         stencilFramebuffer.bindFramebuffer(false);
         drawMod.run();
@@ -66,13 +66,13 @@ public class KawaseBloom {
         RenderUtils.setAlphaLimit(0.0f);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(1, 1);
-        GL11.glClearColor((float)0.0f, (float)0.0f, (float)0.0f, (float)0.0f);
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         KawaseBloom.renderFBO(framebufferList.get(1), framebufferTexture, kawaseDown, offset);
         for (i = 1; i < iterations; ++i) {
-            KawaseBloom.renderFBO(framebufferList.get(i + 1), KawaseBloom.framebufferList.get((int)i).framebufferTexture, kawaseDown, offset);
+            KawaseBloom.renderFBO(framebufferList.get(i + 1), KawaseBloom.framebufferList.get(i).framebufferTexture, kawaseDown, offset);
         }
         for (i = iterations; i > 1; --i) {
-            KawaseBloom.renderFBO(framebufferList.get(i - 1), KawaseBloom.framebufferList.get((int)i).framebufferTexture, kawaseUp, offset);
+            KawaseBloom.renderFBO(framebufferList.get(i - 1), KawaseBloom.framebufferList.get(i).framebufferTexture, kawaseUp, offset);
         }
         Framebuffer lastBuffer = framebufferList.get(0);
         lastBuffer.framebufferClear();
@@ -87,18 +87,19 @@ public class KawaseBloom {
         GlStateManager.setActiveTexture(34000);
         RenderUtils.bindTexture(framebufferTexture);
         GlStateManager.setActiveTexture(33984);
-        RenderUtils.bindTexture(KawaseBloom.framebufferList.get((int)1).framebufferTexture);
+        RenderUtils.bindTexture(KawaseBloom.framebufferList.get(1).framebufferTexture);
         ShaderUtil.drawQuads();
         kawaseUp.unload();
         GlStateManager.clearColor(0.0f, 0.0f, 0.0f, 0.0f);
         mc.getFramebuffer().bindFramebuffer(false);
-        RenderUtils.bindTexture(KawaseBloom.framebufferList.get((int)0).framebufferTexture);
+        RenderUtils.bindTexture(KawaseBloom.framebufferList.get(0).framebufferTexture);
         RenderUtils.setAlphaLimit(0.0f);
-        RenderUtils.startBlend();
+        GLUtil.startBlend();
         ShaderUtil.drawQuads();
         GlStateManager.bindTexture(0);
         RenderUtils.setAlphaLimit(0.0f);
-        RenderUtils.startBlend();
+        GLUtil.endBlend();
+        GlStateManager.disableBlend();
     }
 
     private static void renderFBO(Framebuffer framebuffer, int framebufferTexture, ShaderUtil shader, float offset) {

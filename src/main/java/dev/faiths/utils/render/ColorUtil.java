@@ -226,13 +226,12 @@ public class ColorUtil {
 
     public static int applyOpacity(int color, float opacity) {
         Color old = new Color(color);
-        return applyOpacity(old, opacity).getRGB();
+        return ColorUtil.applyOpacity(old, opacity).getRGB();
     }
 
-    //Opacity value ranges from 0-1
     public static Color applyOpacity(Color color, float opacity) {
-        opacity = Math.min(1, Math.max(0, opacity));
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() * opacity));
+        opacity = Math.min(1.0f, Math.max(0.0f, opacity));
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)((float)color.getAlpha() * opacity));
     }
 
     public static Color darker(Color color, float FACTOR) {
@@ -341,12 +340,10 @@ public class ColorUtil {
     //Fade a color in and out with a specified alpha value ranging from 0-1
     public static Color fade(int speed, int index, Color color, float alpha) {
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-        int angle = (int) ((System.currentTimeMillis() / speed + index) % 360);
+        int angle = (int)((System.currentTimeMillis() / (long)speed + (long)index) % 360L);
         angle = (angle > 180 ? 360 - angle : angle) + 180;
-
-        Color colorHSB = new Color(Color.HSBtoRGB(hsb[0], hsb[1], angle / 360f));
-
-        return new Color(colorHSB.getRed(), colorHSB.getGreen(), colorHSB.getBlue(), Math.max(0, Math.min(255, (int) (alpha * 255))));
+        Color colorHSB = new Color(Color.HSBtoRGB(hsb[0], hsb[1], (float)angle / 360.0f));
+        return new Color(colorHSB.getRed(), colorHSB.getGreen(), colorHSB.getBlue(), Math.max(0, Math.min(255, (int)(alpha * 255.0f))));
     }
 
 

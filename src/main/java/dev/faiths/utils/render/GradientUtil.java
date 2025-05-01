@@ -1,5 +1,6 @@
 package dev.faiths.utils.render;
 
+import dev.faiths.utils.render.shader.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
