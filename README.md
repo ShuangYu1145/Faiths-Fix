@@ -71,4 +71,10 @@ Faiths Client
 [+]一些Utils
 [+/-]一些HUD(Bug)
 [+]Bhop(Bypass Watchdog)🐔🐔🐔
+
+
+
+#5/1
+[+]更新了一些HUD和动画，看起来更丝滑
+[+]修复了一些已知问题。
 ```
