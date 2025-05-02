@@ -8,7 +8,6 @@ import dev.faiths.ui.font.FontManager;
 import dev.faiths.ui.menu.AstolfoMenuButton;
 
 import dev.faiths.ui.menu.GuiAbout;
-import dev.faiths.utils.render.BlurUtil;
 import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -166,7 +165,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
                     0,
                     this.width,
                     this.height);
-            BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
         }
 
         if (!(progress < 1)) {
@@ -183,7 +181,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
                     0,
                     this.width,
                     this.height);
-            BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
         }
 
         startProgress();
@@ -203,7 +200,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             (this.buttons.get(i2)).drawButton(this.mc, mouseX, mouseY);
         }
 
-        FontManager.p100.drawStringDynamicWithShadow("Faiths",this.width / 2F - 110F,this.height / 4f - 40F,1,50);
+        FontManager.p100.drawStringDynamic("Faiths",this.width / 2F - 110F,this.height / 4f - 40F,1,50);
 
 
 //        RenderUtils.drawImage(
