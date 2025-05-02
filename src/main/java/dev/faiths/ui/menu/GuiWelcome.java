@@ -84,7 +84,14 @@ public class GuiWelcome extends GuiScreen {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
-            mc.displayGuiScreen(new GuiMainMenu());
+            for (AstolfoMenuButton button : buttons) {
+                if (button.mousePressed(this.mc, mouseX, mouseY)) {
+                    // 这里可以根据button.id或者其他属性执行对应操作
+                    button.playPressSound(mc.getSoundHandler());
+                    // 可根据需要添加回调或事件
+                    return;
+                }
+            }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
