@@ -6,8 +6,6 @@ import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.animation.normal.Animation;
 import dev.faiths.utils.animation.normal.Direction;
 import dev.faiths.utils.animation.normal.other.DecelerateAnimation;
-import dev.faiths.utils.render.BlurUtil;
-import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -29,10 +27,9 @@ import static net.minecraft.client.gui.GuiMainMenu.startTime;
 public class GuiWelcome extends GuiScreen {
 
     private Animation fadeAnimation;
-    protected List<AstolfoMenuButton> buttons = Lists.<AstolfoMenuButton>newArrayList();
+    protected List<AstolfoMenuButton> buttons = Lists.newArrayList();
 
-    public void initGui() {
-    }
+    
 
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -59,6 +56,10 @@ public class GuiWelcome extends GuiScreen {
 
         FontManager.sf72.drawString(formatter.format(date), 5, 5, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
         FontManager.sf40.drawString(greeting + " " + "福瑞控", 5, FontManager.sf72.getFontHeight(), new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
+        
+        String clickText = "点击任意位置进入";
+        int textWidth = FontManager.sf40.getStringWidth(clickText);
+        FontManager.sf40.drawString(clickText, (this.width - textWidth) / 2f, this.height / 2f, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -86,12 +87,12 @@ public class GuiWelcome extends GuiScreen {
         if (mouseButton == 0) {
             for (AstolfoMenuButton button : buttons) {
                 if (button.mousePressed(this.mc, mouseX, mouseY)) {
-                    // 这里可以根据button.id或者其他属性执行对应操作
                     button.playPressSound(mc.getSoundHandler());
-                    // 可根据需要添加回调或事件
                     return;
                 }
             }
+            this.mc.displayGuiScreen(new GuiMainMenu());
+            return;
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
