@@ -1,22 +1,16 @@
 package dev.faiths.ui.menu;
 
-import dev.faiths.Faiths;
-import dev.faiths.module.client.ModuleHUD;
+
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.animation.normal.Animation;
 import dev.faiths.utils.animation.normal.Direction;
 import dev.faiths.utils.animation.normal.other.DecelerateAnimation;
-import dev.faiths.utils.render.RenderUtils;
 import dev.faiths.utils.render.RoundedUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
+
 
 import java.awt.*;
-import java.io.File;
 
 import static net.minecraft.client.gui.GuiMainMenu.progress;
 import static net.minecraft.client.gui.GuiMainMenu.startTime;
@@ -57,6 +51,10 @@ public class GuiAbout extends GuiScreen {
 
         FontManager.sf19.drawString("github.com/ShuangYu1145/Faiths-Fix", this.width - fontRendererObj.getStringWidth("github.com/ShuangYu1145/Faiths-Fix") + 10, this.height - 10, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
         FontManager.sf19.drawString("本项目完全免费且开源", 2, this.height - 10, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
+        
+        FontManager.sf19.drawString("贡献人员名单", width / 2.5F, 150, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 255)));
+        FontManager.sf19.drawString("ShuangYu", width / 2.5F, 170, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 200)));
+        FontManager.sf19.drawString("OpticsValley", width / 2.5F, 190, new Color(0, 0, 0, (int) (fadeAnimation.getValue() * 200)));
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
