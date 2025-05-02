@@ -73,16 +73,32 @@ public class ModuleInventoryHUD extends CheatModule {
     //绘制
     public void draw() {
         ItemStack[] inventory = mc.thePlayer.inventory.mainInventory;
-        RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0,ModuleHUD.globalalpha.getValue()));
-        ShaderElement.addBlurTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0)));
-        ShaderElement.addBloomTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0,0,0)));
-        for (int i = 9; i < inventory.length; i++) {
-            ItemStack stack = inventory[i];
-            if (stack != null) {
-                int itemX = (int)xValue.getValue() + ((i - 9) % 9) * 18;
-                int itemY = (int)yValue.getValue() + ((i - 9) / 9) * 18 ;
-                drawItemStack(stack, itemX, itemY);
+        boolean hasItems = false;
+
+
+            RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0, 0, 0, ModuleHUD.globalalpha.getValue()));
+            ShaderElement.addBlurTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0, 0, 0)));
+            ShaderElement.addBloomTask(() -> RoundedUtil.drawRound(xValue.getValue() - 1, yValue.getValue() - 1, 162, 55, 4, new Color(0, 0, 0)));
+            for (int i = 9; i < inventory.length; i++) {
+                ItemStack stack = inventory[i];
+                if (stack != null) {
+                    hasItems = true;
+                    int itemX = (int) xValue.getValue() + ((i - 9) % 9) * 18;
+                    int itemY = (int) yValue.getValue() + ((i - 9) / 9) * 18;
+                    drawItemStack(stack, itemX, itemY);
+                }
             }
+
+        if (!hasItems) {
+            String emptyText = "Empty";
+            // 计算文本宽度
+            int textWidth = FontManager.bold20.getStringWidth(emptyText);
+            // 计算居中位置 (xValue + HUD宽度/2 - 文本宽度/2)
+            float centerX = xValue.getValue() + (hudwidth / 2f) - (textWidth / 2f);
+            // 计算垂直居中 (yValue + HUD高度/2 - 字体高度/2)
+            float centerY = yValue.getValue() + (hudheight / 2f) - (FontManager.bold20.getHeight() / 2f);
+
+            FontManager.bold20.drawStringWithShadow(emptyText, centerX, centerY, new Color(255, 255, 255, 200).getRGB());
         }
     }
 

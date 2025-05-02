@@ -1,8 +1,10 @@
 package dev.faiths.ui.notifiction;
 
 import dev.faiths.Faiths;
+import dev.faiths.module.client.ModuleHUD;
 import dev.faiths.ui.font.FontManager;
 import dev.faiths.utils.render.RenderUtils;
+import dev.faiths.utils.render.shader.ShaderElement;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -35,12 +37,27 @@ public final class NotificationRenderer {
                     notification.getCallReason();
             String message = notification.getMessage();
 
-            Gui.drawRect(
+            Gui.drawRect3(
                     resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0),
                     y,
                     resolution.getScaledWidth(),
-                    y + 24,
-                    new Color(0, 0, 0,150).getRGB());
+                    24,
+                    new Color(0, 0, 0, ModuleHUD.globalalpha.getValue()).getRGB());
+
+
+            ShaderElement.addBlurTask(() -> Gui.drawRect3(
+                    resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0),
+                    y,
+                    resolution.getScaledWidth(),
+                    24,
+                    new Color(0, 0, 0, 255).getRGB()));
+
+            ShaderElement.addBloomTask(() -> Gui.drawRect3(
+                    resolution.getScaledWidth() - x - (notification.getNotificationType() == NotificationType.WARNING || notification.getNotificationType() == NotificationType.SUCCESS || notification.getNotificationType() == NotificationType.INFO ? 2 : 0),
+                    y,
+                    resolution.getScaledWidth(),
+                    24,
+                    new Color(0, 0, 0,255).getRGB()));
 
 //            FontManager.sf19.drawString(callReason,resolution.getScaledWidth() - (float)x + 25,(float) y + 4F,Color.WHITE.getRGB(),false);
 //            FontManager.sf18.drawString(message + " ",resolution.getScaledWidth() - (float)x + 25,(float)y + 12.5F,Color.GRAY.getRGB(),false);

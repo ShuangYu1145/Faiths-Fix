@@ -1,10 +1,11 @@
 package dev.faiths.ui.clickgui;
 
 import dev.faiths.module.Category;
-import dev.faiths.utils.render.BlurUtil;
+import dev.faiths.utils.render.RenderUtils;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.Display;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,7 @@ public class AstolfoGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        BlurUtil.blurArea(0, 0, Display.getWidth(), Display.getHeight(), 10f);
-     //   RenderUtils.drawRect(0, 0, Display.getWidth(), Display.getHeight(), new Color(0, 0, 0, 150));
+        RenderUtils .drawRect(0, 0, Display.getWidth(), Display.getHeight(), new Color(0, 0, 0, 150));
 
         this.windows.forEach(window -> {
             window.renderWindow(mouseX, mouseY);
