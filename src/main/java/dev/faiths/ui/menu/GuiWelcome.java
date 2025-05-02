@@ -62,7 +62,7 @@ public class GuiWelcome extends GuiScreen {
         FontManager.sf40.drawString(clickText, (this.width - textWidth) / 2f, this.height / 2f, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
+    }//啾啾写的
 
 
     public static String getGreeting(LocalTime time) {
