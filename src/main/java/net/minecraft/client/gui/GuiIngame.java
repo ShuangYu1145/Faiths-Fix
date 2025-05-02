@@ -330,7 +330,7 @@ public class GuiIngame extends Gui
 //                GlStateManager.pushMatrix();
 //                GlStateManager.scale(4.0F, 4.0F, 4.0F);
 //                int j2 = i2 << 24 & -16777216;
-//                this.displayedTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedTitle, "花雨庭", "破特庭");
+//                this.displayedTitle = org.apache.commons.lang3.StringUtils.replace(this.displayedTitle, "花雨庭", "啾啾庭");
 //                this.getFontRenderer().drawString(this.displayedTitle, (float)(-this.getFontRenderer().getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
 //                GlStateManager.popMatrix();
 //                GlStateManager.pushMatrix();

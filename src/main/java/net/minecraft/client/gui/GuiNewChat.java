@@ -113,7 +113,7 @@ public class GuiNewChat extends Gui
 
     private String getReplacedMessage(IChatComponent chatComponent) {
         String message = chatComponent.getFormattedText();
-        String replacedMessage = StringUtils.replace(StringUtils.replace(message, "花雨庭", "破特庭"), "MCHYT", "SBPoint");
+        String replacedMessage = StringUtils.replace(StringUtils.replace(message, "花雨庭", "啾啾庭"), "MCHYT", "SBPoint");
 
 
 
