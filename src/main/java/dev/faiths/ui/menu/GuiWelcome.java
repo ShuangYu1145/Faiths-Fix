@@ -62,6 +62,10 @@ public class GuiWelcome extends GuiScreen {
         FontManager.sf40.drawString(clickText, (this.width - textWidth) / 2f, this.height / 2f, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
 
         super.drawScreen(mouseX, mouseY, partialTicks);
+        
+        String openSourceText = "本客户端完全免费，已在Github/ShuangYu1145/Faiths-Fix开源";
+        int openSourceTextWidth = FontManager.sf19.getStringWidth(openSourceText);
+        FontManager.sf19.drawString(openSourceText, (this.width - openSourceTextWidth) / 2f, this.height - 20, new Color(255, 255, 255, (int) (fadeAnimation.getValue() * 255)));
     }//啾啾写的
 
 
