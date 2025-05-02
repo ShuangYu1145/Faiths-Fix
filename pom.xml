@@ -65,7 +65,6 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
@@ -93,6 +92,27 @@
     </build>
 
     <repositories>
+        <!-- Alibaba Cloud Mirror -->
+        <repository>
+            <id>aliyunmaven</id>
+            <name>Aliyun Public Repository</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+
+        <!-- Huawei Cloud Mirror -->
+        <repository>
+            <id>huaweicloud</id>
+            <name>Huawei Cloud Repository</name>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+        </repository>
+
+        <!-- Tencent Cloud Mirror -->
+        <repository>
+            <id>tencentcloud</id>
+            <name>Tencent Cloud Repository</name>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+        </repository>
+
         <repository>
             <id>marcloud-development-repository</id>
             <name>marCloud-Repository</name>
@@ -103,12 +123,8 @@
             <name>PaperMC-Repository</name>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
-        <repository>
-            <id>aliyunmaven</id>
-            <name>阿里云公共仓库</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
     </repositories>
+
 
     <dependencies>
         <dependency>
