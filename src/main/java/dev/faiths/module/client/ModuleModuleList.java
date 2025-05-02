@@ -14,6 +14,7 @@ import dev.faiths.value.ValueBoolean;
 import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ModuleModuleList extends CheatModule {
 
@@ -37,7 +38,7 @@ public class ModuleModuleList extends CheatModule {
                     int totalWidth = FontManager.bold15.getStringWidth(name + suffix);
                     return sortByLength.getValue() ? -totalWidth : totalWidth;
                 }))
-                .toList();
+                .collect(Collectors.toList());
 
         int padding = 2;
         int textHeight = FontManager.bold15.getHeight();

@@ -338,7 +338,7 @@
             <artifactId>viabackwards-common</artifactId>
             <version>4.9.2-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/viabackwards-common-4.9.2-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/lib/viabackwards-common-4.9.2-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -346,7 +346,7 @@
             <artifactId>viarewind-common</artifactId>
             <version>3.0.6-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/viarewind-common-3.0.6-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/lib/viarewind-common-3.0.6-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -354,7 +354,7 @@
             <artifactId>ViaVersion</artifactId>
             <version>4.9.3-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/ViaVersion-4.9.3-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/lib/ViaVersion-4.9.3-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -362,7 +362,7 @@
             <artifactId>phantomshield-annotations</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/phantomshield-annotations.jar</systemPath>
+            <systemPath>${project.basedir}/lib/phantomshield-annotations.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -370,7 +370,7 @@
             <artifactId>phantomshield-inline</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/phantomshield-inline.jar</systemPath>
+            <systemPath>${project.basedir}/lib/phantomshield-inline.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -378,7 +378,13 @@
             <artifactId>vecmath</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/vecmath.jar</systemPath>
+            <systemPath>${project.basedir}/lib/vecmath.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
