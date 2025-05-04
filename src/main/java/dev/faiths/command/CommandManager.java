@@ -38,7 +38,7 @@ public class CommandManager {
                 try {
                     command.execute(args);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ClientUtils.LOGGER.error(e);
                 }
                 return;
             }
@@ -50,7 +50,7 @@ public class CommandManager {
                 try {
                     command.execute(args);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ClientUtils.LOGGER.error(e);
                 }
                 return;
             }
@@ -79,7 +79,7 @@ public class CommandManager {
      * @param input text that should be used to check for auto completions.
      */
     private List<String> getCompletions(final String input) {
-        if (!input.isEmpty() && input.charAt(0) == prefix) {
+        if (input != null && !input.isEmpty() && input.charAt(0) == prefix) {
             final String[] args = input.split(" ");
 
             if (args.length > 1) {
