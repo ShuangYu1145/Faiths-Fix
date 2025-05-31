@@ -10,7 +10,6 @@ import dev.faiths.module.CheatModule;
 import dev.faiths.ui.notifiction.NotificationType;
 import dev.faiths.utils.sound.SoundUtil;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.util.ResourceLocation;
 
