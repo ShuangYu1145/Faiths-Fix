@@ -22,12 +22,7 @@ public class ModuleACE extends CheatModule {
     private int killCount = 0;
     private int resetTicks = 0;
 
-    /*
-    private EntityLivingBase target;  // 支持所有生物
-    private EntityPlayer target;  // 支持玩家
-     */
-
-    private EntityPlayer target
+    private EntityLivingBase target;
 
     public ModuleACE() {
         super("ACE", Category.Misc , "ACE");
