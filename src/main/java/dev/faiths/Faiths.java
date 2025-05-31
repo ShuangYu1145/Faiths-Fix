@@ -29,7 +29,7 @@ import java.util.Comparator;
 public class Faiths {
     public static Faiths INSTANCE;
     public static final String NAME = "Faiths";
-    public static String VERSION = "250308";
+    public static String VERSION = "250531";
     private final EventManager eventManager;
     @NativeObfuscation.Inline
     public static HackerDetector hackerDetector;
